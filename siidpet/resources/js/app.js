@@ -13,10 +13,42 @@ import { createApp } from 'vue';
  * to use in your application's views. An example is included for you.
  */
 
-const app = createApp({});
+//const app = createApp({});
 
-import ExampleComponent from './components/ExampleComponent.vue';
-app.component('example-component', ExampleComponent);
+//import ExampleComponent from './components/ExampleComponent.vue';
+//app.component('example-component', ExampleComponent);
+//import 'carbon-components/css/carbon-components.css';
+//import CarbonComponentsVue from '@carbon/vue';
+
+
+import {
+    provideFluentDesignSystem,
+    fluentCombobox,
+    fluentOption
+} from "@fluentui/web-components";
+
+provideFluentDesignSystem()
+    .register(
+        fluentCombobox(),
+        fluentOption()
+    );
+    
+
+import router from './router/index';
+import AppComponent from './components/App.vue';
+
+
+
+const app = createApp({
+    components: {
+        AppComponent,
+    }
+});
+
+app.use(router)
+//app.use(CarbonComponentsVue);
+app.mount('#app');
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -35,5 +67,3 @@ app.component('example-component', ExampleComponent);
  * an "id" attribute of "app". This element is included with the "auth"
  * scaffolding. Otherwise, you will need to add an element yourself.
  */
-
-app.mount('#app');

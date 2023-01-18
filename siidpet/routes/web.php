@@ -13,6 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/*Route::get('/vue', function () {
+    return view('testVue');
+});*/
+
+
+/*Route::get('/{any}', function () {
+    return view('testVue');
+})->where("any",".*");*/
+
+
 Route::get('/', function () {
     return view('welcome');
 });
