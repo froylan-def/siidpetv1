@@ -4,7 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import './bootstrap';
+//import './bootstrap';
 import { createApp } from 'vue';
 
 /**
@@ -21,7 +21,7 @@ import { createApp } from 'vue';
 //import CarbonComponentsVue from '@carbon/vue';
 
 
-import {
+/*import {
     provideFluentDesignSystem,
     fluentCombobox,
     fluentOption
@@ -31,20 +31,28 @@ provideFluentDesignSystem()
     .register(
         fluentCombobox(),
         fluentOption()
-    );
+    ); */
     
 
 import router from './router/index';
 import AppComponent from './components/App.vue';
 
+import Vue3EasyDataTable from 'vue3-easy-data-table';
+import 'vue3-easy-data-table/dist/style.css';
+
+
 
 
 const app = createApp({
     components: {
-        AppComponent,
+        AppComponent
     }
 });
 
+//app.component("data-table", DataTable);
+
+//app.component("data-table", DataTable);
+app.component('EasyDataTable', Vue3EasyDataTable);
 app.use(router)
 //app.use(CarbonComponentsVue);
 app.mount('#app');

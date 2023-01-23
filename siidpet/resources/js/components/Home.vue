@@ -1,71 +1,93 @@
 <template>
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Inicio</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                        <li class="breadcrumb-item active"> </li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Example Component</div>
+                    <div class="card-header border-0">Total carpetas</div>
 
                     <div class="card-body">
-                        <h3>Default</h3>
-                        <fluent-combobox placeholder="Select a graphics card">
-                        <fluent-option value="1">GTX 1060</fluent-option>
-                        <fluent-option value="2">GTX 1070</fluent-option>
-                        <fluent-option value="3">GTX 1080</fluent-option>
-                        <fluent-option value="4" disabled>GTX 1090</fluent-option>
-                        </fluent-combobox>
-
-                        <h3>With autocomplete</h3>
-                        <fluent-combobox autocomplete="both" placeholder="Select a graphics card">
-                        <fluent-option value="1">GTX 1060</fluent-option>
-                        <fluent-option value="2">GTX 1070</fluent-option>
-                        <fluent-option value="3">GTX 1080</fluent-option>
-                        <fluent-option value="4" disabled>GTX 1090</fluent-option>
-                        </fluent-combobox>
-
-                        <h3>Disabled</h3>
-                        <fluent-combobox disabled placeholder="Select an option">
-                        <fluent-option value="1">Option 1</fluent-option>
-                        <fluent-option value="2">Option 2</fluent-option>
-                        <fluent-option value="3">Option 3</fluent-option>
-                        </fluent-combobox>
+                        <div id="piechart" style="width: 900px; height: 500px;"></div>
                     </div>
                 </div>
             </div>
         </div>
+        
+
+
     </div>
-  </template>
-  
-  <script>
-    export default {
-      name: 'HelloWorld',
-      data() {
+</template>
+
+<script>
+google.charts.load('current', { 'packages': ['corechart'] });
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+
+    var data = google.visualization.arrayToDataTable([
+        ['Task', 'Hours per Day'],
+        ['Work', 11],
+        ['Eat', 2],
+        ['Commute', 2],
+        ['Watch TV', 2],
+        ['Sleep', 7]
+    ]);
+
+    var options = {
+        title: 'My Daily Activities'
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+    chart.draw(data, options);
+}
+
+export default {
+    name: 'HelloWorld',
+    data() {
         return {
-          yourName: '',
-          visible: false,
+            yourName: '',
+            visible: false,
         };
-      },
-      methods: {
+    },
+    methods: {
         onClick() {
-          this.visible = true;
+            this.visible = true;
         },
         modalClosed() {
-          this.visible = false;
+            this.visible = false;
         },
-      },
-    };
-  </script>
-  
-  <style>
-    .sample {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      max-width: 600px;
-      margin: 5% auto;
-    }
-  
-    .cv-text-input {
-      margin: 30px 0;
-    }
-  </style>
+    },
+};
+</script>
+
+<style>
+.sample {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 600px;
+    margin: 5% auto;
+}
+
+.cv-text-input {
+    margin: 30px 0;
+}
+</style>
