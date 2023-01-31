@@ -41,7 +41,8 @@ import Vue3EasyDataTable from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';
 
 
-
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 const app = createApp({
     components: {
@@ -54,6 +55,7 @@ const app = createApp({
 //app.component("data-table", DataTable);
 app.component('EasyDataTable', Vue3EasyDataTable);
 app.use(router)
+app.use(VueAxios, axios)
 //app.use(CarbonComponentsVue);
 app.mount('#app');
 

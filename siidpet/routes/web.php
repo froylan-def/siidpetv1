@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,23 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*Route::get('/vue', function () {
-    return view('testVue');
-});*/
-
-
-
+Auth::routes();
 
 Route::get('/', function () {
-    return view('auth.login');
+    return view('home');
 });
+
+Route::resource('users', UserController::class);
 
 
 Route::get('/{any}', function () {
     return view('home');
 })->where("any", ".*");
 
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
