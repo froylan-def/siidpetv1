@@ -34,7 +34,7 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 
-
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link href=' http://fonts.googleapis.com/css?family=Encode+Sans' rel='stylesheet' type='text/css'>
 

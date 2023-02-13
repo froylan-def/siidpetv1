@@ -32,7 +32,7 @@
                             <a href="#" class="btn btn-tool btn-sm">
                                 <i class="fas fa-bars"></i>
                             </a>
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarUsuario">
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarUsuario" @click="abrirModalRegistro">
                                 <i class="fas fa-user-plus"></i> Agregar
                             </button>
                         </div>
@@ -64,48 +64,55 @@
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalAgregarUsuario"> Agregar usuario </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form @submit.prevent="registrarUsuario" @keydown="form.onKeydown($event)">
-                            <div class="form-group">
-                                <label for="Nombre del usuario">Nombre</label>
-                                <input v-model="form.name"  type="text" class="form-control" id="nombre"
-                                    aria-describedby="emailHelp" placeholder="Juan Pérez">
-
-                                <div v-if="form.errors.has('name')" v-html="form.errors.get('name')" />
-                                
-                            </div>
-                            <div class="form-group">
-                                <label for="Correo del usuario">Correo</label>
-                                <input v-model="form.email" type="text" class="form-control" id="correo"
-                                    placeholder="algo@correo.com">
-
-                                <div v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
-
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Contraseña del usuario">Contraseña</label>
-                                <input type="text" class="form-control" id="contrasena"
-                                    placeholder="Introduce edad">
-                            </div>
-                            
-                            <button type="submit" :disabled="form.busy">
-                                Registrar
+                    <form @submit.prevent="registrarUsuario" @keydown="form.onKeydown($event)">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalAgregarUsuario"> Agregar usuario </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
                             </button>
+                        </div>
+                        <div class="modal-body">
+                            
+                                <input type="hidden" name="_token" :value="csrf">
+                                    
+                                <div class="form-group">
+                                    <label for="Nombre del usuario">Nombre</label>
+                                    <input v-model="form.name"  type="text" class="form-control" id="nombre"
+                                        aria-describedby="emailHelp" placeholder="Juan Pérez">
 
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i
-                                class="fas fa-times"></i> Cancelar </button>
-                        <button type="button" class="btn btn-primary"> <i class="fas fa-save"></i> Guardar </button>
-                    </div>
+                                    <div style="color: red;" v-if="form.errors.has('name')" v-html="form.errors.get('name')" />
+                                    
+                                </div>
+                                <div class="form-group">
+                                    <label for="Correo del usuario">Correo</label>
+                                    <input v-model="form.email" type="text" class="form-control" id="correo"
+                                        placeholder="algo@correo.com">
+
+                                    <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Contraseña del usuario">Contraseña</label>
+                                    <input v-model="form.password" type="password" class="form-control" id="contrasena" placeholder="Ingrese contraseña">
+
+                                    <div style="color: red;" v-if="form.errors.has('password')" v-html="form.errors.get('password')" />
+
+                                </div>
+                                
+                                
+
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"> 
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                            <button type="submit" :disabled="form.busy" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Registrar
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -122,6 +129,7 @@ export default {
 
     data(){
         return{
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             searchField:ref("name"),
             searchValue: ref(""),
             themeColor: "#AB0033",
@@ -152,21 +160,29 @@ export default {
         this.getList();
     },
     methods: {
+        abrirModalRegistro() {
+            console.log("Se ha abierto el modal");
+            this.form.reset();
+            this.form.clear();
+        },
+
         getList() {
             this.axios.get('/users').then((response) => {
                 this.items = response.data;
+                console.log(response);
             })
         },
 
         async registrarUsuario () {
-            await this.axios.post('/users', this.form).then((response) => {
-                this.items = response.data;
+
+            await this.form.post('/users').then((response) => {
+                console.log(response);
+            }).catch(error => {
+                console.log(error);
+
             })
-            //const response = await this.form.post('/users');
+
             this.getList();
-            //$('#addContacto').modal('hide');
-            //this.$refs['modalAgregarUsuario'].hide()
-            $('#modalAgregarUsuario').modal('hide');
         }
     }
 }
