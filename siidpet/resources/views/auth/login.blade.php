@@ -38,26 +38,27 @@
 
 </head>
 <body class="hold-transition login-page" >
-<div class="login-box" >
+<div class="login-box" style="width: 30rem;">
  
   <!-- /.login-logo -->
-  <div class="card">
+  <div class="card" >
 
-    <div class="login-logo mt-3">
+    <div class="login-logo mt-5 ">
       <img src="{{ asset('img/logo_tam_1.jpg') }}" class="rounded mx-auto d-block" width="100" height="100"  alt="Logo tam" >
       <a href="/" > SIIDPET </a>
       
     </div>
 
-    <div class="card-body login-card-body">
-      <p class="login-box-msg">Iniciar sesión</p>
+    <div class="card-body login-card-body" >
+
+      <p class="login-box-msg"> <b> Iniciar sesión </b> </p>
 
       <form method="POST" action="{{ route('login') }}">
         @csrf
         <div class="row mb-3">
             <label for="email" class="col-md-4 col-form-label text-md-end"> Correo: </label>
             <div class="col-md-8">
-                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                <input placeholder="algo@tamaulipas.gob.mx" id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                 @error('email')
                     <span class="invalid-feedback" role="alert">
@@ -70,7 +71,7 @@
             <label for="password" class="col-md-4 col-form-label text-md-end"> Constraseña: </label>
 
             <div class="col-md-8">
-                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                <input id="password" placeholder="Contraseña" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
 
                 @error('password')
                     <span class="invalid-feedback" role="alert">
@@ -81,8 +82,8 @@
         </div>
         <div class="row mb-0">
             <div class="col-md-8 offset-md-4">
-                <button type="submit" class="btn btn-primary">
-                  <i class="fa-solid fa-right-to-bracket"></i>
+                <button type="submit" class="btn btn-primary" style="background-color: #AB0033; border: 1px solid #AB0033;">
+                  <i class="fa-solid fa-right-to-bracket mr-2"></i>
                     Iniciar sesión
                 </button>
             </div>

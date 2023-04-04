@@ -44,6 +44,11 @@
       }
     </style>
 
+  <script>
+    window.permisosSession = "{{ Session::get('permisos'); }}"
+    window.permisosSession = JSON.parse(window.permisosSession.replace(/&quot;/g,'"'))
+  </script>
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed" style="background-color: #D1E7E0;">
 <div class="wrapper" id="app">
@@ -113,7 +118,7 @@
           <img src="{{ asset('img/user2-160x160.jpg' ) }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block"> Froylán Martinez </a>
+          <a href="#" class="d-block"> {{ Auth::user()->name }} </a>
         </div>
       </div>
 
@@ -139,6 +144,46 @@
                     </p>
                 </router-link>
             </li>
+
+
+            <li class="nav-item">
+                <router-link to="/nsjpao" class="nav-link" active-class="active"  >
+ 
+                <i class="nav-icon fas fa-scale-balanced"></i>
+                    <p>
+                        NSJPAO
+                    </p>
+                </router-link>
+            </li>
+
+
+            <li class="nav-item">
+                <router-link to="/permisos" class="nav-link" active-class="active"  >
+
+                <i class="nav-icon fa-solid fa-key"></i>
+
+                    <p>
+                        Permisos
+                    </p>
+                </router-link>
+            </li>
+
+
+
+            <li class="nav-item">
+                <router-link to="/peticionarios" class="nav-link" active-class="active"  >
+
+                <i class="nav-icon fa-solid fa-users"></i>
+
+                    <p>
+                        Peticionarios
+                    </p>
+                </router-link>
+            </li>
+
+
+
+            
           <li class="nav-item">
             <a class="nav-link" href="{{ route('logout') }}"   href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">                         
               
@@ -225,10 +270,7 @@
 <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('js/adminlte.js') }}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{ asset('js/demo.js') }}"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{ asset('js/pages/dashboard.js') }}"></script>
+
 
 
 

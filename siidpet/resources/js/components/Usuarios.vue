@@ -16,15 +16,12 @@
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-
     <div class="container">
-
-
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header border-0">
-                        <h3 class="card-title"> Datos registrados de los peticionarios </h3>
+                    <div class="card-header">
+                        <h3 class="card-title">Registro de usuarios </h3>
                         <div class="card-tools">
                             <a href="#" class="btn btn-tool btn-sm">
                                 <i class="fas fa-download"></i>
@@ -37,29 +34,27 @@
                             </button>
                         </div>
                     </div>
-                    <div class="card-body table-responsive p-0">
+                    <div class="card-body ">
                         <div class="row">
-                            <div class="col-md-6 mb-2">
+                            <div class="col-6 mb-2">
                                 <span class="ml-2">Campo de busqueda: </span>
-                                <select class="custom-select form-control-border ml-2" v-model="searchField">
-                                    <option value="name">nombre</option>
-                                    <option value="email">correo</option>
+                                <select class="custom-select ml-2" v-model="searchField">
+                                    <option value="name">Nombre</option>
+                                    <option value="email">Correo</option>
                                 </select>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-6">
                                 <span class=""> Valor: </span>
-                                <input class="form-control form-control-border border-width-2 mr-2"
+                                <input class="form-control  border-width-2 mr-2"
                                     v-model="searchValue" placeholder="Juanito perez" type="search"/>
                             </div>
                         </div>
-
-                        <EasyDataTable buttons-pagination :headers="headers" :items="items" :theme-color="themeColor"
+                        <EasyDataTable buttons-pagination :headers="datos" :items="items" :theme-color="themeColor"
                             :search-field="searchField" :search-value="searchValue"  />
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="modal fade" id="modalAgregarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -95,14 +90,8 @@
                                 <div class="form-group">
                                     <label for="Contraseña del usuario">Contraseña</label>
                                     <input v-model="form.password" type="password" class="form-control" id="contrasena" placeholder="Ingrese contraseña">
-
                                     <div style="color: red;" v-if="form.errors.has('password')" v-html="form.errors.get('password')" />
-
-                                </div>
-                                
-                                
-
-                            
+                                </div>      
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal"> 
@@ -133,7 +122,7 @@ export default {
             searchField:ref("name"),
             searchValue: ref(""),
             themeColor: "#AB0033",
-            headers: [
+            datos: [
                 { text: "Id", value: "id" },
                 { text: "Nombre", value: "name" },
                 { text: "Correo", value: "email" },
@@ -161,6 +150,7 @@ export default {
     },
     methods: {
         abrirModalRegistro() {
+            let hola = "hola";
             console.log("Se ha abierto el modal");
             this.form.reset();
             this.form.clear();
@@ -174,13 +164,12 @@ export default {
         },
 
         async registrarUsuario () {
-
             await this.form.post('/users').then((response) => {
                 console.log(response);
             }).catch(error => {
                 console.log(error);
 
-            })
+            });
 
             this.getList();
         }

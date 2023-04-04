@@ -20,7 +20,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header border-0">Total carpetas</div>
+                    <div class="card-header border-0">Total carpetass</div>
 
                     <div class="card-body">
                         <div id="piechart" style="width: 900px; height: 500px;"></div>
@@ -35,28 +35,6 @@
 </template>
 
 <script>
-google.charts.load('current', { 'packages': ['corechart'] });
-google.charts.setOnLoadCallback(drawChart);
-
-function drawChart() {
-
-    var data = google.visualization.arrayToDataTable([
-        ['Task', 'Hours per Day'],
-        ['Work', 11],
-        ['Eat', 2],
-        ['Commute', 2],
-        ['Watch TV', 2],
-        ['Sleep', 7]
-    ]);
-
-    var options = {
-        title: 'My Daily Activities'
-    };
-
-    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-    chart.draw(data, options);
-}
 
 export default {
     name: 'HelloWorld',
