@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Peticionario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Direccion;
 
 class PeticionarioController extends Controller
 {
@@ -119,7 +120,31 @@ class PeticionarioController extends Controller
      */
     public function update(Request $request, Peticionario $peticionario)
     {
-        //
+        $id_peticionario = $request->input('id');
+        $peticionario = Peticionario::find($id_peticionario);
+        $peticionario->nombres = $request->input("nombres");
+        $peticionario->apellidoP = $request->input("apellidoP");
+        $peticionario->apellidoM = $request->input("apellidoM");
+        $peticionario->CURP = $request->input("CURP");
+        $peticionario->correo = $request->input("correo");
+        $peticionario->telefono = $request->input("telefono");
+        $peticionario->telefono_particular = $request->input("telefono_particular");
+        $peticionario->save();
+
+        $id_direccion = $request->input('id_direccion');
+        $direccion = Direccion::find($id_direccion);
+        $direccion->calle = $request->input('calle');
+        $direccion->colonia = $request->input('colonia');
+        $direccion->municipio = $request->input('municipio');
+        $direccion->ciudad = $request->input('ciudad');
+        $direccion->estado = $request->input('estado');
+        $direccion->pais = $request->input('pais');
+        $direccion->num_ext = $request->input('num_ext');
+        $direccion->num_int = $request->input('num_int');
+
+        $direccion->save();
+
+        return response([$request, $peticionario]);
     }
 
     /**
@@ -131,5 +156,6 @@ class PeticionarioController extends Controller
     public function destroy(Peticionario $peticionario)
     {
         //
+
     }
 }

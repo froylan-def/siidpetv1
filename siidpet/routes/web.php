@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth'], 'middleware' => ['access'] ], function()
     Route::get('imputado/NUC/{nuc}', [imputadoController::class, 'getImputadosPorNuc']);
     Route::get('/bitacora/notas/{imputado}', [bitacoraController::class, 'getBitacora']);
     Route::get('/etapa/imputado/{imputado}', [etapaProcesalController::class, 'getEstados']);
+    Route::post('/etapa/finalizar/', [etapaProcesalController::class, 'finalizarEtapa']);
 
     Route::resource('peticionario', PeticionarioController::class);
     Route::resource('users', UserController::class);

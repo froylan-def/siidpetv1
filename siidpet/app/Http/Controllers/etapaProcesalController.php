@@ -60,6 +60,27 @@ class etapaProcesalController extends Controller
         return response($NUCS);
     }
 
+    public function finalizarEtapa(Request $request)
+    {
+        if($request->input('idEtapa')<5)
+        {
+
+            DB::table('historialEtapaProcesal')
+            ->where('idimputado',$request->input('idimputado'))
+            ->where('idEtapa',$request->input('idEtapa'))
+            ->update(array(
+                'estado'=>2,
+            ));
+            DB::table('historialEtapaProcesal')
+            ->where('idimputado',$request->input('idimputado'))
+            ->where('idEtapa',$request->input('idEtapa')+1)
+            ->update(array(
+                'estado'=>1,
+            ));
+        }
+        
+      
+    }
     /**
      * Display the specified resource.
      *
