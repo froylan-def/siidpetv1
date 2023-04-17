@@ -92,7 +92,13 @@ class DatabaseSeeder extends Seeder
         DB::table('permisos')->insert(['nombre' => 'Eliminar NUC','detalles' => 'Eliminar dashboard', 'ruta' => '/NUC' ,'fecha' => '2023-03-10']);
         DB::table('permisos')->insert(['nombre' => 'Registrar NUC','detalles' => 'Registrar dashboard', 'ruta' => '/NUC' ,'fecha' => '2023-03-10']);
         
-         
-
+        DB::table('etapa')->insert(['nombre' => 'Preeliminar','descripcion' => '']);
+        DB::table('etapa')->insert(['nombre' => 'Audiencia inicial','descripcion' => '']);
+        DB::table('etapa')->insert(['nombre' => 'Vinculacion a proceso','descripcion' => '']);
+        DB::table('etapa')->insert(['nombre' => 'Etapa intermedia','descripcion' => '']);
+        DB::table('etapa')->insert(['nombre' => 'Juicio Oral','descripcion' => '']);
+        
+        DB::table('sexo')->insert(['sexo' => 'Hombre']);
+        DB::table('sexo')->insert(['sexo' => 'Mujer']);
     }
 }

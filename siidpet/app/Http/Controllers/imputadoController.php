@@ -51,9 +51,11 @@ class imputadoController extends Controller
             'apellidoM' => $request->input('apellidoM'),
             'CURP' => $request->input('CURP'),
             'IDMunicipio' => $request->input('IDMunicipio'),
+            'IDSexo' => $request->input('IDSexo'),
             'direccion' => $request->input('direccion'),
             'correo' => $request->input('correo'),
             'telefono' => $request->input('telefono'),
+            'estado' => "En proceso",
         ]);
 
         //$idnuc = DB::table('NUC')->where('NUC', $request->input('IDNUC'))->get();

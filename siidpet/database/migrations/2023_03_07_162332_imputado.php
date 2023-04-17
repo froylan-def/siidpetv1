@@ -19,10 +19,12 @@ return new class extends Migration
             $table->string('apellidoP');
             $table->string('apellidoM');
             $table->string('CURP',18);
+            $table->foreignId('IDSexo')->constrained('sexo');
             $table->tinyInteger('IDMunicipio')->nulleable;
             $table->string('direccion')->nullable;
             $table->string('correo')->nullable;
             $table->string('telefono')->nullable;
+            $table->string('estado')->nullable;
             $table->timestamps();
         });
     }

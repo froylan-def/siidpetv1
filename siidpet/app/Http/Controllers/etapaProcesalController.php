@@ -81,6 +81,28 @@ class etapaProcesalController extends Controller
         
       
     }
+    public function masc(Request $request)
+    {
+        if($request->input('idEtapa')<5)
+        {
+
+            DB::table('historialEtapaProcesal')
+            ->where('idimputado',$request->input('idimputado'))
+            ->where('idEtapa',$request->input('idEtapa'))
+            ->update(array(
+                'estado'=>2,
+            ));
+            DB::table('imputado')
+            ->where('id',$request->input('idimputado'))
+ 
+            ->update(array(
+                'estado'=>"Reparacion de daños",
+            ));
+             
+        }
+        
+      
+    }
     /**
      * Display the specified resource.
      *
@@ -91,7 +113,7 @@ class etapaProcesalController extends Controller
     {
         //
     }
-
+    
     public function getEstados($imputado)
     {
         $estados = DB::table('historialEtapaProcesal')->where("idImputado", $imputado)->pluck('estado');

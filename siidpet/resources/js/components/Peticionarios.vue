@@ -55,13 +55,13 @@
 
                                     <button class="btn btn-warning btn-sm mt-2 mb-2 mr-1"
                                         @click="actualizarPeticionario(item)">
-                                        <i class="fa-solid fa-pen-to-square"></i> Update
+                                        <i class="fa-solid fa-pen-to-square"></i> 
                                         
                                     </button>
 
                                     <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1"
                                         @click="eliminarPeticionario(item)">
-                                        <i class="fa-solid fa-trash"></i> Eliminar
+                                        <i class="fa-solid fa-trash"></i> 
                                     </button>
 
                                 </div>
@@ -170,6 +170,15 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="Correo del usuario"> Código Postal: </label>
+                                <input v-model="form.codigo_postal" type="text" class="form-control" id="codigo_postal"
+                                    placeholder="">
+                                <div style="color: red;" v-if="form.errors.has('codigo_postal')"
+                                    v-html="form.errors.get('codigo_postal')" />
+                            </div>
+
+
+                            <div class="form-group">
                                 <label for="Correo del usuario"> Estado: </label>
                                 <input v-model="form.estado" type="text" class="form-control" id="estado" placeholder="">
                                 <div style="color: red;" v-if="form.errors.has('estado')"
@@ -243,7 +252,6 @@ export default {
                 apellidoP: '',
                 apellidoM: '',
                 CURP: '',
-                IDMunicipio: '',
                 correo: '',
                 telefono: '',
                 telefono_particular: '',
@@ -253,7 +261,9 @@ export default {
                 estado: '',
                 pais: '',
                 num_int: '',
-                num_ext: ''
+                num_ext: '',
+                id_direccion: '',
+                codigo_postal: ''
             })
         }
     },
@@ -282,32 +292,37 @@ export default {
         obtenerPeticionarios() {
             this.axios.get('/peticionario').then((response) => {
                 this.peticionarios = response.data;
-                console.log(this.peticionarios);
+                console.log( response.data );
             })
         },
         async actualizarPeticionario(peticionario) {
             $('#modalAgregarPeticionario').modal('show');
             this.form.fill(peticionario);
             this.actualizarPeticionarioCheck = true;
+            //console.log("Peticionario a actualizar ");
+            //console.log( peticionario );
+            
+
         },
         async editarPeticionario(){
             console.log("Actualizar peticionario");
-            await this.form.put('/peticionario/'+this.form.id, this.form).then((response) => {
+            await this.form.put('/peticionario/' + this.form.id , this.form).then((response) => {
                 console.log(response);
+                this.obtenerPeticionarios(); 
+                $('#modalAgregarPeticionario').modal('hide');
             }).catch(error => {
                 console.log(error);
             });
-
         },
         async registrarPeticionario() {
-            console.log("Registrar");
-            /*await this.form.post('/peticionario').then((response) => {
+            //console.log("Registrar");
+            await this.form.post('/peticionario').then((response) => {
                 console.log(response);
             }).catch(error => {
                 console.log(error);
             });
 
-            this.obtenerPeticionarios();*/
+            this.obtenerPeticionarios();
         }
     }
 }

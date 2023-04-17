@@ -19,11 +19,11 @@ return new class extends Migration
             $table->string('calle');
             $table->string('colonia');
             $table->string('municipio');
-            $table->string('ciudad')->nullable;
-            $table->string('estado')->nullable;
-            $table->string('pais')->nulleable;
-            $table->string('num_ext')->nulleable;
-            $table->string('num_int')->nulleable;
+            $table->string('codigo_postal');
+            $table->string('estado')->nullable();
+            $table->string('pais')->nullable();
+            $table->string('num_ext')->nullable();
+            $table->string('num_int')->nullable();
             $table->timestamps();
         });
 
@@ -32,11 +32,10 @@ return new class extends Migration
             $table->string('nombres');
             $table->string('apellidoP');
             $table->string('apellidoM');
-            $table->string('CURP',18)->nulleable;;
-            $table->tinyInteger('IDMunicipio')->nulleable;
-            $table->string('correo')->nullable;
-            $table->string('telefono')->nullable;
-            $table->string('telefono_particular')->nullable;
+            $table->string('CURP', 18)->nullable();
+            $table->string('correo')->nullable();
+            $table->string('telefono')->nullable();
+            $table->string('telefono_particular')->nullable();
             $table->foreignId('id_direccion')->constrained('direccion');
             $table->timestamps();
         });

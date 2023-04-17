@@ -16,16 +16,14 @@ class PeticionarioController extends Controller
      */
     public function index()
     {
-        //
-
-        $peticionario = DB::table('peticionario')
+        $peticionarios = DB::table('peticionario')
             ->select('*')
             ->join('direccion', 'direccion.id', '=', 'peticionario.id_direccion')
             ->get();
 
 
         //$peticionario = DB::table('peticionario')->get();
-        return response( $peticionario );
+        return response( $peticionarios );
     }
 
     /**
@@ -56,7 +54,6 @@ class PeticionarioController extends Controller
             'calle' => 'required',
             'colonia' => 'required',
             'municipio' => 'required',
-
         ]);
 
         $id_direccion = DB::table('direccion')->insertGetId(
@@ -64,9 +61,9 @@ class PeticionarioController extends Controller
                 'calle' => $request->input('calle'),
                 'colonia' => $request->input('colonia'),
                 'municipio' => $request->input('municipio'),
-                'ciudad' => $request->input('ciudad'),
                 'estado' => $request->input('estado'),
                 'pais' => $request->input('pais'),
+                'codigo_postal' => $request->input('codigo_postal'),
                 'num_ext' => $request->input('num_ext'),
                 'num_int' => $request->input('num_int')
                 )
@@ -78,7 +75,6 @@ class PeticionarioController extends Controller
             'apellidoP' => $request->input('apellidoP'),
             'apellidoM' => $request->input('apellidoM'),
             'CURP' => $request->input('CURP'),
-            'IDMunicipio' => $request->input('IDMunicipio'),
             'correo' => $request->input('correo'),
             'telefono' => $request->input('telefono'),
             'telefono_particular' => $request->input('telefono_particular'),
@@ -118,10 +114,13 @@ class PeticionarioController extends Controller
      * @param  \App\Models\Peticionario  $peticionario
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Peticionario $peticionario)
+    public function update(Request $request, $id)
     {
+
+        
         $id_peticionario = $request->input('id');
-        $peticionario = Peticionario::find($id_peticionario);
+        $peticionario = Peticionario::find( $id_peticionario );
+
         $peticionario->nombres = $request->input("nombres");
         $peticionario->apellidoP = $request->input("apellidoP");
         $peticionario->apellidoM = $request->input("apellidoM");
@@ -133,6 +132,7 @@ class PeticionarioController extends Controller
 
         $id_direccion = $request->input('id_direccion');
         $direccion = Direccion::find($id_direccion);
+
         $direccion->calle = $request->input('calle');
         $direccion->colonia = $request->input('colonia');
         $direccion->municipio = $request->input('municipio');
@@ -144,7 +144,9 @@ class PeticionarioController extends Controller
 
         $direccion->save();
 
-        return response([$request, $peticionario]);
+        
+
+        return response('Información guardada exitosamente');
     }
 
     /**

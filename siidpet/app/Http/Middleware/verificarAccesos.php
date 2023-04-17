@@ -20,7 +20,7 @@ class verificarAccesos
      */
     public function handle(Request $request, Closure $next)
     {   
-        if (Auth::check()) {
+        /*if (Auth::check()) {
             $rol = Auth::user()->IDRol;
             
             $permisos = DB::table('rol_permiso')
@@ -30,7 +30,7 @@ class verificarAccesos
             ->get();
 
             Session::put('permisos', json_encode($permisos) );
-        }
+        }*/
 
         return $next($request);
     }

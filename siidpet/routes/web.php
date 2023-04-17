@@ -9,6 +9,7 @@ use App\Http\Controllers\PermisosController;
 use App\Http\Controllers\bitacoraController;
 use App\Http\Controllers\PeticionarioController;
 use App\Http\Controllers\etapaProcesalController;
+use App\Http\Controllers\sexoController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,12 +25,9 @@ Auth::routes();
 
 Route::group(['middleware' => ['auth'], 'middleware' => ['access'] ], function() {
    
-    
-
     Route::get('/', function () {
         return view('home');
     });
-
     Route::get('/home', function () {
         return redirect('/');
     });
@@ -42,6 +40,10 @@ Route::group(['middleware' => ['auth'], 'middleware' => ['access'] ], function()
     Route::get('/bitacora/notas/{imputado}', [bitacoraController::class, 'getBitacora']);
     Route::get('/etapa/imputado/{imputado}', [etapaProcesalController::class, 'getEstados']);
     Route::post('/etapa/finalizar/', [etapaProcesalController::class, 'finalizarEtapa']);
+    Route::post('/etapa/masc/', [etapaProcesalController::class, 'masc']);
+    
+
+    //Route::post('/peticionario/guardar/', [PeticionarioController::class, 'update'] );
 
     Route::resource('peticionario', PeticionarioController::class);
     Route::resource('users', UserController::class);
@@ -50,8 +52,8 @@ Route::group(['middleware' => ['auth'], 'middleware' => ['access'] ], function()
     Route::resource('imputado', imputadoController::class);
     Route::resource('bitacora', bitacoraController::class);
     Route::resource('etapaProcesal', etapaProcesalController::class);
-
-
+    Route::resource('sexo', sexoController::class);
+    
     Route::get('/{any}', function () {
         return view('home');
     })->where("any", ".*");

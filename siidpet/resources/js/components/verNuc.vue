@@ -18,8 +18,6 @@
     <!-- /.content-header -->
 
     <div class="container">
-
-
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
@@ -58,8 +56,7 @@
                             :items="items" 
                             :theme-color="themeColor"
                             :search-field="searchField" 
-                            :search-value="searchValue"
-                            >
+                            :search-value="searchValue">
 
                             <template #item-operation="item">
                             <div class="operation-wrapper">
@@ -74,9 +71,7 @@
                                         <i class="fa-solid fa-eye"></i>
                                     </button>
                                 </a>
-                            
-                            
-      </div>
+                            </div>
     </template>
     </EasyDataTable>
                     </div>
@@ -138,6 +133,13 @@
                                     <div style="color: red;" v-if="form2.errors.has('IDMunicipio')" v-html="form2.errors.get('IDMunicipio')" />
                                 </div>
                                 <div class="form-group">
+                                    <label for="Correo del usuario">Sexo</label>
+                                    <select  v-model="form2.IDSexo" type="text" class="form-control" id="correo">
+                                        <option v-for=" s in sexo" :value="s.id">{{s.sexo}}</option>
+                                    </select>
+                                    <div style="color: red;" v-if="form2.errors.has('sexo')" v-html="form2.errors.get('IDMunicipio')" />
+                                </div>
+                                <div class="form-group">
                                     <label for="Nombre del usuario">Dirección</label>
                                     <input v-model="form2.direccion"  type="text" class="form-control" id="NUC"
                                         aria-describedby="emailHelp" placeholder="123456">
@@ -193,17 +195,20 @@ export default {
             searchValue: ref(""),
             themeColor: "#AB0033",
             headers: [
-                { text: "nombres", value: "nombres" },
-                { text: "apellidoP", value: "apellidoP" },
-                { text: "apellidoM", value: "apellidoM" },
+                { text: "Nombre", value: "nombres" },
+                { text: "A. paterno", value: "apellidoP" },
+                { text: "A. materno", value: "apellidoM" },
                 { text: "CURP", value: "CURP"  },
-                { text: "direccion", value: "direccion"},
-                { text: "correo", value: "correo"},
-                { text: "telefono", value: "telefono"},
+                { text: "Sexo", value: "IDSexo"  },
+                { text: "Direccion", value: "direccion"},
+                { text: "Correo", value: "correo"},
+                { text: "Teléfono", value: "telefono"},
+                { text: "Estado", value: "estado"},
                 { text: "Acciones", value: "operation"}
             ],
             items: [],
             municipios: [],
+            sexo: [],
             form2: new Form({
                 nombres: '',
                 apellidoP: '',
@@ -212,6 +217,7 @@ export default {
                 IDMunicipio: '',
                 direccion: '',
                 correo: '',
+                IDSexo: '',
                 telefono: '',
                 IDNUC:''
             }),
@@ -225,7 +231,7 @@ export default {
     mounted() {
         this.getList();
         this.getMunicipios();
-      
+        this.getSexo();
        
     },
     methods: {
@@ -237,19 +243,25 @@ export default {
        getList() {
             this.axios.get('/imputado/NUC/'+this.nuc).then((response) => {
                 this.items = response.data;
-                //console.log(response.data);
+                 
+                for (let i = 0; i < this.items.length; i++)
+                    this.items[i].IDSexo=this.sexo[this.items[i].IDSexo-1].sexo
+                 
                 
             })
-           /* await this.IDNUC.get('/imputado').then((response) => {
-                console.log(response);
-            }).catch(error => {
-                console.log(error);
-            })*/
+         
         },
         getMunicipios() {
             this.axios.get('/municipios').then((response) => {
                 this.municipios = response.data;
                  
+                 
+            })
+        },
+        getSexo() {
+            this.axios.get('/sexo').then((response) => {
+                this.sexo = response.data;
+                 console.log(sexo)
                  
             })
         },  

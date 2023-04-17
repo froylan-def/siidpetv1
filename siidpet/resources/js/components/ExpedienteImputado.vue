@@ -150,7 +150,7 @@
                                         <div class="col-4 mb-2 w-100" >
                                             <button
                                             class="btn btn-primary btn-sm"
-                                            @click="finalizarEtapa(2)"> 
+                                            @click="masc(2)"> 
                                                 Reparación de Daños
                                             </button>
                                         </div>
@@ -158,14 +158,14 @@
                                         <div class="col-4 mb-2 w-100"  >
                                             <button
                                             class="btn btn-primary btn-sm"
-                                            @click="finalizarEtapa(2)">
+                                            @click="masc(2)">
                                                 Etapa
                                             </button>
                                         </div>
                                         <div class="col-4 mb-2 w-100"  >
                                             <button
                                             class="btn btn-primary btn-sm"
-                                            @click="finalizarEtapa(2)">
+                                            @click="masc(2)">
                                                 Etapa
                                             </button>
                                         </div>
@@ -599,6 +599,10 @@ export default {
                 idimputado: 1,
                 idEtapa: 1,
             }),
+            dmasc: new Form({
+                idimputado: 1,
+                idEtapa: 1,
+            }),
             estados: [],
             claseEstados: ["", "", "", "", ""],
         };
@@ -664,7 +668,18 @@ export default {
               console.log(error);
           })
         
-      }
+      },
+      async masc(idEtapa) {
+        console.log("a")
+        this.dmasc.idimputado = Number(this.idimputado);
+        this.dmasc.idEtapa = idEtapa;
+        await this.dmasc.post('/etapa/masc').then((response) => {
+            this.getEstadoEtapas();
+      }).catch(error => {
+          console.log(error);
+      })
+    
+  }
            
     },
 };

@@ -10,5 +10,24 @@ class Peticionario extends Model
     use HasFactory;
 
     protected $table = 'peticionario';
+
+    protected $primaryKey = 'id';
+
+
+    protected $fillable = [
+        'id',
+        'nombres',
+        'apellidoP',
+        'apellidoM',
+        'CURP',
+        'IDMunicipio',
+        'correo',
+        'telefono',
+        'telefono_particular',
+        'id_direccion',
+        'created_at',
+        'updated_at'
+    ];
+
     
 }

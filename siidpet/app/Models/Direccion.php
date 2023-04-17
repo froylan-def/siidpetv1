@@ -11,7 +11,19 @@ class Direccion extends Model
 
     protected $table = 'direccion';
 
-    //protected $fillable = ['name'];
-
+    protected $primaryKey = 'id';
     
+    protected $fillable = [
+        'id',
+        'calle',
+        'colonia',
+        'municipio',
+        'ciudad',
+        'estado',
+        'pais',
+        'num_ext',
+        'num_int',
+        'created_at',
+        'updated_at'
+    ];   
 }
