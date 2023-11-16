@@ -44,19 +44,27 @@ import 'vue3-easy-data-table/dist/style.css';
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
+
 const app = createApp({
     components: {
         AppComponent
     }
 });
 
-//app.component("data-table", DataTable);
 
-//app.component("data-table", DataTable);
+import { setupCalendar, Calendar, DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
+
+// Use plugin defaults (optional)
+app.use(setupCalendar, {})
+
+// Use the components
+app.component('VCalendar', Calendar)
+app.component('VDatePicker', DatePicker)
+
 app.component('EasyDataTable', Vue3EasyDataTable);
 app.use(router)
 app.use(VueAxios, axios)
-//app.use(CarbonComponentsVue);
 app.mount('#app');
 
 

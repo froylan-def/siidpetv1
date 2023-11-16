@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -41,13 +43,16 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required|max:30',
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
+            'IDRol' => 'required'
         ]);
         
         DB::table('users')->insert([
             'email' => $request->input('email'),
             'name' => $request->input('name'),
-            'password' => $request->input('password')
+            'password' =>  Hash::make( $request->input('password') ) ,
+            'created_at' => date('Y-m-d'),
+            'IDRol' => $request->input('IDRol')
         ]);
 
         return response("Usuario guardado con éxito", 200);
@@ -84,7 +89,25 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'name' => 'required|max:30',
+            'email' => 'required|email',
+            'IDRol' => 'required'
+        ]);
         //
+        $usuario = User::find($id);
+        $usuario->name = $request->input('name');
+        $usuario->email = $request->input('email');
+        
+        if( $request->input('password') != "" ){
+            $usuario->password = Hash::make( $request->input('password') );
+        }
+
+        $usuario->IDRol = $request->input('IDRol');
+        $usuario->save();
+
+        
+        return response("Usuario almacenado correctamente ", 200);
     }
 
     /**
@@ -96,5 +119,14 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function eliminarUsuario($id)
+    {
+
+        $usuario = User::find($id);
+        $usuario->delete();
+        return response(["Usuario eliminado correctamente"]);
+
     }
 }

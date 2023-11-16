@@ -6,7 +6,7 @@
                 <div class="col-sm-6">
                     <h1 class="m-0">NUC No. {{this.nuc}}</h1>
                 </div><!-- /.col -->
-                <div class="col-sm-6">
+                <div class="col-sm-6" >
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Inicio</a></li>
                         <li class="breadcrumb-item active"> NSJPAO </li>
@@ -20,8 +20,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header border-0">
+                <div class="card" id="element-to-convert"> 
+                    <div class="card-header border-0" >
                         <h3 class="card-title">Imputados </h3>
                         <div class="card-tools">
                             <a href="#" class="btn btn-tool btn-sm">
@@ -179,7 +179,7 @@
 import { ref } from "vue";
 import type { Header, Item,ClickRowArgument  } from "vue3-easy-data-table";
 import Form from 'vform'
-
+import html2pdf from "html2pdf.js";
 
 const showRow = (item: ClickRowArgument) => {
     console.log("aaa")
@@ -232,9 +232,15 @@ export default {
         this.getList();
         this.getMunicipios();
         this.getSexo();
-       
+        this.exportToPDF()
     },
     methods: {
+        exportToPDF() {
+            html2pdf(document.getElementById("element-to-convert"), {
+                      margin: 1,
+                      filename: "reporte.pdf",
+                  });
+          },
         abrirModalRegistro() {
             console.log("Se ha abierto el modal");
             this.form2.reset();
@@ -304,3 +310,5 @@ export default {
     }
 }
 </script>
+ 
+

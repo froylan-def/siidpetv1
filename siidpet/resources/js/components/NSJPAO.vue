@@ -107,6 +107,7 @@
                                 <div class="form-group">
                                     <label for="Correo del usuario">Delito</label>
                                     <select  v-model="form2.delito" type="text" class="form-control" id="correo">
+                                        <option value=""> Seleccione una opción </option>
                                         <option value="1">Value 1</option>
                                         <option value="2" selected>Value 2</option>
                                         <option value="3">Value 3</option>

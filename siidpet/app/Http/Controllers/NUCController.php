@@ -36,11 +36,11 @@ class NUCController extends Controller
      */
     public function store(Request $request)
     {
-        /*$this->validate($request, [
-            'NUC' => 'required|max:30',
+        $this->validate($request, [
+            'NUC' => 'required|max:10',
             'delito' => 'required',
             'fechaRegistro' => 'required'
-        ]);*/
+        ]);
         
         DB::table('NUC')->insert([
             'NUC' => $request->input('NUC'),

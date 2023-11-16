@@ -17,7 +17,17 @@ class PeticionarioController extends Controller
     public function index()
     {
         $peticionarios = DB::table('peticionario')
-            ->select('*')
+            ->select('peticionario.*',  'direccion.id as direccion_id', 
+            'direccion.calle', 
+            'direccion.colonia', 
+            'direccion.municipio',
+            'direccion.estado', 
+            'direccion.pais', 
+            'direccion.num_ext', 
+            'direccion.num_int', 
+            'direccion.created_at', 
+            'direccion.updated_at',
+            'direccion.codigo_postal')
             ->join('direccion', 'direccion.id', '=', 'peticionario.id_direccion')
             ->get();
 
@@ -116,11 +126,8 @@ class PeticionarioController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-        
         $id_peticionario = $request->input('id');
         $peticionario = Peticionario::find( $id_peticionario );
-
         $peticionario->nombres = $request->input("nombres");
         $peticionario->apellidoP = $request->input("apellidoP");
         $peticionario->apellidoM = $request->input("apellidoM");
@@ -130,22 +137,18 @@ class PeticionarioController extends Controller
         $peticionario->telefono_particular = $request->input("telefono_particular");
         $peticionario->save();
 
-        $id_direccion = $request->input('id_direccion');
-        $direccion = Direccion::find($id_direccion);
+        $id_direccion = $request->input("id_direccion");
 
+        $direccion = Direccion::find($id_direccion);
         $direccion->calle = $request->input('calle');
         $direccion->colonia = $request->input('colonia');
         $direccion->municipio = $request->input('municipio');
-        $direccion->ciudad = $request->input('ciudad');
+        $direccion->codigo_postal = $request->input('codigo_postal');
         $direccion->estado = $request->input('estado');
         $direccion->pais = $request->input('pais');
         $direccion->num_ext = $request->input('num_ext');
         $direccion->num_int = $request->input('num_int');
-
         $direccion->save();
-
-        
-
         return response('Información guardada exitosamente');
     }
 
@@ -155,9 +158,12 @@ class PeticionarioController extends Controller
      * @param  \App\Models\Peticionario  $peticionario
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Peticionario $peticionario)
+    public function eliminarPeticionario($id)
     {
         //
+        $peticionario = Peticionario::find( $id );
+        $peticionario->delete();
+        return response(["Usuario eliminado correctamente"]);
 
     }
 }

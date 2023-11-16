@@ -10,6 +10,10 @@ import ExpedienteImputado from  '../components/ExpedienteImputado.vue'
 import AccesoDenegado from '../components/PaginaDenegada.vue'
 import Permisos from '../components/Permisos.vue';
 import Peticionarios from '../components/Peticionarios.vue';
+import reportesNSJPAO from '../components/reportesNSJPAO.vue';
+import calendario from '../components/Calendario.vue';
+import CuentaDiaria from '../components/CuentaDiaria.vue';
+
 const routes = [
     {
         path: '/',
@@ -56,10 +60,25 @@ const routes = [
         name: 'Peticionarios',
         component: Peticionarios
     },
+    { 
+        path: '/reportesNSJPAO',
+        name: 'reportesNSJPAO',
+        component: reportesNSJPAO
+    },
+    { 
+        path: '/calendario',
+        name: 'calendario',
+        component: calendario
+    },
     {
         path: "/:catchAll(.*)",
         name: "NotFound",
         component: PaginaNoEncontrada,
+    },
+    {
+        path: "/registrar/cuentadiaria",
+        name: "CuentaDiaria",
+        component: CuentaDiaria
     }
 ];
 

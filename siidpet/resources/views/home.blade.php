@@ -29,6 +29,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
+  <link rel="stylesheet" href="{{ asset('plugins/fullcalendar/main.css') }}"> 
+
   <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -45,8 +47,8 @@
     </style>
 
   <script>
-    window.permisosSession = "{{ Session::get('permisos'); }}"
-    window.permisosSession = JSON.parse(window.permisosSession.replace(/&quot;/g,'"'))
+    //window.permisosSession = "{{ Session::get('permisos'); }}"
+    //window.permisosSession = JSON.parse(window.permisosSession.replace(/&quot;/g,'"'))
   </script>
 
 </head>
@@ -156,6 +158,14 @@
                 </router-link>
             </li>
 
+            <li class="nav-item">
+                <router-link to="/reportesNSJPAO" class="nav-link" active-class="active"  >
+                 <i class="nav-icon fas fa-clipboard-list "></i>
+                    <p>
+                        Reportes
+                    </p>
+                </router-link>
+            </li>
 
             <li class="nav-item">
                 <router-link to="/permisos" class="nav-link" active-class="active"  >
@@ -172,11 +182,19 @@
 
             <li class="nav-item">
                 <router-link to="/peticionarios" class="nav-link" active-class="active"  >
-
                 <i class="nav-icon fa-solid fa-users"></i>
-
                     <p>
                         Peticionarios
+                    </p>
+                </router-link>
+            </li>
+
+
+            <li class="nav-item">
+                <router-link to="/registrar/cuentadiaria" class="nav-link" active-class="active"  >
+                <i class="nav-icon fa-solid fa-book"></i>
+                    <p>
+                        Cuenta diaria
                     </p>
                 </router-link>
             </li>
@@ -186,8 +204,6 @@
             
           <li class="nav-item">
             <a class="nav-link" href="{{ route('logout') }}"   href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">                         
-              
-
               <i class="nav-icon fas fa-solid fa-right-from-bracket"></i>
               <p>
                 Cerrar sesión
@@ -270,9 +286,8 @@
 <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('js/adminlte.js') }}"></script>
-
-
-
+<script src="{{ asset('plugins/fullcalendar/main.js') }}"> </script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@3.10.2/dist/locale/es.js'></script>
 
 </body>
 </html>

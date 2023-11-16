@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CuentaDiariaController;
+use App\Http\Controllers\GoogleDriveController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\NUCController;
@@ -22,18 +24,23 @@ use App\Http\Controllers\sexoController;
 */
 
 Auth::routes();
-
+//, 'middleware' => ['access']
 Route::group(['middleware' => ['auth'], 'middleware' => ['access'] ], function() {
    
     Route::get('/', function () {
         return view('home');
     });
+
     Route::get('/home', function () {
         return redirect('/');
     });
 
 
+    //Route::get('google-drive/file-upload',[GoogleDriveController::class,'googleDriveFilePpload'])->name('google.drive.file.upload');
+    
+
     Route::get('/permisos/{id}', [PermisosController::class, 'obtenerPermisosPorRol']);
+    Route::get('/users/eliminar/{id}', [UserController::class, 'eliminarUsuario' ] );
 
     Route::get('/permisos/{id}', [PermisosController::class, 'obtenerPermisosPorRol']);
     Route::get('imputado/NUC/{nuc}', [imputadoController::class, 'getImputadosPorNuc']);
@@ -45,6 +52,19 @@ Route::group(['middleware' => ['auth'], 'middleware' => ['access'] ], function()
 
     //Route::post('/peticionario/guardar/', [PeticionarioController::class, 'update'] );
 
+    Route::get('/googleDrive', [GoogleDriveController::class, 'subirArchivo']);
+
+
+    Route::get('/peticionario/eliminar/{id}', [PeticionarioController::class, 'eliminarPeticionario']);
+
+
+
+    Route::get('/obenerimputados', [CuentaDiariaController::class, 'obenerImputados']);
+    Route::get('/obtenerdelitos', [CuentaDiariaController::class, 'obtenerDelitos']);
+    Route::get('/obteneraudiencias', [CuentaDiariaController::class, 'obtenerAudiencias']);
+
+
+    Route::resource('cuentadiaria', CuentaDiariaController::class);
     Route::resource('peticionario', PeticionarioController::class);
     Route::resource('users', UserController::class);
     Route::resource('NUCs', NUCController::class);

@@ -31,17 +31,34 @@
                     </div>
                     <div class="card-body ">
                         <div class="row">
-                            <div class="col-6 mb-2">
-                                <span class="ml-2">Campo de busqueda: </span>
-                                <select class="custom-select ml-2" v-model="searchField">
-                                    <option value="name">Nombre</option>
-                                    <option value="email">Correo</option>
-                                </select>
-                            </div>
-                            <div class="col-6">
-                                <span class=""> Valor: </span>
-                                <input class="form-control  border-width-2 mr-2" v-model="searchValue"
-                                    placeholder="Juanito perez" type="search" />
+                            <p>
+                                <a class="text-right" data-toggle="collapse" href="#collapseExample" role="button"
+                                    aria-expanded="false" aria-controls="collapseExample">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    Busqueda
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseExample">
+                                <div class="card card-body">
+
+                                    <div class="row">
+
+                                        <div class="col-6 ">
+                                            <span class="">Campo de busqueda: </span>
+                                            <select class="custom-select " v-model="searchField">
+                                                <option value="name">Nombre</option>
+                                                <option value="email">Correo</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class=""> Valor: </span>
+                                            <input class="form-control  border-width-2 mr-2" v-model="searchValue"
+                                                placeholder="Juanito perez" type="search" />
+                                        </div>
+
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                         <EasyDataTable buttons-pagination :headers="datos" :items="peticionarios"
@@ -55,13 +72,13 @@
 
                                     <button class="btn btn-warning btn-sm mt-2 mb-2 mr-1"
                                         @click="actualizarPeticionario(item)">
-                                        <i class="fa-solid fa-pen-to-square"></i> 
-                                        
+                                        <i class="fa-solid fa-pen-to-square"></i>
+
                                     </button>
 
                                     <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1"
                                         @click="eliminarPeticionario(item)">
-                                        <i class="fa-solid fa-trash"></i> 
+                                        <i class="fa-solid fa-trash"></i>
                                     </button>
 
                                 </div>
@@ -75,7 +92,9 @@
             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-                    <form @submit.prevent="actualizarPeticionarioCheck === false ? registrarPeticionario : editarPeticionario " @keydown="form.onKeydown($event)">
+                    <form
+                        @submit.prevent="actualizarPeticionarioCheck === false ? registrarPeticionario : editarPeticionario"
+                        @keydown="form.onKeydown($event)">
                         <div class="modal-header">
                             <h5 v-if="actualizarPeticionarioCheck" class="modal-title" id="modalAgregarPeticionario">
                                 Actualizar peticionario </h5>
@@ -119,10 +138,10 @@
 
                             <div class="form-group">
                                 <label for="Correo del usuario"> Municipio: </label>
-                                <input v-model="form.IDMunicipio" type="text" class="form-control" id="IDMunicipio"
+                                <input v-model="form.municipio" type="text" class="form-control" id="municipio"
                                     placeholder="">
-                                <div style="color: red;" v-if="form.errors.has('IDMunicipio')"
-                                    v-html="form.errors.get('IDMunicipio')" />
+                                <div style="color: red;" v-if="form.errors.has('municipio')"
+                                    v-html="form.errors.get('municipio')" />
                             </div>
 
                             <div class="form-group">
@@ -209,10 +228,12 @@
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                 <i class="fas fa-times"></i> Cancelar
                             </button>
-                            <button v-if="actualizarPeticionarioCheck === false " @click="registrarPeticionario" type="submit" class="btn btn-primary">
+                            <button v-if="actualizarPeticionarioCheck === false" @click="registrarPeticionario"
+                                type="submit" class="btn btn-primary">
                                 <i class="fas fa-save"></i> Registrar
                             </button>
-                            <button v-else type="submit" :disabled="form.busy" @click="editarPeticionario" class="btn btn-warning">
+                            <button v-else type="submit" :disabled="form.busy" @click="editarPeticionario"
+                                class="btn btn-warning">
                                 <i class="fas fa-save"></i> Actualizar
                             </button>
                         </div>
@@ -228,6 +249,8 @@
 import { ref } from "vue";
 import type { Header, Item } from "vue3-easy-data-table";
 import Form from 'vform'
+import Swal from 'sweetalert2'
+
 
 export default {
 
@@ -280,7 +303,41 @@ export default {
         eliminarPeticionario($peticionario) {
 
             console.log("BORRAR");
-            console.log($peticionario);
+            console.log($peticionario.id);
+
+            Swal.fire({
+                title: '¿Estas seguro de eliminar este registro?',
+                showDenyButton: true,
+                confirmButtonText: 'Aceptar',
+                denyButtonText: `Cancelar`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+                    
+                    this.axios.get('/peticionario/eliminar/' + $peticionario.id).then((response) => {
+                        console.log("Respuesta de la eliminacion");
+                        console.log(response);
+                        this.obtenerPeticionarios();
+                        $('#modalAgregarPeticionario').modal('hide');
+
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Usuario eliminado con éxito',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }) 
+
+                    }).catch(error => {
+                        console.log(error);
+                    });
+
+                    
+
+                } else if (result.isDenied) {
+                    //Swal.fire('Changes are not saved', '', 'info')
+                }
+            })
 
         },
         abrirModalRegistro() {
@@ -292,7 +349,7 @@ export default {
         obtenerPeticionarios() {
             this.axios.get('/peticionario').then((response) => {
                 this.peticionarios = response.data;
-                console.log( response.data );
+                console.log(response.data);
             })
         },
         async actualizarPeticionario(peticionario) {
@@ -301,15 +358,23 @@ export default {
             this.actualizarPeticionarioCheck = true;
             //console.log("Peticionario a actualizar ");
             //console.log( peticionario );
-            
+
 
         },
-        async editarPeticionario(){
+        async editarPeticionario() {
             console.log("Actualizar peticionario");
-            await this.form.put('/peticionario/' + this.form.id , this.form).then((response) => {
+            await this.form.put('/peticionario/' + this.form.id, this.form).then((response) => {
                 console.log(response);
-                this.obtenerPeticionarios(); 
+                this.obtenerPeticionarios();
                 $('#modalAgregarPeticionario').modal('hide');
+
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Peticionario actualizado con éxito',
+                    showConfirmButton: false,
+                    timer: 1500
+                }) 
             }).catch(error => {
                 console.log(error);
             });
@@ -318,6 +383,15 @@ export default {
             //console.log("Registrar");
             await this.form.post('/peticionario').then((response) => {
                 console.log(response);
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Peticionario guardado con éxito',
+                    showConfirmButton: false,
+                    timer: 1500
+                }) 
+
+                $('#modalAgregarPeticionario').modal('hide');
             }).catch(error => {
                 console.log(error);
             });
