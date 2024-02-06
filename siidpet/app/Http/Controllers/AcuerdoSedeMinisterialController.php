@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Estado;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\AcuerdoSedeMinisterial;
 
-use App\Models\Municipio;
-
-
-class municipioController extends Controller
+class AcuerdoSedeMinisterialController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +14,9 @@ class municipioController extends Controller
      */
     public function index()
     {
-        $municipios = Municipio::all();
-        return response( $municipios );
-    
+        //
+        $acuerdoSedeMinisterial = AcuerdoSedeMinisterial::all();
+        return response( $acuerdoSedeMinisterial );
     }
 
     /**
@@ -43,14 +39,17 @@ class municipioController extends Controller
     {
         //
         $request->validate([
-            'nombre' => 'required',
-            'id_estado' => 'required',
+            'medidas_de_proteccion' => 'required',
+            'fecha_inicio'  => 'required',
+            'fecha_fin'  => 'required',
+            'id_estatus_sede_ministerial'  => 'required',
+            'fecha'  => 'required'
         ]);
 
-        $municipio = Municipio::create( $request->all() );
+        $acuerdoSedeMinisterial = AcuerdoSedeMinisterial::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Objeto creado con éxito', 'objeto' => $municipio ], 201);
+        return response()->json(['mensaje' => 'Datos del acuerdo sede ministerial creados con éxito', 'objeto' => $acuerdoSedeMinisterial ], 201);
     }
 
     /**
@@ -61,14 +60,13 @@ class municipioController extends Controller
      */
     public function show($id)
     {
-        //
-        $municipio = Municipio::find($id);
+        $acuerdoSedeMinisterial = AcuerdoSedeMinisterial::find($id);
 
-        if (!$municipio) {
-            return response()->json(['mensaje' => 'Estado no encontrado'], 404);
+        if (! $acuerdoSedeMinisterial ) {
+            return response()->json(['mensaje' => 'Datos del acuerdo no encontrados'], 404);
         }
 
-        return response()->json(['municipio' => $municipio], 201);
+        return response()->json(['victima' => $acuerdoSedeMinisterial ], 201);
     }
 
     /**
@@ -91,17 +89,16 @@ class municipioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         // Encontramos el dato con el id
-        $municipio = Municipio::find($id);
+        $acuerdoSedeMinisterial = AcuerdoSedeMinisterial::find($id);
 
         // Verifica si el usuario existe
-        if (! $municipio ) {
-            return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
+        if (!$acuerdoSedeMinisterial) {
+            return response()->json(['mensaje' => 'Datos del acuerdo no encontrados'], 404);
         }
 
         // Actualiza los datos con los nuevos datos proporcionados
-        $municipio->update($request->all());
+        $acuerdoSedeMinisterial->update($request->all());
 
         // Puedes devolver una respuesta JSON, un mensaje de éxito, etc.
         return response()->json(['mensaje' => 'Datos actualizados con éxito']);
@@ -115,16 +112,16 @@ class municipioController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $municipio = Municipio::find($id);
+        // Buscar el usuario por su ID
+        $acuerdoSedeMinisterial = AcuerdoSedeMinisterial::find($id);
 
         // Verificar si el usuario existe
-        if ($municipio) {
+        if ($acuerdoSedeMinisterial) {
             // Eliminar el usuario
-            $municipio->delete();
-            return response()->json(['mensaje' => 'Municipio eliminado correctamente'], 201);
+            $acuerdoSedeMinisterial->delete();
+            return response()->json(['mensaje' => 'Datos del acuerdo ministerial eliminados correctamente'], 201);
         } else {
-            return response()->json(['mensaje' => 'No se ha encontrado el municipio '], 201);
+            return response()->json(['mensaje' => 'No se ha encontrado datos del acuerdo ministerial'], 201);
         }
     }
 }

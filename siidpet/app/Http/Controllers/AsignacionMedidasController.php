@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Estado;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\AsignacionMedidas;
 
-use App\Models\Municipio;
-
-
-class municipioController extends Controller
+class AsignacionMedidasController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +14,9 @@ class municipioController extends Controller
      */
     public function index()
     {
-        $municipios = Municipio::all();
-        return response( $municipios );
-    
+        //
+        $asignacionMedidas = AsignacionMedidas::all();
+        return response( $asignacionMedidas );
     }
 
     /**
@@ -41,16 +37,18 @@ class municipioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Se validan los datos a traves de laravel
         $request->validate([
-            'nombre' => 'required',
-            'id_estado' => 'required',
+            'fecha_inicio' => 'required',
+            'fecha_vencimiento' => 'required',
+            'id_medida_proteccion' => 'required',
         ]);
 
-        $municipio = Municipio::create( $request->all() );
+        //Se usa la función create() con el request que guarda el objeto
+        $AsignacionMedidas = AsignacionMedidas::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Objeto creado con éxito', 'objeto' => $municipio ], 201);
+        return response()->json(['mensaje' => 'Datos guardados con éxito', 'asignacionmedidas' => $AsignacionMedidas ], 201);
     }
 
     /**
@@ -61,14 +59,16 @@ class municipioController extends Controller
      */
     public function show($id)
     {
-        //
-        $municipio = Municipio::find($id);
+        //Se obtiene el registro de la base de datos
+        $asignacionMedidas = AsignacionMedidas::find($id);
 
-        if (!$municipio) {
-            return response()->json(['mensaje' => 'Estado no encontrado'], 404);
+        //Compara si la consulta encontró datos
+        if (!$asignacionMedidas) {
+            return response()->json(['mensaje' => 'Asignacion de medidas no encontrado'], 404);
         }
 
-        return response()->json(['municipio' => $municipio], 201);
+        //Lo retorna con un código 201
+        return response()->json(['asignacionmedidas' => $asignacionMedidas], 201);
     }
 
     /**
@@ -91,17 +91,16 @@ class municipioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         // Encontramos el dato con el id
-        $municipio = Municipio::find($id);
+        $asignacionMedidas = AsignacionMedidas::find($id);
 
         // Verifica si el usuario existe
-        if (! $municipio ) {
-            return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
+        if (! $asignacionMedidas ) {
+            return response()->json(['mensaje' => 'Asignacion medidas no encontrado'], 404);
         }
 
         // Actualiza los datos con los nuevos datos proporcionados
-        $municipio->update($request->all());
+        $asignacionMedidas->update($request->all());
 
         // Puedes devolver una respuesta JSON, un mensaje de éxito, etc.
         return response()->json(['mensaje' => 'Datos actualizados con éxito']);
@@ -115,16 +114,16 @@ class municipioController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $municipio = Municipio::find($id);
+        // Buscar el usuario por su ID
+        $asignacionMedidas = AsignacionMedidas::find($id);
 
         // Verificar si el usuario existe
-        if ($municipio) {
+        if ( $asignacionMedidas ) {
             // Eliminar el usuario
-            $municipio->delete();
-            return response()->json(['mensaje' => 'Municipio eliminado correctamente'], 201);
+            $asignacionMedidas->delete();
+            return response()->json(['mensaje' => 'Asignacion medidas eliminado correctamente'], 201);
         } else {
-            return response()->json(['mensaje' => 'No se ha encontrado el municipio '], 201);
+            return response()->json(['mensaje' => 'No se ha encontrado el dato'], 201);
         }
     }
 }

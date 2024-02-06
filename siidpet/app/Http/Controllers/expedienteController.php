@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-class NUCController extends Controller
+
+class expedienteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +13,7 @@ class NUCController extends Controller
      */
     public function index()
     {
-        $users = DB::table('NUC')->where('IDUsuario',Auth::id())->get();
-        return response($users);
+        //
     }
 
     /**
@@ -36,21 +34,7 @@ class NUCController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'NUC' => 'required|max:10',
-            'delito' => 'required',
-            'fechaRegistro' => 'required'
-        ]);
-        
-        DB::table('NUC')->insert([
-            'NUC' => $request->input('NUC'),
-            'IDUsuario'=> Auth::id(),
-            'delito' => 1,
-            'fechaRegistro' => $request->input('fechaRegistro'),
-            'estado'=> 1
-        ]);
-
-        return response("Usuario guardado con éxito", 200);
+        //
     }
 
     /**
@@ -95,7 +79,6 @@ class NUCController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('NUCImputado')->whereIn('IDNUC', [$id])->delete();
-        DB::table('NUC')->whereIn('id', [$id])->delete();
+        //
     }
 }

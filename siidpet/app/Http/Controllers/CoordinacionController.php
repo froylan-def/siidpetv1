@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Estado;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\Coordinacion;
 
-use App\Models\Municipio;
-
-
-class municipioController extends Controller
+class CoordinacionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +14,9 @@ class municipioController extends Controller
      */
     public function index()
     {
-        $municipios = Municipio::all();
-        return response( $municipios );
-    
+        //
+        $coordinacion = Coordinacion::all();
+        return response( $coordinacion );
     }
 
     /**
@@ -41,16 +37,16 @@ class municipioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Se validan los datos a traves de laravel
         $request->validate([
             'nombre' => 'required',
-            'id_estado' => 'required',
         ]);
 
-        $municipio = Municipio::create( $request->all() );
+        //Se usa la función create() con el request que guarda el objeto
+        $coordinacion = Coordinacion::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Objeto creado con éxito', 'objeto' => $municipio ], 201);
+        return response()->json(['mensaje' => 'Datos guardados con éxito', 'coordinacion' => $coordinacion ], 201);
     }
 
     /**
@@ -61,14 +57,16 @@ class municipioController extends Controller
      */
     public function show($id)
     {
-        //
-        $municipio = Municipio::find($id);
+        //Se obtiene el registro de la base de datos
+        $coordinacion = Coordinacion::find($id);
 
-        if (!$municipio) {
-            return response()->json(['mensaje' => 'Estado no encontrado'], 404);
+        //Compara si la consulta encontró datos
+        if (! $coordinacion ) {
+            return response()->json(['mensaje' => 'Datos de la coordinacion no encontrados'], 404);
         }
 
-        return response()->json(['municipio' => $municipio], 201);
+        //Lo retorna con un código 201
+        return response()->json(['coordinacion' => $coordinacion ], 201);
     }
 
     /**
@@ -91,17 +89,16 @@ class municipioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         // Encontramos el dato con el id
-        $municipio = Municipio::find($id);
+        $coordinacion = Coordinacion::find($id);
 
         // Verifica si el usuario existe
-        if (! $municipio ) {
-            return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
+        if (! $coordinacion ) {
+            return response()->json(['mensaje' => 'Datos de la coordinacion no encontrados'], 404);
         }
 
         // Actualiza los datos con los nuevos datos proporcionados
-        $municipio->update($request->all());
+        $coordinacion->update($request->all());
 
         // Puedes devolver una respuesta JSON, un mensaje de éxito, etc.
         return response()->json(['mensaje' => 'Datos actualizados con éxito']);
@@ -115,16 +112,16 @@ class municipioController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $municipio = Municipio::find($id);
+        // Buscar el usuario por su ID
+        $coordinacion = Coordinacion::find($id);
 
         // Verificar si el usuario existe
-        if ($municipio) {
+        if ( $coordinacion ) {
             // Eliminar el usuario
-            $municipio->delete();
-            return response()->json(['mensaje' => 'Municipio eliminado correctamente'], 201);
+            $coordinacion->delete();
+            return response()->json(['mensaje' => 'Datos de la coordinacion eliminados correctamente'], 201);
         } else {
-            return response()->json(['mensaje' => 'No se ha encontrado el municipio '], 201);
+            return response()->json(['mensaje' => 'No se ha encontrado el dato'], 201);
         }
     }
 }

@@ -22,536 +22,490 @@
     <!-- /.content-header -->
 
     <div class="container">
-        <!--%%%%%%%Preeliminar%%%%%%%-->
-
-        <div :class="claseEstados[0]">
-            <div class="card-header">
-                <h3 class="card-title">Preeliminar</h3>
-                <div v-if="estados[0] != 0" class="card-tools">
-                    <button
-                        type="button"
-                        class="btn btn-tool"
-                        data-card-widget="collapse"
-                        title="Collapse"
-                    >
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button
-                        type="button"
-                        class="btn btn-tool"
-                        data-card-widget="maximize"
-                        title="Collapse"
-                    >
-                        <i class="fa fa-maximize"></i>
-                    </button>
-                </div>
+        <form>
+            <div class="form-group">
+                <label for="FOJA LIBRO">FOJA LIBRO</label>
+                <input v-model="form.name" type="number" class="form-control" id="FOJA" aria-describedby="emailHelp" placeholder="3">
+                <div style="color: red;" v-if="form.errors.has('name')" v-html="form.errors.get('name')" />
             </div>
+        </form>
 
-            <div class="card-body p-0">
-                <div class="card-body table-responsive p-0">
-                    <div class="col-md-9 mb-2 w-100">
-                        <button
-                            class="btn btn-primary"
-                            @click="finalizarEtapa(1)"
-                        >
-                            <i class="fa-solid fa-eye"></i> Siguiente Etapa
-                        </button>
-                    </div> 
-                    <div class="form-group">
-                        <div class="col-md-9 mb-2 w-100">
-                            <h5>Bitacora</h5>
-                            <div v-if="estados[0] == 1">
-                                <label>Agregar nota</label>
-                                <textarea
-                                    name="Text1"
-                                    v-model="nota.texto"
-                                    class="form-control"
-                                    cols="70"
-                                    rows="5"
-                                ></textarea>
-                                <button
-                                    class="btn btn-primary"
-                                    @click="registrarNota(1)"
-                                >
-                                    <i class="fa-solid fa-eye"></i> Agregar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <EasyDataTable
-                        buttons-pagination
-                        :headers="headers"
-                        :items="itemsPreeliminar"
-                        :theme-color="themeColor"
-                    >
-                        <template #item-operation="item">
-                            <div class="operation-wrapper">
-                                <button
-                                    class="btn btn-primary"
-                                    data-toggle="modal"
-                                    data-target="#modalAgregarUsuario"
-                                    @click="abrirModalRegistro"
-                                >
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </button>
-                                <button
-                                    class="btn btn-primary"
-                                    @click="eliminar(item)"
-                                >
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </template>
-                    </EasyDataTable>
-                </div>
-            </div>
+        <div class="form-group">
+            <label for="UGI">UGI</label>
+            <select v-model="form.IDRol" id="UGI" type="text" class="form-control " name="UGI">
+                <option value=""> Seleccione una opcion </option>
+                <option value="1"> Administrador </option>
+                <option value="2"> Director General </option>
+                <option value="3"> Director Defensoria </option>
+                <option value="4"> Director Asesoria </option>
+                <option value="5"> Jefe de Asesorias </option>
+                <option value="6"> Defensor </option>
+                <option value="7"> Asesor </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
         </div>
 
-        <!-- %%%%%%%Audiencia inicial%%%%%%%-->
-
-        <div :class="claseEstados[1]">
-            <div class="card-header">
-                <h3 class="card-title">Audiencia inicial</h3>
-                <div v-if="estados[1] != 0" class="card-tools">
-                    <button
-                        type="button"
-                        class="btn btn-tool"
-                        data-card-widget="collapse"
-                        title="Collapse"
-                    >
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button
-                        type="button"
-                        class="btn btn-tool"
-                        data-card-widget="maximize"
-                        title="Collapse"
-                    >
-                        <i class="fa fa-maximize"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="card-body table-responsive ">
-                <div class="form-group">
-                    <div>
-                        <div class="col-md-12 mb-2 w-100">
-                            <div class="row">
-                                <div class="col-8" >
-                                <button
-                                class="btn btn-primary"
-                                @click="finalizarEtapa(2)">
-                                <i class="fa-solid fa-eye"></i> Siguiente Etapa
-                                </button>
-                                </div>
-                                <div class="col-4" style=" border-style: solid;">
-                                    <label >MASC</label>
-                                    <div class="row">
-                                        <div class="col-4 mb-2 w-100" >
-                                            <button
-                                            class="btn btn-primary btn-sm"
-                                            @click="masc(2)"> 
-                                                Reparación de Daños
-                                            </button>
-                                        </div>
-                                        
-                                        <div class="col-4 mb-2 w-100"  >
-                                            <button
-                                            class="btn btn-primary btn-sm"
-                                            @click="masc(2)">
-                                                Etapa
-                                            </button>
-                                        </div>
-                                        <div class="col-4 mb-2 w-100"  >
-                                            <button
-                                            class="btn btn-primary btn-sm"
-                                            @click="masc(2)">
-                                                Etapa
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <h5>Bitacora</h5>
-                        <div v-if="estados[1] == 1">
-                            <label>Agregar nota</label>
-                            <textarea
-                                name="Text1"
-                                v-model="nota.texto"
-                                class="form-control"
-                                cols="70"
-                                rows="5"
-                            ></textarea>
-                            <button
-                                class="btn btn-primary"
-                                @click="registrarNota(2)">
-                                <i class="fa-solid fa-eye"></i> Agregar
-                            </button>
-                        </div>
-
-                        <EasyDataTable
-                            buttons-pagination
-                            :headers="headers"
-                            :items="itemsAudienciaInicial"
-                            :theme-color="themeColor">
-                            <template #item-operation="item">
-                                <div class="operation-wrapper">
-                                    <button
-                                        class="btn btn-primary"
-                                        data-toggle="modal"
-                                        data-target="#modalAgregarUsuario"
-                                        @click="abrirModalRegistro"
-                                    >
-                                        <i
-                                            class="fa-solid fa-pen-to-square"
-                                        ></i>
-                                    </button>
-                                    <button
-                                        class="btn btn-primary"
-                                        @click="eliminar(item)"
-                                    >
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </div>
-                            </template>
-                        </EasyDataTable>
-                    </div>
-                </div>
-            </div>
+        <div class="form-group">
+            <label for="DEFENSOR QUE CUBRE ENTREVISTA">DEFENSOR QUE CUBRE ENTREVISTA</label>
+            <select v-model="form.IDRol" id="DefensorEntrevista" type="text" class="form-control " name="DefensorEntrevista">
+                <option value=""> Seleccione una opcion </option>
+                <option value="1"> Administrador </option>
+                <option value="2"> Director General </option>
+                <option value="3"> Director Defensoria </option>
+                <option value="4"> Director Asesoria </option>
+                <option value="5"> Jefe de Asesorias </option>
+                <option value="6"> Defensor </option>
+                <option value="7"> Asesor </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
         </div>
 
-        <!--%%%%%%%Vinculacion a proceso%%%%%%%-->
-
-        <div :class="claseEstados[2]">
-            <div class="card-header">
-                <h3 class="card-title">Vinculacion a proceso</h3>
-                <div v-if="estados[2] != 0" class="card-tools">
-                    <button
-                        type="button"
-                        class="btn btn-tool"
-                        data-card-widget="collapse"
-                        title="Collapse"
-                    >
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button
-                        type="button"
-                        class="btn btn-tool"
-                        data-card-widget="maximize"
-                        title="Collapse"
-                    >
-                        <i class="fa fa-maximize"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="card-body p-0">
-              <div class="col-md-9 mb-2 w-100">
-                            <br />
-                            <button
-                                class="btn btn-primary"
-                                @click="finalizarEtapa(3)"
-                            >
-                                <i class="fa-solid fa-eye"></i> Siguiente Etapa
-                            </button>
-                        </div>
-                <h5>Bitacora</h5>
-                <div v-if="estados[2] == 1">
-                    <label>Agregar nota</label>
-                    <textarea
-                        name="Text1"
-                        v-model="nota.texto"
-                        class="form-control"
-                        cols="70"
-                        rows="5"
-                    ></textarea>
-                    <button class="btn btn-primary" @click="registrarNota(3)">
-                        <i class="fa-solid fa-eye"></i> Agregar
-                    </button>
-                </div>
-
-                <EasyDataTable
-                    buttons-pagination
-                    :headers="headers"
-                    :items="itemsVinculacionAProceso"
-                    :theme-color="themeColor"
-                    :search-field="searchField"
-                    :search-value="searchValue"
-                >
-                    <template #item-operation="item">
-                        <div class="operation-wrapper">
-                            <button
-                                class="btn btn-primary"
-                                data-toggle="modal"
-                                data-target="#modalAgregarUsuario"
-                                @click="abrirModalRegistro"
-                            >
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
-                            <button
-                                class="btn btn-primary"
-                                @click="eliminar(item)"
-                            >
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </template>
-                </EasyDataTable>
-            </div>
+        <div class="form-group">
+            <label for="NUC-RAC-EXH">NUC-RAC-EXH</label>
+            <input v-model="form.email" type="text" class="form-control" id="NUC-RAC-EXH" placeholder="02/2015">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
         </div>
 
-        <!--%%%%%%%Etapa intermedia%%%%%%%-->
-
-        <div :class="claseEstados[3]">
-            <div class="card-header">
-                <h3 class="card-title">Etapa intermedia</h3>
-                <div v-if="estados[3] != 0" class="card-tools">
-                    <button
-                        type="button"
-                        class="btn btn-tool"
-                        data-card-widget="collapse"
-                        title="Collapse"
-                    >
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button
-                        type="button"
-                        class="btn btn-tool"
-                        data-card-widget="maximize"
-                        title="Collapse"
-                    >
-                        <i class="fa fa-maximize"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="card-body p-0">
-              <div class="col-md-9 mb-2 w-100">
-                            <br />
-                            <button
-                                class="btn btn-primary"
-                                @click="finalizarEtapa(4)"
-                            >
-                                <i class="fa-solid fa-eye"></i> Siguiente Etapa
-                            </button>
-                        </div>
-                <h5>Bitacora</h5>
-                <div v-if="estados[4] == 1">
-                    <label>Agregar nota</label>
-                    <textarea
-                        name="Text1"
-                        v-model="nota.texto"
-                        class="form-control"
-                        cols="70"
-                        rows="5"
-                    ></textarea>
-                    <button class="btn btn-primary" @click="registrarNota(4)">
-                        <i class="fa-solid fa-eye"></i> Agregar
-                    </button>
-                </div>
-
-                <EasyDataTable
-                    buttons-pagination
-                    :headers="headers"
-                    :items="itemsEtapaIntermedia"
-                    :theme-color="themeColor"
-                    :search-value="searchValue"
-                >
-                    <template #item-operation="item">
-                        <div class="operation-wrapper">
-                            <button
-                                class="btn btn-primary"
-                                data-toggle="modal"
-                                data-target="#modalAgregarUsuario"
-                                @click="abrirModalRegistro"
-                            >
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
-                            <button
-                                class="btn btn-primary"
-                                @click="eliminar(item)"
-                            >
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </template>
-                </EasyDataTable>
-            </div>
+        <div class="form-group">
+            <label for="FECHA DE ENTREVISTA">FECHA DE ENTREVISTA</label>
+            <input v-model="form.email" type="date" class="form-control" id="FechaEntrevista">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+       
+        <div class="form-group">
+            <label for="IMPUTADO">IMPUTADO</label>
+            <select v-model="form.IDRol" id="Imputado" type="text" class="form-control " name="Imputado">
+                <option value=""> Seleccione una opcion </option>
+                <option value="1"> Administrador </option>
+                <option value="2"> Director General </option>
+                <option value="3"> Director Defensoria </option>
+                <option value="4"> Director Asesoria </option>
+                <option value="5"> Jefe de Asesorias </option>
+                <option value="6"> Defensor </option>
+                <option value="7"> Asesor </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
+        </div>
+      
+        <div class="form-group">
+            <label for="DELITO">DELITO</label>
+            <select v-model="form.IDRol" id="Delito" type="text" class="form-control " name="Delito">
+                <option value=""> Seleccione una opcion </option>
+                <option value="1"> Administrador </option>
+                <option value="2"> Director General </option>
+                <option value="3"> Director Defensoria </option>
+                <option value="4"> Director Asesoria </option>
+                <option value="5"> Jefe de Asesorias </option>
+                <option value="6"> Defensor </option>
+                <option value="7"> Asesor </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
         </div>
 
-        <!-- %%%%%%%Juicio Oral%%%%%%%-->
-
-        <div :class="claseEstados[4]">
-            <div class="card-header">
-                <h3 class="card-title">Juicio Oral</h3>
-                <div v-if="estados[4] != 0" class="card-tools">
-                    <button
-                        type="button"
-                        class="btn btn-tool"
-                        data-card-widget="collapse"
-                        title="Collapse"
-                    >
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button
-                        type="button"
-                        class="btn btn-tool"
-                        data-card-widget="maximize"
-                        title="Collapse"
-                    >
-                        <i class="fa fa-maximize"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <h5>Bitacora</h5>
-                <div v-if="estados[5] == 1">
-                    <label>Agregar nota</label>
-                    <textarea
-                        name="Text1"
-                        v-model="nota.texto"
-                        class="form-control"
-                        cols="70"
-                        rows="5"
-                    ></textarea>
-                    <button class="btn btn-primary" @click="registrarNota(5)">
-                        <i class="fa-solid fa-eye"></i> Agregar
-                    </button>
-                </div>
-
-                <EasyDataTable
-                    buttons-pagination
-                    :headers="headers"
-                    :items="itemsjuicioOral"
-                    :theme-color="themeColor"
-                    :search-field="searchField"
-                    :search-value="searchValue"
-                >
-                    <template #item-operation="item">
-                        <div class="operation-wrapper">
-                            <button
-                                class="btn btn-primary"
-                                data-toggle="modal"
-                                data-target="#modalAgregarUsuario"
-                                @click="abrirModalRegistro"
-                            >
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
-
-                            <button
-                                class="btn btn-primary"
-                                @click="eliminar(item)"
-                            >
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </template>
-                </EasyDataTable>
-            </div>
+        <div class="form-group">
+            <label for="VICTIMA">VICTIMA</label>
+            <input v-model="form.email" type="text" class="form-control" id="Victima">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
         </div>
 
-        <div
-            class="modal fade"
-            id="modalAgregarUsuario"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-        >
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <form
-                        @submit.prevent="registrarUsuario"
-                        @keydown="form.onKeydown($event)"
-                    >
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalAgregarUsuario">
-                                Agregar usuario
-                            </h5>
-                            <button
-                                type="button"
-                                class="close"
-                                data-dismiss="modal"
-                                aria-label="Close"
-                            >
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <input type="hidden" name="_token" :value="csrf" />
-
-                            <div class="form-group">
-                                <label for="Nombre del usuario">Nombre</label>
-                                <input
-                                    v-model="form.name"
-                                    type="text"
-                                    class="form-control"
-                                    id="nombre"
-                                    aria-describedby="emailHelp"
-                                    placeholder="Juan Pérez"
-                                />
-
-                                <div
-                                    style="color: red"
-                                    v-if="form.errors.has('name')"
-                                    v-html="form.errors.get('name')"
-                                />
-                            </div>
-                            <div class="form-group">
-                                <label for="Correo del usuario">Correo</label>
-                                <input
-                                    v-model="form.email"
-                                    type="text"
-                                    class="form-control"
-                                    id="correo"
-                                    placeholder="algo@correo.com"
-                                />
-
-                                <div
-                                    style="color: red"
-                                    v-if="form.errors.has('email')"
-                                    v-html="form.errors.get('email')"
-                                />
-                            </div>
-                            <div class="form-group">
-                                <label for="Contraseña del usuario"
-                                    >Contraseña</label
-                                >
-                                <input
-                                    v-model="form.password"
-                                    type="password"
-                                    class="form-control"
-                                    id="contrasena"
-                                    placeholder="Ingrese contraseña"
-                                />
-
-                                <div
-                                    style="color: red"
-                                    v-if="form.errors.has('password')"
-                                    v-html="form.errors.get('password')"
-                                />
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button
-                                type="button"
-                                class="btn btn-secondary"
-                                data-dismiss="modal"
-                            >
-                                <i class="fas fa-times"></i> Cancelar
-                            </button>
-                            <button
-                                type="submit"
-                                :disabled="form.busy"
-                                class="btn btn-primary"
-                            >
-                                <i class="fas fa-save"></i> Registrar
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <h5 class="m-0">FLAGRANCIA</h5><br>
+        <div class="form-group">
+            <label for="FECHA DE FLAGRANCIA">FECHA</label>
+            <input v-model="form.email" type="date" class="form-control" id="FechaFlagracia">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
         </div>
+
+        <div class="form-group">
+            <label for="HORA FLAGRANCIA">HORA</label>
+            <input v-model="form.email" type="TEXT" class="form-control" id="HoraEntrevista" placeholder="08:00 AM">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <h5 class="m-0">EXAMEN DE LA DETENCION</h5><br>
+        <div class="form-group">
+            <label for="FECHA DE EXAMEN DE LA DETENCION">FECHA</label>
+            <input v-model="form.email" type="date" class="form-control" id="FechaExamenDetencion">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="HORA EXAMEN DE LA DETENCION">HORA</label>
+            <input v-model="form.email" type="TEXT" class="form-control" id="HoraExamenDetencion" placeholder="08:00 AM">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="RESULTADO">RESULTADO</label>
+            <select v-model="form.IDRol" id="ResultadoExamenDetencion" type="text" class="form-control " name="ResultadoExamenDetencion">
+                <option value=""> Seleccione una opcion </option>
+                <option value="L"> LIBERTAD </option>
+                <option value="D"> DETENCION </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
+        </div>
+
+        <div class="form-group">
+            <label for="DETERMINACION DEL MP">DETERMINACION DEL MP</label>
+            <select v-model="form.IDRol" id="DeterminacionMP" type="text" class="form-control " name="DeterminacionMP">
+                <option value=""> Seleccione una opcion </option>
+                <option value="L"> LIBERTAD </option>
+                <option value="D"> DETENCION </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
+        </div>
+
+        <h5 class="m-0">ORDEN DE APREHENSIÓN/ COMPARECENCIA</h5><br>
+        <div class="form-group">
+            <label for="FECHA DE ORDEN DE APREHENSIÓN">FECHA</label>
+            <input v-model="form.email" type="date" class="form-control" id="FechaOrdenAprencion">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="HORA ORDEN DE APREHENSIÓN">HORA</label>
+            <input v-model="form.email" type="TEXT" class="form-control" id="HoraOrdenAprencion" placeholder="08:00 AM">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <h5 class="m-0">MEDIDAS DE PROTECCIÓN</h5><br>
+        <div class="form-group">
+            <label for="MEDIDA">MEDIDA</label>
+            <select v-model="form.IDRol" id="medidaProteccion" type="text" class="form-control " name="medidaProteccion">
+                <option value=""> Seleccione una opcion </option>
+                <option value="L"> LIBERTAD </option>
+                <option value="D"> DETENCION </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
+        </div>
+
+        <div class="form-group">
+            <label for="INICIO DE MEDIDA">INICIO</label>
+            <input v-model="form.email" type="date" class="form-control" id="InicioMedida">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="FIN DE MEDIDA">FIN</label>
+            <input v-model="form.email" type="date" class="form-control" id="FinMedida">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <h5 class="m-0">ACUERDO SEDE MINISTERIAL</h5><br>
+        <div class="form-group">
+            <label for="MECANISMOS SEDE">MECANISMOS SEDE</label>
+            <select v-model="form.IDRol" id="MecanismosSede" type="text" class="form-control " name="MecanismosSede">
+                <option value=""> Seleccione una opcion </option>
+                <option value="L"> LIBERTAD </option>
+                <option value="D"> DETENCION </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
+        </div>
+
+        <div class="form-group">
+            <label for="INICIO DE ACUERDO">INICIO</label>
+            <input v-model="form.email" type="date" class="form-control" id="InicioAcuerdo">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="FIN DE ACUERDO">FIN</label>
+            <input v-model="form.email" type="date" class="form-control" id="FinAcuerdo">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <h5 class="m-0">ESTATUS SEDE MINISTERIAL</h5><br>
+        <div class="form-group">
+            <label for="ESTATUS ">ESTATUS </label>
+            <select v-model="form.IDRol" id="EstatusSede" type="text" class="form-control " name="EstatusSede">
+                <option value=""> Seleccione una opcion </option>
+                <option value="L"> LIBERTAD </option>
+                <option value="D"> DETENCION </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
+        </div>
+
+        <div class="form-group">
+            <label for="FECHA ESTATUS SEDE">FECHA</label>
+            <input v-model="form.email" type="date" class="form-control" id="FechaEstatusSede">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="CARPETA PROCESAL">CARPETA PROCESAL</label>
+            <input v-model="form.email" type="text" class="form-control" id="CarpetaProcesal">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+        
+        <div class="form-group">
+            <label for="AUDIENCIA INICIAL">AUDIENCIA INICIAL</label>
+            <input v-model="form.email" type="text" class="form-control" id="AudienciaInicial">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="JUEZ DE CONTROL ">JUEZ DE CONTROL </label>
+            <select v-model="form.IDRol" id="JuezControl" type="text" class="form-control " name="JuezControl">
+                <option value=""> Seleccione una opcion </option>
+                <option value="L"> LIBERTAD </option>
+                <option value="D"> DETENCION </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
+        </div>
+
+        <div class="form-group">
+            <label for="DEFENSOR QUE CUBRE AUDIENCIA ">DEFENSOR QUE CUBRE AUDIENCIA </label>
+            <select v-model="form.IDRol" id="DefensorAudiencia" type="text" class="form-control " name="DefensorAudiencia">
+                <option value=""> Seleccione una opcion </option>
+                <option value="1"> Administrador </option>
+                <option value="2"> Director General </option>
+                <option value="3"> Director Defensoria </option>
+                <option value="4"> Director Asesoria </option>
+                <option value="5"> Jefe de Asesorias </option>
+                <option value="6"> Defensor </option>
+                <option value="7"> Asesor </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
+        </div>
+
+        <h5 class="m-0">ACUERDO REPATATORIO</h5> <br>
+        <div class="form-group">
+            <label for="INICIO DE ACUERDO">INICIO</label>
+            <input v-model="form.email" type="date" class="form-control" id="InicioAcuerdoReparatorio">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="FIN DE ACUERDO">FIN</label>
+            <input v-model="form.email" type="date" class="form-control" id="FinAcuerdoReparatorio">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="RESULTADO">RESULTADO</label>
+            <select v-model="form.IDRol" id="ResultadoAcuerdoReparatorio" type="text" class="form-control " name="ResultadoAcuerdoReparatorio">
+                <option value=""> Seleccione una opcion </option>
+                <option value="L"> CUMPLIDO </option>
+                <option value="D"> NO CUMPLIDO </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
+        </div>
+
+        <div class="form-group">
+            <label for="OBSERVACIONES">OBSERVACIONES</label>
+            <textarea  v-model="form.email" class="form-control" id="ObservacionesAcuerdoReparatorio"></textarea>
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="FECHA DE FORMULACIÓN DE IMPUTACIÓN">FECHA DE FORMULACIÓN DE IMPUTACIÓN"</label>
+            <input v-model="form.email" type="date" class="form-control" id="FechaFormulacionImputacion">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="FECHA DE VINCULACIÓN A PROCESO">FECHA DE VINCULACIÓN A PROCESO"</label>
+            <input v-model="form.email" type="date" class="form-control" id="FechaVinculacionProceso">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="DELITO">DELITO </label>
+            <select v-model="form.IDRol" id="DefensorAudiencia" type="text" class="form-control " name="DefensorAudiencia">
+                <option value=""> Seleccione una opcion </option>
+                <option value="1"> Administrador </option>
+                <option value="2"> Director General </option>
+                <option value="3"> Director Defensoria </option>
+                <option value="4"> Director Asesoria </option>
+                <option value="5"> Jefe de Asesorias </option>
+                <option value="6"> Defensor </option>
+                <option value="7"> Asesor </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
+        </div>
+
+        <h5 class="m-0">INVESTIGACION COMPLEMENTARIA</h5> <br>
+        <div class="form-group">
+            <label for="INICIO DE INVESTIGACION COMPLEMENTARIA">INICIO</label>
+            <input v-model="form.email" type="date" class="form-control" id="InicioIvenstigacionComplementaria">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="FIN DE INVESTIGACION COMPLEMENTARIA">FIN</label>
+            <input v-model="form.email" type="date" class="form-control" id="FinIvenstigacionComplementaria">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <h5 class="m-0">PRORROGA DE INVESTIGACION COMPLEMENTARIA</h5> <br>
+        <div class="form-group">
+            <label for="INICIO DE PRORROGA DE INVESTIGACION COMPLEMENTARIA">INICIO PRORROGA</label>
+            <input v-model="form.email" type="date" class="form-control" id="InicioProrrogaIvenstigacionComplementaria">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="FIN DE PRORROGA INVESTIGACION COMPLEMENTARIA">FIN PRORROGA</label>
+            <input v-model="form.email" type="date" class="form-control" id="FinProrrogaIvenstigacionComplementaria">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <h5 class="m-0">MEDIDAS CAUTELARES</h5> <br>
+        <div class="form-group">
+            <label for="MEDIDA CAUTELAR">MEDIDA</label>
+            <select v-model="form.IDRol" id="MedidaCautelar" type="text" class="form-control " name="MedidaCautelar">
+                <option value=""> Seleccione una opcion </option>
+                <option value="1"> Administrador </option>
+                <option value="2"> Director General </option>
+                <option value="3"> Director Defensoria </option>
+                <option value="4"> Director Asesoria </option>
+                <option value="5"> Jefe de Asesorias </option>
+                <option value="6"> Defensor </option>
+                <option value="7"> Asesor </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
+        </div>
+
+        <div class="form-group">
+            <label for="FECHA">FECHA</label>
+            <input v-model="form.email" type="date" class="form-control" id="FechaMedidasCautelares">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+    
+        <div class="form-group">
+            <label for="AUDIENCIA INTERMEDIA">AUDIENCIA INTERMEDIA</label>
+            <input v-model="form.email" type="text" class="form-control" id="AudienciaIntermedia">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+        
+
+        <h5 class="m-0">SUSPENSIÓN CONDICIONAL DEL PROCESO</h5> <br>
+
+        <div class="form-group">
+            <label for="INICIO DE ACUERDO">INICIO</label>
+            <input v-model="form.email" type="date" class="form-control" id="InicioSuspensionCondicional">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="FIN DE ACUERDO">FIN</label>
+            <input v-model="form.email" type="date" class="form-control" id="FinSuspensionCondicional">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="RESULTADO">RESULTADO</label>
+            <select v-model="form.IDRol" id="ResultadoSuspensionCondicional" type="text" class="form-control " name="ResultadoSuspensionCondicionalo">
+                <option value=""> Seleccione una opcion </option>
+                <option value="L"> CUMPLIDO </option>
+                <option value="D"> NO CUMPLIDO </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
+        </div>
+
+        <div class="form-group">
+            <label for="OBSERVACIONES">OBSERVACIONES</label>
+            <textarea  v-model="form.email" class="form-control" id="ObservacionesSuspensionCondicional"></textarea>
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="REPORTE DE CUMPLIMIENTO ">REPORTE DE CUMPLIMIENTO </label>
+            <input v-model="form.email" type="text" class="form-control" id="ReporteCumplimientoSustensionCondicional">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <h5 class="m-0">PROCEDIMIENTO ABREVIADO	</h5> <br>
+
+        <div class="form-group">
+            <label for="FECHA">FECHA</label>
+            <input v-model="form.email" type="date" class="form-control" id="FechaProcedimientoAbreviado">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+
+        <div class="form-group">
+            <label for="SENTENCIA">SENTENCIA </label>
+            <input v-model="form.email" type="text" class="form-control" id="SentenciaProcedimientoAbreviado">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="JUICIO ">JUICIO </label>
+            <input v-model="form.email" type="text" class="form-control" id="JUICIO">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="TRIBUNAL DE ENJUICIAMIENTO ">TRIBUNAL DE ENJUICIAMIENTO </label>
+            <select v-model="form.IDRol" id="TribunalEnjuciamiento" type="text" class="form-control " name="TribunalEnjuciamiento">
+                <option value=""> Seleccione una opcion </option>
+                <option value="L"> CUMPLIDO </option>
+                <option value="D"> NO CUMPLIDO </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
+        </div>
+
+        
+        <div class="form-group">
+            <label for="SENTENCIA JUICIO">SENTENCIA JUICIO</label>
+            <input v-model="form.email" type="text" class="form-control" id="SentenciaJuicio">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="CONCLUSION ">CONCLUSION </label>
+            <select v-model="form.IDRol" id="Conclusion" type="text" class="form-control " name="Conclusion">
+                <option value=""> Seleccione una opcion </option>
+                <option value="L"> CUMPLIDO </option>
+                <option value="D"> NO CUMPLIDO </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
+        </div>
+
+        <div class="form-group">
+            <label for="FECHA">FECHA</label>
+            <input v-model="form.email" type="date" class="form-control" id="FechaConclusion">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        
+        <div class="form-group">
+            <label for="VISITA CARCELARIA">VISITA CARCELARIA</label>
+            <input v-model="form.email" type="text" class="form-control" id="VisitaCarcelaria">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+        <div class="form-group">
+            <label for="IMPUGNACION ">IMPUGNACION </label>
+            <select v-model="form.IDRol" id="impugnacion" type="text" class="form-control " name="impugnacion">
+                <option value=""> Seleccione una opcion </option>
+                <option value="AP"> APELACIÓN </option>
+                <option value="AMP"> AMPARO </option>
+            </select>
+            <div style="color: red;" v-if="form.errors.has('IDRol')" v-html="form.errors.get('IDRol')" />
+        </div>
+
+        <div class="form-group">
+            <label for="FECHA">FECHA</label>
+            <input v-model="form.email" type="date" class="form-control" id="FechaImpugnacion">
+            <div style="color: red;" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
 </template>
 

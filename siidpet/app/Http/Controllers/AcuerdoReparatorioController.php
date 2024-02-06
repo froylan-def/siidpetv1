@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Estado;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\AcuerdoReparatorio;
 
-use App\Models\Municipio;
-
-
-class municipioController extends Controller
+class AcuerdoReparatorioController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +14,9 @@ class municipioController extends Controller
      */
     public function index()
     {
-        $municipios = Municipio::all();
-        return response( $municipios );
-    
+        //
+        $acuerdosReparatorios = AcuerdoReparatorio::all();
+        return response( $acuerdosReparatorios );
     }
 
     /**
@@ -43,14 +39,16 @@ class municipioController extends Controller
     {
         //
         $request->validate([
-            'nombre' => 'required',
-            'id_estado' => 'required',
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'required|date',
+            'resultado' => 'required',
+            'observaciones' => 'required',
         ]);
 
-        $municipio = Municipio::create( $request->all() );
+        $acuerdoReparatorio = AcuerdoReparatorio::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Objeto creado con éxito', 'objeto' => $municipio ], 201);
+        return response()->json(['mensaje' => 'Datos del acuerdo repatario creados con éxito', 'objeto' => $acuerdoReparatorio ], 201);
     }
 
     /**
@@ -62,13 +60,13 @@ class municipioController extends Controller
     public function show($id)
     {
         //
-        $municipio = Municipio::find($id);
+        $acuerdoReparatorio = AcuerdoReparatorio::find($id);
 
-        if (!$municipio) {
-            return response()->json(['mensaje' => 'Estado no encontrado'], 404);
+        if (!$acuerdoReparatorio) {
+            return response()->json(['mensaje' => 'Datos del acuerdo no encontrados'], 404);
         }
 
-        return response()->json(['municipio' => $municipio], 201);
+        return response()->json(['victima' => $acuerdoReparatorio], 201);
     }
 
     /**
@@ -91,17 +89,16 @@ class municipioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         // Encontramos el dato con el id
-        $municipio = Municipio::find($id);
+        $acuerdoReparatorio = AcuerdoReparatorio::find($id);
 
         // Verifica si el usuario existe
-        if (! $municipio ) {
-            return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
+        if (!$acuerdoReparatorio) {
+            return response()->json(['mensaje' => 'Datos del acuerdo reparatorio no encontrados'], 404);
         }
 
         // Actualiza los datos con los nuevos datos proporcionados
-        $municipio->update($request->all());
+        $acuerdoReparatorio->update($request->all());
 
         // Puedes devolver una respuesta JSON, un mensaje de éxito, etc.
         return response()->json(['mensaje' => 'Datos actualizados con éxito']);
@@ -115,16 +112,16 @@ class municipioController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $municipio = Municipio::find($id);
+        // Buscar el usuario por su ID
+        $acuerdoReparatorio = AcuerdoReparatorio::find($id);
 
         // Verificar si el usuario existe
-        if ($municipio) {
+        if ($acuerdoReparatorio) {
             // Eliminar el usuario
-            $municipio->delete();
-            return response()->json(['mensaje' => 'Municipio eliminado correctamente'], 201);
+            $acuerdoReparatorio->delete();
+            return response()->json(['mensaje' => 'Acuerdo reparatorio eliminado correctamente'], 201);
         } else {
-            return response()->json(['mensaje' => 'No se ha encontrado el municipio '], 201);
+            return response()->json(['mensaje' => 'No se han encontrado datos del acuerdo reparatorio '], 201);
         }
     }
 }

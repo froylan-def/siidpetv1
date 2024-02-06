@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Estado;
+use App\Models\Detencion;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-use App\Models\Municipio;
-
-
-class municipioController extends Controller
+class DetencionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +14,9 @@ class municipioController extends Controller
      */
     public function index()
     {
-        $municipios = Municipio::all();
-        return response( $municipios );
-    
+        //
+        $detencion = Detencion::all();
+        return response( $detencion );
     }
 
     /**
@@ -41,16 +37,18 @@ class municipioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Se validan los datos a traves de laravel
         $request->validate([
-            'nombre' => 'required',
-            'id_estado' => 'required',
+            'fecha' => 'required',
+            'hora' => 'required',
+            'resultado_examen' => 'required',
         ]);
 
-        $municipio = Municipio::create( $request->all() );
+        //Se usa la función create() con el request que guarda el objeto
+        $detencion = Detencion::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Objeto creado con éxito', 'objeto' => $municipio ], 201);
+        return response()->json(['mensaje' => 'Datos guardados con éxito', 'detencion' => $detencion ], 201);
     }
 
     /**
@@ -61,14 +59,16 @@ class municipioController extends Controller
      */
     public function show($id)
     {
-        //
-        $municipio = Municipio::find($id);
+        //Se obtiene el registro de la base de datos
+        $detencion = Detencion::find($id);
 
-        if (!$municipio) {
-            return response()->json(['mensaje' => 'Estado no encontrado'], 404);
+        //Compara si la consulta encontró datos
+        if (! $detencion ) {
+            return response()->json(['mensaje' => 'Datos de la conclusion no encontrado'], 404);
         }
 
-        return response()->json(['municipio' => $municipio], 201);
+        //Lo retorna con un código 201
+        return response()->json(['detencion' => $detencion], 201);
     }
 
     /**
@@ -91,17 +91,16 @@ class municipioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         // Encontramos el dato con el id
-        $municipio = Municipio::find($id);
+        $detencion = Detencion::find($id);
 
         // Verifica si el usuario existe
-        if (! $municipio ) {
-            return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
+        if (! $detencion ) {
+            return response()->json(['mensaje' => 'Datos de la detencion no encontrados'], 404);
         }
 
         // Actualiza los datos con los nuevos datos proporcionados
-        $municipio->update($request->all());
+        $detencion->update($request->all());
 
         // Puedes devolver una respuesta JSON, un mensaje de éxito, etc.
         return response()->json(['mensaje' => 'Datos actualizados con éxito']);
@@ -115,16 +114,16 @@ class municipioController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $municipio = Municipio::find($id);
+        // Buscar el usuario por su ID
+        $detencion = Detencion::find($id);
 
         // Verificar si el usuario existe
-        if ($municipio) {
+        if ( $detencion ) {
             // Eliminar el usuario
-            $municipio->delete();
-            return response()->json(['mensaje' => 'Municipio eliminado correctamente'], 201);
+            $detencion->delete();
+            return response()->json(['mensaje' => 'Datos de la detencion eliminados correctamente'], 201);
         } else {
-            return response()->json(['mensaje' => 'No se ha encontrado el municipio '], 201);
+            return response()->json(['mensaje' => 'No se ha encontrado el dato'], 201);
         }
     }
 }

@@ -13,5 +13,8 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //
+        "http://172.21.85.37/defensor",
+        "http://172.21.85.37/entrevista",
+        "http://172.21.85.37/entrevista/*",
     ];
 }

@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Estado;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\Ugi;
 
-use App\Models\Municipio;
-
-
-class municipioController extends Controller
+class UgiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +14,10 @@ class municipioController extends Controller
      */
     public function index()
     {
-        $municipios = Municipio::all();
-        return response( $municipios );
-    
+        //
+        $ugis = Ugi::all();
+        return response($ugis);
+        //return csrf_token(); 
     }
 
     /**
@@ -28,9 +25,9 @@ class municipioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        //return csrf_token(); 
     }
 
     /**
@@ -42,15 +39,15 @@ class municipioController extends Controller
     public function store(Request $request)
     {
         //
+        //
         $request->validate([
             'nombre' => 'required',
-            'id_estado' => 'required',
         ]);
 
-        $municipio = Municipio::create( $request->all() );
+        $ugi = Ugi::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Objeto creado con éxito', 'objeto' => $municipio ], 201);
+        return response()->json(['mensaje' => 'Objeto creado con éxito', 'objeto' => $ugi ], 201);
     }
 
     /**
@@ -62,13 +59,13 @@ class municipioController extends Controller
     public function show($id)
     {
         //
-        $municipio = Municipio::find($id);
+        $ugi = Ugi::find($id);
 
-        if (!$municipio) {
-            return response()->json(['mensaje' => 'Estado no encontrado'], 404);
+        if (!$ugi) {
+            return response()->json(['mensaje' => 'Ugi no encontrado'], 404);
         }
 
-        return response()->json(['municipio' => $municipio], 201);
+        return response()->json(['ugi' => $ugi], 201);
     }
 
     /**
@@ -91,17 +88,16 @@ class municipioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         // Encontramos el dato con el id
-        $municipio = Municipio::find($id);
+        $ugi = Ugi::find($id);
 
         // Verifica si el usuario existe
-        if (! $municipio ) {
+        if (!$ugi) {
             return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
         }
 
         // Actualiza los datos con los nuevos datos proporcionados
-        $municipio->update($request->all());
+        $ugi->update($request->all());
 
         // Puedes devolver una respuesta JSON, un mensaje de éxito, etc.
         return response()->json(['mensaje' => 'Datos actualizados con éxito']);
@@ -115,16 +111,17 @@ class municipioController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $municipio = Municipio::find($id);
+        // return response()->json(['mensaje' => 'ALGO DE RESPUESTA EN DELETE'], 201);
+        // Buscar el usuario por su ID
+        $ugi = Ugi::find($id);
 
         // Verificar si el usuario existe
-        if ($municipio) {
+        if ($ugi) {
             // Eliminar el usuario
-            $municipio->delete();
-            return response()->json(['mensaje' => 'Municipio eliminado correctamente'], 201);
+            $ugi->delete();
+            return response()->json(['mensaje' => 'Ugi eliminado correctamente'], 201);
         } else {
-            return response()->json(['mensaje' => 'No se ha encontrado el municipio '], 201);
+            return response()->json(['mensaje' => 'No se ha encontrado el Ugi correspondiente'], 201);
         }
     }
 }

@@ -2,14 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Estado;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-
-use App\Models\Municipio;
-
-
-class municipioController extends Controller
+use App\Models\Juez;
+class juezControlController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +13,9 @@ class municipioController extends Controller
      */
     public function index()
     {
-        $municipios = Municipio::all();
-        return response( $municipios );
-    
+        //
+        $juez = Juez::all();
+        return response( $juez );
     }
 
     /**
@@ -41,16 +36,17 @@ class municipioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Se validan los datos a traves de laravel
         $request->validate([
             'nombre' => 'required',
-            'id_estado' => 'required',
+            'id_municipio' => 'required',
         ]);
 
-        $municipio = Municipio::create( $request->all() );
+        //Se usa la función create() con el request que guarda el objeto
+        $juez = Juez::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Objeto creado con éxito', 'objeto' => $municipio ], 201);
+        return response()->json(['mensaje' => 'Datos guardados con éxito', 'juez' => $juez ], 201);
     }
 
     /**
@@ -61,14 +57,16 @@ class municipioController extends Controller
      */
     public function show($id)
     {
-        //
-        $municipio = Municipio::find($id);
+        //Se obtiene el registro de la base de datos
+        $juez = Juez::find($id);
 
-        if (!$municipio) {
-            return response()->json(['mensaje' => 'Estado no encontrado'], 404);
+        //Compara si la consulta encontró datos
+        if (!$juez) {
+            return response()->json(['mensaje' => 'Juez no encontrado'], 404);
         }
 
-        return response()->json(['municipio' => $municipio], 201);
+        //Lo retorna con un código 201
+        return response()->json(['juez' => $juez], 201);
     }
 
     /**
@@ -91,17 +89,16 @@ class municipioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         // Encontramos el dato con el id
-        $municipio = Municipio::find($id);
+        $juez = Juez::find($id);
 
         // Verifica si el usuario existe
-        if (! $municipio ) {
-            return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
+        if (!$juez) {
+            return response()->json(['mensaje' => 'Juez no encontrado'], 404);
         }
 
         // Actualiza los datos con los nuevos datos proporcionados
-        $municipio->update($request->all());
+        $juez->update($request->all());
 
         // Puedes devolver una respuesta JSON, un mensaje de éxito, etc.
         return response()->json(['mensaje' => 'Datos actualizados con éxito']);
@@ -115,16 +112,16 @@ class municipioController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $municipio = Municipio::find($id);
+        // Buscar el usuario por su ID
+        $juez = Juez::find($id);
 
         // Verificar si el usuario existe
-        if ($municipio) {
+        if ($juez) {
             // Eliminar el usuario
-            $municipio->delete();
-            return response()->json(['mensaje' => 'Municipio eliminado correctamente'], 201);
+            $juez->delete();
+            return response()->json(['mensaje' => 'Juez eliminado correctamente'], 201);
         } else {
-            return response()->json(['mensaje' => 'No se ha encontrado el municipio '], 201);
+            return response()->json(['mensaje' => 'No se ha encontrado el juez'], 201);
         }
     }
 }

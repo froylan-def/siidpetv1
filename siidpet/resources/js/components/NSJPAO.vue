@@ -93,34 +93,36 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
-                            
-                                    
+                        <div class="modal-body">         
                                 <div class="form-group">
-                                    <label for="Nombre del usuario">Número</label>
-                                    <input v-model="form2.NUC"  type="text" class="form-control" id="NUC"
+                                    <label for="Nombre del usuario">NUC</label>
+                                    <input v-model="form2.nuc"  type="text" class="form-control" id="NUC"
                                         aria-describedby="emailHelp" placeholder="123456">
 
                                     <div style="color: red;" v-if="form2.errors.has('NUC')" v-html="form2.errors.get('NUC')" />
                                     
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="Correo del usuario">Delito</label>
-                                    <select  v-model="form2.delito" type="text" class="form-control" id="correo">
+                                    <label for="Nombre del usuario">FOJA LIBRO</label>
+                                    <input v-model="form2.foja"  type="text" class="form-control" id="foja"
+                                        aria-describedby="emailHelp" placeholder="2">
+
+                                    <div style="color: red;" v-if="form2.errors.has('foja')" v-html="form2.errors.get('foja')" />
+                                    
+                                </div>
+                                <div class="form-group">
+                                    <label for="UGI">UGI</label>
+                                    <select  v-model="form2.ugi" type="text" class="form-control" id="ugi">
                                         <option value=""> Seleccione una opción </option>
                                         <option value="1">Value 1</option>
                                         <option value="2" selected>Value 2</option>
                                         <option value="3">Value 3</option>
                                     </select>
-                                    <div style="color: red;" v-if="form2.errors.has('delito')" v-html="form2.errors.get('delito')" />
+                                    <div style="color: red;" v-if="form2.errors.has('ugi')" v-html="form2.errors.get('ugi')" />
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="Correo del usuario">Fecha</label>
-                                    <input v-model="form2.fechaRegistro" type="date" class="form-control" id="fechaRegistro">
-
-                                    <div style="color: red;" v-if="form2.errors.has('fechaRegistro')" v-html="form2.errors.get('fechaRegistro')" />
-                                </div>                           
+                                                 
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal"> 
@@ -153,8 +155,9 @@ export default {
             themeColor: "#AB0033",
             headers: [
                 { text: "NUC", value: "NUC" },
-                { text: "Delitos", value: "delito" },
-                { text: "Fecha", value: "fechaRegistro" },
+                { text: "Foja", value: "delito" },
+                { text: "UGI", value: "fechaRegistro" },
+                { text: "Imputado", value: "fechaRegistro" },
                 { text: "Estado", value: "estado"  },
                 { text: "Acciones", value: "operation"}
             ],
@@ -192,7 +195,7 @@ export default {
         }, 
  
         ver(item) {
-            window.location.href = "nuc/ver/"+item.NUC;
+            window.location.href = "/nuc/ExpedienteImputado/"+item.NUC;
            
        }, 
 

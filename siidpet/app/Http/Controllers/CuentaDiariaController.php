@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\CuentaDiaria;
 
 class CuentaDiariaController extends Controller
 {
@@ -15,7 +16,10 @@ class CuentaDiariaController extends Controller
     public function index()
     {
         //
-        $cuentaDiaria = DB::table('cuenta_diaria')->get();
+        /*$cuentaDiaria = DB::table('cuenta_diaria')->get();
+        return response( $cuentaDiaria );*/
+
+        $cuentaDiaria = CuentaDiaria::all();
         return response( $cuentaDiaria );
     }
 
@@ -60,7 +64,28 @@ class CuentaDiariaController extends Controller
     {
         //
 
-        $this->validate($request, [
+        //Se validan los datos a traves de laravel
+        $request->validate([
+            'num' => 'required',
+            'cp' => 'required',
+            'fecha' => 'required',
+            'hora' => 'required',
+            'sala' => 'required',
+            'observaciones' => 'required',
+            'resultado' => 'required',
+            'imputado' => 'required',
+            'delito' => 'required',
+            'audiencia' => 'required',
+        ]);
+
+        //Se usa la función create() con el request que guarda el objeto
+        $cuentaDiaria = CuentaDiaria::create( $request->all() );
+
+        // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
+        return response()->json(['mensaje' => 'Datos guardados con éxito', 'cuentadiaria' => $cuentaDiaria ], 201);
+
+
+        /*$this->validate($request, [
             'num' => 'required',
             'cp' => 'required|max:10',
             'fecha' => 'required',
@@ -84,7 +109,7 @@ class CuentaDiariaController extends Controller
             'audiencia' => $request->input('audiencia')
         ]);
 
-        return response("Registro guardado con éxito", 200);
+        return response("Registro guardado con éxito", 200); */
     }
 
     /**
@@ -95,7 +120,16 @@ class CuentaDiariaController extends Controller
      */
     public function show($id)
     {
-        //
+        //Se obtiene el registro de la base de datos
+        $cuentadiaria = CuentaDiaria::find($id);
+
+        //Compara si la consulta encontró datos
+        if (! $cuentadiaria ) {
+            return response()->json(['mensaje' => 'Datos de la cuenta diaria no encontrados'], 404);
+        }
+
+        //Lo retorna con un código 201
+        return response()->json(['cuentadiaria' => $cuentadiaria ], 201);
     }
 
     /**
@@ -118,7 +152,19 @@ class CuentaDiariaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Encontramos el dato con el id
+        $cuentadiaria = CuentaDiaria::find($id);
+
+        // Verifica si el usuario existe
+        if (! $cuentadiaria ) {
+            return response()->json(['mensaje' => 'Datos de la cuenta diaria no encontrado'], 404);
+        }
+
+        // Actualiza los datos con los nuevos datos proporcionados
+        $cuentadiaria->update($request->all());
+
+        // Puedes devolver una respuesta JSON, un mensaje de éxito, etc.
+        return response()->json(['mensaje' => 'Datos actualizados con éxito']);
     }
 
     /**
@@ -129,6 +175,16 @@ class CuentaDiariaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Buscar el usuario por su ID
+        $cuentadiaria = CuentaDiaria::find($id);
+
+        // Verificar si el usuario existe
+        if ( $cuentadiaria ) {
+            // Eliminar el usuario
+            $cuentadiaria->delete();
+            return response()->json(['mensaje' => 'Datos de la cuenta diaria eliminados correctamente'], 201);
+        } else {
+            return response()->json(['mensaje' => 'No se ha encontrado el dato'], 201);
+        }
     }
 }

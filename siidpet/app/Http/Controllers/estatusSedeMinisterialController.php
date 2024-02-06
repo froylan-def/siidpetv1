@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Estado;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\EstatusSedeMinisterial;
 
-use App\Models\Municipio;
-
-
-class municipioController extends Controller
+class estatusSedeMinisterialController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +14,9 @@ class municipioController extends Controller
      */
     public function index()
     {
-        $municipios = Municipio::all();
-        return response( $municipios );
-    
+        //.
+        $sedeMinisterial = EstatusSedeMinisterial::all();
+        return response($sedeMinisterial);
     }
 
     /**
@@ -44,13 +40,13 @@ class municipioController extends Controller
         //
         $request->validate([
             'nombre' => 'required',
-            'id_estado' => 'required',
         ]);
 
-        $municipio = Municipio::create( $request->all() );
+        $estatusSedeMinisterial = EstatusSedeMinisterial::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Objeto creado con éxito', 'objeto' => $municipio ], 201);
+        return response()->json(['mensaje' => 'Datos de la sede ministerial creado con éxito', 'objeto' => $estatusSedeMinisterial ], 201);
+
     }
 
     /**
@@ -62,13 +58,13 @@ class municipioController extends Controller
     public function show($id)
     {
         //
-        $municipio = Municipio::find($id);
+        $estatusSedeMinisterial = EstatusSedeMinisterial::find($id);
 
-        if (!$municipio) {
-            return response()->json(['mensaje' => 'Estado no encontrado'], 404);
+        if (!$estatusSedeMinisterial) {
+            return response()->json(['mensaje' => 'Datos de la sede ministerial no encontrada'], 404);
         }
 
-        return response()->json(['municipio' => $municipio], 201);
+        return response()->json(['sede' => $estatusSedeMinisterial], 201);
     }
 
     /**
@@ -91,17 +87,16 @@ class municipioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         // Encontramos el dato con el id
-        $municipio = Municipio::find($id);
+        $sedeMinisterial = EstatusSedeMinisterial::find($id);
 
         // Verifica si el usuario existe
-        if (! $municipio ) {
-            return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
+        if (!$sedeMinisterial) {
+            return response()->json(['mensaje' => 'Sede ministerial no encontrada'], 404);
         }
 
         // Actualiza los datos con los nuevos datos proporcionados
-        $municipio->update($request->all());
+        $sedeMinisterial->update($request->all());
 
         // Puedes devolver una respuesta JSON, un mensaje de éxito, etc.
         return response()->json(['mensaje' => 'Datos actualizados con éxito']);
@@ -116,15 +111,15 @@ class municipioController extends Controller
     public function destroy($id)
     {
         //
-        $municipio = Municipio::find($id);
+        $sedeMinisterial = EstatusSedeMinisterial::find($id);
 
         // Verificar si el usuario existe
-        if ($municipio) {
+        if ($sedeMinisterial) {
             // Eliminar el usuario
-            $municipio->delete();
-            return response()->json(['mensaje' => 'Municipio eliminado correctamente'], 201);
+            $sedeMinisterial->delete();
+            return response()->json(['mensaje' => 'Datos de sede ministerial eliminados correctamente'], 201);
         } else {
-            return response()->json(['mensaje' => 'No se ha encontrado el municipio '], 201);
+            return response()->json(['mensaje' => 'No se ha encontrado registro de la sede ministerial'], 201);
         }
     }
 }
