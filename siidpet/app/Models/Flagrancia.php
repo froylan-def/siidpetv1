@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Flagrancia extends Model
 {
     use HasFactory;
+
+    protected $table = 'flagrancia';
+
+    protected $fillable = [
+        'fecha',
+        'hora',
+        // ... otras propiedades ...
+    ];
+
 }

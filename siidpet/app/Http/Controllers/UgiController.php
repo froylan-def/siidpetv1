@@ -93,7 +93,7 @@ class UgiController extends Controller
 
         // Verifica si el usuario existe
         if (!$ugi) {
-            return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
+            return response()->json(['mensaje' => 'Ugi no encontrado'], 404);
         }
 
         // Actualiza los datos con los nuevos datos proporcionados

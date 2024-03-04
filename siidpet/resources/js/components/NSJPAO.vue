@@ -171,7 +171,7 @@ export default {
         }
     },
     mounted() {
-        this.getList();
+        //this.getList();
     },
     methods: {
         abrirModalRegistro() {
@@ -195,7 +195,7 @@ export default {
         }, 
  
         ver(item) {
-            window.location.href = "/nuc/ExpedienteImputado/"+item.NUC;
+          window.location.href = "/nuc/ExpedienteImputado/"+item.NUC;
            
        }, 
 

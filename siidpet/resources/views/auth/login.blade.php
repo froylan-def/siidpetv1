@@ -40,14 +40,16 @@
 <body class="hold-transition login-page" >
 <div class="login-box" style="width: 30rem;">
  
-  <!-- /.login-logo -->
-  <div class="card" >
-
-    <div class="login-logo mt-5 ">
+<div class="login-logo mt-5 ">
       <img src="{{ asset('img/logo_tam_1.jpg') }}" class="rounded mx-auto d-block" width="100" height="100"  alt="Logo tam" >
       <a href="/" > SIIDPET </a>
       
+      
     </div>
+  <!-- /.login-logo -->
+  <div class="card" >
+
+    
 
     <div class="card-body login-card-body" >
 

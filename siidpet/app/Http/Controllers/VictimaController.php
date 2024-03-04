@@ -56,7 +56,7 @@ class VictimaController extends Controller
         $victima = Victima::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Datos de la victima creado con éxito', 'objeto' => $victima ], 201);
+        return response()->json(['mensaje' => 'Datos de la victima guardados con éxito', 'objeto' => $victima ], 201);
 
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Municipio;
 use Illuminate\Http\Request;
 use App\Models\Defensor;
 
@@ -15,8 +16,9 @@ class DefensorController extends Controller
     public function index()
     {
         //
-        $defensor = Defensor::all();
-        return response( $defensor );
+        // $defensor = Defensor::all();
+        $defensores = Defensor::with('municipio')->get();
+        return response($defensores);
     }
 
     /**

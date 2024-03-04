@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\imputado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class imputadoController extends Controller
@@ -13,7 +14,9 @@ class imputadoController extends Controller
      */
     public function index()
     {
-        return response("Imputados guardado con éxito", 200);
+        //return response("Imputados guardado con éxito", 200);
+        $imputado = imputado::all();
+        return response( $imputado );
     }
 
     /**
@@ -34,7 +37,7 @@ class imputadoController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        /*$this->validate($request, [
             'nombres' => 'required',
             'apellidoP' => 'required',
             'apellidoM' => 'required',
@@ -65,7 +68,30 @@ class imputadoController extends Controller
             'IDNUC' => $idnuc[0]->id,
         ]);
 
-        return response($id);
+        return response($id); */
+
+        //Se validan los datos a traves de laravel
+        $request->validate([
+            'nombres' => 'required',
+            'apellido_paterno'=> 'required',
+            'apellido_materno'=> 'required',
+            'telefono'=> 'required',
+            'domicilio'=> 'required',
+            'sexo'=> 'required',
+            'id_pais'=> 'required',
+            'id_estado'=> 'required',
+            'id_municipio'=> 'required',
+            'estado_civil'=> 'required',
+            'fecha_de_nacimiento'=> 'required',
+            'id_escolaridad'=> 'required',
+            'id_ocupacion'=> 'required',
+        ]);
+
+        $imputado = imputado::create( $request->all() );
+
+        // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
+        return response()->json(['mensaje' => 'Datos guardados con éxito', 'imputado' => $imputado ], 201);
+
     }
 
     /**
@@ -76,7 +102,16 @@ class imputadoController extends Controller
      */
     public function show($id)
     {
-        //
+        //Se obtiene el registro de la base de datos
+        $imputado = imputado::find($id);
+
+        //Compara si la consulta encontró datos
+        if (! $imputado) {
+            return response()->json(['mensaje' => 'Datos del imputado no encontrados'], 404);
+        }
+
+        //Lo retorna con un código 201
+        return response()->json(['imputado' => $imputado ], 201);
     }
 
     /**
@@ -99,7 +134,20 @@ class imputadoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Encontramos el dato con el id
+        $imputado = imputado::find($id);
+
+        // Verifica si el usuario existe
+        if (! $imputado ) {
+            return response()->json(['mensaje' => 'Datos del imputado no encontrados'], 404);
+        }
+
+        // Actualiza los datos con los nuevos datos proporcionados
+        $imputado->update($request->all());
+
+        // Puedes devolver una respuesta JSON, un mensaje de éxito, etc.
+        return response()->json(['mensaje' => 'Datos actualizados con éxito']);
+
     }
 
     /**
@@ -110,7 +158,17 @@ class imputadoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Buscar el usuario por su ID
+        $imputado = imputado::find($id);
+
+        // Verificar si el usuario existe
+        if ( $imputado ) {
+            // Eliminar el usuario
+            $imputado->delete();
+            return response()->json(['mensaje' => 'Datos del imputado eliminados correctamente'], 201);
+        } else {
+            return response()->json(['mensaje' => 'No se ha encontrado el dato'], 201);
+        }
     }
 
 
@@ -118,7 +176,6 @@ class imputadoController extends Controller
         //return response($nuc);
         $idnuc = DB::table('NUC')->where('NUC', $nuc)->value('id');
         $datos=DB::table('NUCImputado')
-        //->join('NUCImputado','imputado.id','NUCImputado.IDImputado')
         ->join('imputado','NUCImputado.IDImputado','=','imputado.id')
         ->where('NUCImputado.IDNUC',$idnuc)
         ->get();

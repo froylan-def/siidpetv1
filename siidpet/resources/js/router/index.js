@@ -13,6 +13,7 @@ import Peticionarios from '../components/Peticionarios.vue';
 import reportesNSJPAO from '../components/reportesNSJPAO.vue';
 import calendario from '../components/Calendario.vue';
 import CuentaDiaria from '../components/CuentaDiaria.vue';
+import Defensores from '../components/admin/Defensores.vue';
 
 const routes = [
     {
@@ -79,6 +80,16 @@ const routes = [
         path: "/registrar/cuentadiaria",
         name: "CuentaDiaria",
         component: CuentaDiaria
+    },
+    {
+        path: "/Catalogos",
+        name: "Catalogos",
+        component: CuentaDiaria
+    },
+    {
+        path: "/defensores",
+        name: "Defensores",
+        component: Defensores
     }
 ];
 
