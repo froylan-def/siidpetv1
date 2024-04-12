@@ -14,6 +14,7 @@ class Ugi extends Model
 
     protected $fillable = [
         'nombre',
+        'activo',
         // ... otras propiedades ...
     ];
 

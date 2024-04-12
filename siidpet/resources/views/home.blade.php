@@ -47,7 +47,7 @@
     </style>
 
   <script>
-    //window.permisosSession = "{{ Session::get('permisos'); }}"
+    window.rol = "{{ Session::get('rol'); }}"
     //window.permisosSession = JSON.parse(window.permisosSession.replace(/&quot;/g,'"'))
   </script>
 
@@ -136,19 +136,12 @@
                     </p>
                 </router-link>
             </li>
-            <li class="nav-item">
-                <router-link to="/usuarios" class="nav-link" active-class="active"  >
-                    
 
-                    <i class="nav-icon fas fa-solid fa-user"></i>
-                    <p>
-                        Usuarios
-                    </p>
-                </router-link>
-            </li>
+            @if(session('rol') === '1')
+            
 
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <router-link to="/nsjpao" class="nav-link" active-class="active"  >
  
                 <i class="nav-icon fas fa-scale-balanced"></i>
@@ -156,52 +149,215 @@
                         NSJPAO
                     </p>
                 </router-link>
-            </li>
+            </li> -->
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <router-link to="/reportesNSJPAO" class="nav-link" active-class="active"  >
                  <i class="nav-icon fas fa-clipboard-list "></i>
                     <p>
                         Reportes
                     </p>
                 </router-link>
-            </li>
+            </li> -->
 
-            <li class="nav-item">
-                <router-link to="/permisos" class="nav-link" active-class="active"  >
-
-                <i class="nav-icon fa-solid fa-key"></i>
-
-                    <p>
-                        Permisos
-                    </p>
-                </router-link>
-            </li>
+            
 
 
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <router-link to="/peticionarios" class="nav-link" active-class="active"  >
                 <i class="nav-icon fa-solid fa-users"></i>
                     <p>
                         Peticionarios
                     </p>
                 </router-link>
-            </li>
+            </li> --> 
 
-
-            <li class="nav-item">
-                <router-link to="/registrar/cuentadiaria" class="nav-link" active-class="active"  >
+          
+            
+            <!-- <li class="nav-item">
+                <router-link to="/registrar/cuentadiaria" class="nav-link" active-class="active" >
                 <i class="nav-icon fa-solid fa-book"></i>
                     <p>
                         Cuenta diaria
+                    </p>
+                </router-link>
+            </li> -->
+            
+
+            
+            <li class="nav-item ">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Usuarios
+              <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+            <li class="nav-item">
+                <router-link to="/usuarios" class="nav-link" active-class="active"  >
+                    
+
+            <i class="nav-icon fas fa-solid fa-user"></i>
+                    <p>
+                        Cuentas
+                    </p>
+                </router-link>
+            </li>
+
+
+                <li class="nav-item">
+                    <router-link to="/permisos" class="nav-link" active-class="active"  >
+
+                    <i class="nav-icon fa-solid fa-key"></i>
+
+                        <p>
+                            Permisos
+                        </p>
+                    </router-link>
+                </li>
+              
+              
+            </ul>
+          </li>
+
+          <!-- DATOS SISTEMA ACUSATORIO -->
+          
+          <li class="nav-item ">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Datos Sistema Acusatorio
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+<!-- AGREGAR ICONO PENDIENTE Y COLORES -->
+
+
+<!-- Catalogo 1 -->
+            <li class="nav-item">
+                  <router-link to="/Defensores" class="nav-link" active-class="active"  >
+                    
+                    <i class="nav-icon fas fa-caret-right fa-solid"></i>
+                    <p>
+                        Defensores
+                    </p>
+                </router-link>
+            </li> 
+
+<!-- Catalogo 2 -->
+            <li class="nav-item">
+                  <router-link to="/Delito" class="nav-link" active-class="active"  >
+                    
+                    <i class="nav-icon fas fa-caret-right fa-solid "></i>
+                    <p>
+                        Delito
+                    </p>
+                </router-link>
+            </li> 
+<!-- Catalogo 3 -->
+            <li class="nav-item">
+                  <router-link to="/Ugi" class="nav-link" active-class="active"  >
+                    
+                  <i class="nav-icon fas fa-caret-right fa-solid"></i>
+                    <p>
+                        UGI
+                    </p>
+                </router-link>
+            </li> 
+<!-- Catalogo 4 -->            
+            <li class="nav-item">
+                  <router-link to="/MedidasProteccion" class="nav-link" active-class="active"  >
+                    
+                  <i class="nav-icon fas fa-caret-right fa-solid"></i>
+
+                    <p>
+                        Medidas de Protección
+                    </p>
+                </router-link>
+            </li> 
+
+<!-- Catalogo 5 -->     
+
+<li class="nav-item">
+                  <router-link to="/Juez" class="nav-link" active-class="active"  >
+                    
+                  <i class="nav-icon fas fa-caret-right fa-solid"></i>
+                    <p>
+                       Juez de Control
+                    </p>
+                </router-link>
+            </li>
+
+<!-- Catalogo 6 -->     
+<!--
+<li class="nav-item">
+                  <router-link to="/Delito" class="nav-link" active-class="active"  >
+                    
+                  <i class="nav-icon fas fa-caret-right fa-solid"></i>
+                    <p>
+                        Delito
+                    </p>
+                </router-link>
+            </li>
+-->
+
+<!-- Catalogo 7 -->     
+
+<li class="nav-item">
+                  <router-link to="/Medida" class="nav-link" active-class="active"  >
+                    
+                  <i class="nav-icon fas fa-caret-right fa-solid"></i>
+                    <p>
+                        Medida Cautelar 
+                    </p>
+                </router-link>
+            </li>
+
+<!-- Catalogo 8 -->     
+
+<li class="nav-item">
+                  <router-link to="/Tribunal" class="nav-link" active-class="active"  >
+                    
+                  <i class="nav-icon fas fa-caret-right fa-solid"></i>
+                    <p>
+                        Tribunal de Enjuiciamiento
+                    </p>
+                </router-link>
+            </li>
+
+<!-- Catalogo 9 -->     
+
+  <li class="nav-item">
+                  <router-link to="/Conclusion" class="nav-link" active-class="active"  >
+                    
+                  <i class="nav-icon fas fa-caret-right fa-solid"></i>
+                    <p>
+                        Conclusión 
                     </p>
                 </router-link>
             </li>
 
 
 
-            
+ 
+
+<!-- ---------------------------------------------------------------- -->
+            </ul>
+          </li>
+          @endif
+          <li class="nav-item">
+              <router-link to="/expedientes" class="nav-link" active-class="active"  >
+
+              <i class="nav-icon fas fa-scale-balanced"></i>
+                  <p>
+                      Expedientes
+                  </p>
+              </router-link>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ route('logout') }}"   href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">                         
               <i class="nav-icon fas fa-solid fa-right-from-bracket"></i>
@@ -288,6 +444,11 @@
 <script src="{{ asset('js/adminlte.js') }}"></script>
 <script src="{{ asset('plugins/fullcalendar/main.js') }}"> </script>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@3.10.2/dist/locale/es.js'></script>
+
+<script src="{{ asset('js/pages/dashboard.js') }}"></script>
+
+<script src="{{ asset('js/pages/dashboard.js') }}"></script>
+
 
 </body>
 </html>

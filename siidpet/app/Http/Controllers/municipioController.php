@@ -44,7 +44,7 @@ class municipioController extends Controller
         //
         $request->validate([
             'nombre' => 'required',
-            'id_estado' => 'required',
+            'estado' => 'required',
         ]);
 
         $municipio = Municipio::create( $request->all() );

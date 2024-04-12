@@ -15,7 +15,7 @@ class UgiController extends Controller
     public function index()
     {
         //
-        $ugis = Ugi::all();
+        $ugis = Ugi::orderBy('activo', 'DESC')->get();
         return response($ugis);
         //return csrf_token(); 
     }
@@ -59,7 +59,7 @@ class UgiController extends Controller
     public function show($id)
     {
         //
-        $ugi = Ugi::find($id);
+        $ugi = Ugi::where('id', $id)->where('activo', 1);
 
         if (!$ugi) {
             return response()->json(['mensaje' => 'Ugi no encontrado'], 404);
@@ -76,7 +76,20 @@ class UgiController extends Controller
      */
     public function edit($id)
     {
-        //
+        $ugi = Ugi::find($id);
+
+        if ($ugi) {
+            // Eliminar el usuario
+            //$ugi->delete();
+        
+      
+            $ugi->activo = 1;
+            $ugi->save();
+        
+            return response()->json(['mensaje' => 'Ugi activado correctamente'], 201);
+        } else {
+            return response()->json(['mensaje' => 'No se ha encontrado el Ugi correspondiente'], 201);
+        }
     }
 
     /**
@@ -111,17 +124,46 @@ class UgiController extends Controller
      */
     public function destroy($id)
     {
-        // return response()->json(['mensaje' => 'ALGO DE RESPUESTA EN DELETE'], 201);
+         // return response()->json(['mensaje' => 'ALGO DE RESPUESTA EN DELETE'], 201);
         // Buscar el usuario por su ID
         $ugi = Ugi::find($id);
 
         // Verificar si el usuario existe
         if ($ugi) {
             // Eliminar el usuario
-            $ugi->delete();
+            //$ugi->delete();
+        
+      
+            $ugi->activo = 0;
+            $ugi->save();
+        
             return response()->json(['mensaje' => 'Ugi eliminado correctamente'], 201);
         } else {
             return response()->json(['mensaje' => 'No se ha encontrado el Ugi correspondiente'], 201);
         }
+    }
+
+
+    public function activar()
+    {
+        return response()->json(['mensaje' => 'Hola mundo'], 201);
+        /*
+         // return response()->json(['mensaje' => 'ALGO DE RESPUESTA EN DELETE'], 201);
+        // Buscar el usuario por su ID
+        $ugi = Ugi::find($id);
+
+        // Verificar si el usuario existe
+        if ($ugi) {
+            // Eliminar el usuario
+            //$ugi->delete();
+        
+      
+            $ugi->activo = 1;
+            $ugi->save();
+        
+            return response()->json(['mensaje' => 'Ugi activado correctamente'], 201);
+        } else {
+            return response()->json(['mensaje' => 'No se ha encontrado el Ugi correspondiente'], 201);
+        }*/
     }
 }

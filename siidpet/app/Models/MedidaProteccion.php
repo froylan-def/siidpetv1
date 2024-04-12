@@ -13,6 +13,7 @@ class MedidaProteccion extends Model
 
     protected $fillable = [
         'nombre',
+        'activo',
         // ... otras propiedades ...
     ];
 }

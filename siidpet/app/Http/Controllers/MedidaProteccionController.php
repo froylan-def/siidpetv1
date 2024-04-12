@@ -15,8 +15,9 @@ class MedidaProteccionController extends Controller
     public function index()
     {
         //
-        $medidaproteccion = MedidaProteccion::all();
-        return response( $medidaproteccion );
+        $MedidaProteccion = MedidaProteccion::orderBy('activo', 'DESC')->get();
+        return response($MedidaProteccion);
+        //return csrf_token(); 
     }
 
     /**
@@ -24,9 +25,9 @@ class MedidaProteccionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        //return csrf_token(); 
     }
 
     /**
@@ -37,16 +38,18 @@ class MedidaProteccionController extends Controller
      */
     public function store(Request $request)
     {
-        //Se validan los datos a traves de laravel
+         
+        //
+        //
         $request->validate([
             'nombre' => 'required',
+            'activo' => 'required',
         ]);
 
-        //Se usa la función create() con el request que guarda el objeto
-        $medidaproteccion = MedidaProteccion::create( $request->all() );
+        $MedidaProteccion = MedidaProteccion::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Datos guardados con éxito', 'medidaproteccion' => $medidaproteccion ], 201);
+        return response()->json(['mensaje' => 'Objeto creado con éxito', 'objeto' => $MedidaProteccion ], 201);
     }
 
     /**
@@ -57,16 +60,14 @@ class MedidaProteccionController extends Controller
      */
     public function show($id)
     {
-        //Se obtiene el registro de la base de datos
-        $medidaProteccion = MedidaProteccion::find($id);
+        //
+        $MedidaProteccion = MedidaProteccion::where('id', $id)->where('activo', 1);
 
-        //Compara si la consulta encontró datos
-        if (!$medidaProteccion) {
-            return response()->json(['mensaje' => 'Medida proteccion no encontrada'], 404);
+        if (!$MedidaProteccion) {
+            return response()->json(['mensaje' => 'Ugi no encontrado'], 404);
         }
 
-        //Lo retorna con un código 201
-        return response()->json(['medidaproteccion' => $medidaProteccion ], 201);
+        return response()->json(['ugi' => $MedidaProteccion], 201);
     }
 
     /**
@@ -77,7 +78,20 @@ class MedidaProteccionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $MedidaProteccion = MedidaProteccion::find($id);
+
+        if ($MedidaProteccion) {
+            // Eliminar el usuario
+            //$ugi->delete();
+        
+      
+            $MedidaProteccion->activo = 1;
+            $MedidaProteccion->save();
+        
+            return response()->json(['mensaje' => 'Ugi activado correctamente'], 201);
+        } else {
+            return response()->json(['mensaje' => 'No se ha encontrado el Ugi correspondiente'], 201);
+        }
     }
 
     /**
@@ -90,15 +104,15 @@ class MedidaProteccionController extends Controller
     public function update(Request $request, $id)
     {
         // Encontramos el dato con el id
-        $medidaProteccion = MedidaProteccion::find($id);
+        $MedidaProteccion = MedidaProteccion::find($id);
 
         // Verifica si el usuario existe
-        if (! $medidaProteccion ) {
-            return response()->json(['mensaje' => 'Medida proteccion no encontrada'], 404);
+        if (!$MedidaProteccion) {
+            return response()->json(['mensaje' => 'Ugi no encontrado'], 404);
         }
 
         // Actualiza los datos con los nuevos datos proporcionados
-        $medidaProteccion->update($request->all());
+        $MedidaProteccion->update($request->all());
 
         // Puedes devolver una respuesta JSON, un mensaje de éxito, etc.
         return response()->json(['mensaje' => 'Datos actualizados con éxito']);
@@ -112,15 +126,44 @@ class MedidaProteccionController extends Controller
      */
     public function destroy($id)
     {
+         // return response()->json(['mensaje' => 'ALGO DE RESPUESTA EN DELETE'], 201);
         // Buscar el usuario por su ID
-        $medidaProteccion = MedidaProteccion::find($id);
+        $MedidaProteccion = MedidaProteccion::find($id);
 
         // Verificar si el usuario existe
-        if ($medidaProteccion) {
-            $medidaProteccion->delete();
-            return response()->json(['mensaje' => 'Medida proteccion eliminada correctamente'], 201);
+        if ($MedidaProteccion) {
+            // Eliminar el usuario
+            //$ugi->delete();
+        
+      
+            $MedidaProteccion->activo = 0;
+            $MedidaProteccion->save();
+        
+            return response()->json(['mensaje' => 'Ugi eliminado correctamente'], 201);
         } else {
-            return response()->json(['mensaje' => 'No se ha encontrado la medida de proteccion'], 201);
+            return response()->json(['mensaje' => 'No se ha encontrado el Ugi correspondiente'], 201);
         }
+    }
+
+
+    public function activar()
+    {
+        return response()->json(['mensaje' => 'Hola mundo'], 201);
+        /*
+         // return response()->json(['mensaje' => 'ALGO DE RESPUESTA EN DELETE'], 201);
+        // Buscar el usuario por su ID
+        $ugi = Ugi::find($id);
+
+        // Verificar si el usuario existe
+        if ($ugi) {
+            // Eliminar el usuario
+            //$ugi->delete();
+            $ugi->activo = 1;
+            $ugi->save();
+        
+            return response()->json(['mensaje' => 'Ugi activado correctamente'], 201);
+        } else {
+            return response()->json(['mensaje' => 'No se ha encontrado el Ugi correspondiente'], 201);
+        }*/
     }
 }

@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory} from 'vue-router'
-
 import Home from '../components/Home.vue'
 import Usuarios from '../components/Usuarios.vue'
 import nsjpao from '../components/NSJPAO.vue'
@@ -14,7 +13,13 @@ import reportesNSJPAO from '../components/reportesNSJPAO.vue';
 import calendario from '../components/Calendario.vue';
 import CuentaDiaria from '../components/CuentaDiaria.vue';
 import Defensores from '../components/admin/Defensores.vue';
-
+import UGI from '../components/admin/UGI.vue';
+import Expedientes from '../components/defensor/Expedientes.vue';
+import verExpediente from '../components/defensor/VerExpediente.vue';
+import Delito from '../components/admin/Delito.vue';
+import MedidasProteccion from '../components/admin/MedidasProteccion.vue';
+import Juez from '../components/admin/Juez.vue';
+import Medidas from '../components/admin/Medidas.vue';
 const routes = [
     {
         path: '/',
@@ -24,7 +29,8 @@ const routes = [
     {
         path: '/usuarios',
         name: 'usuarios',
-        component: Usuarios
+        component: Usuarios,
+        meta: { requiresAuth: true, requiresAdmin: true }
     },
     {
         path: '/denegado',
@@ -34,63 +40,121 @@ const routes = [
     { 
         path: '/nsjpao',
         name: 'nsjpao',
-        component: nsjpao
+        component: nsjpao,
+        meta: { requiresAuth: true, requiresAdmin: true }
     },
     { 
         path: '/nuc',
         name: 'nuc',
-        component: NUC
+        component: NUC,
+        meta: { requiresAuth: true, requiresAdmin: true }
     },
     { 
         path: '/nuc/ver/:NUC',
         name: 'verNuc',
-        component: verNuc
+        component: verNuc,
+        meta: { requiresAuth: true, requiresAdmin: true }
     },
     { 
         path: '/nuc/ExpedienteImputado/:inputado',
         name: 'ExpedienteImputado',
-        component: ExpedienteImputado
+        component: ExpedienteImputado,
+        meta: { requiresAuth: true, requiresAdmin: true }
     },
     { 
         path: '/permisos',
         name: 'Permisos',
-        component: Permisos
+        component: Permisos,
+        meta: { requiresAuth: true, requiresAdmin: true }
     },
     { 
         path: '/peticionarios',
         name: 'Peticionarios',
-        component: Peticionarios
+        component: Peticionarios,
+        meta: { requiresAuth: true, requiresAdmin: true }
     },
     { 
         path: '/reportesNSJPAO',
         name: 'reportesNSJPAO',
-        component: reportesNSJPAO
+        component: reportesNSJPAO,
+        meta: { requiresAuth: true, requiresAdmin: true }
     },
     { 
         path: '/calendario',
         name: 'calendario',
-        component: calendario
+        component: calendario,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+    
+    {
+        path: "/registrar/cuentadiaria",
+        name: "CuentaDiaria",
+        component: CuentaDiaria,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+    {
+        path: "/Catalogos",
+        name: "Catalogos",
+        component: CuentaDiaria,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+    {
+        path: "/defensores",
+        name: "Defensores",
+        component: Defensores,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+ 
+    {
+        path: "/UGI",
+        name: "UGI",
+        component: UGI,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+ 
+    {
+        path: "/expedientes",
+        name: "expedientes",
+        component: Expedientes,
+        meta: { requiresAuth: true, requiresD: true }
+    },
+
+    {
+        path: "/expedientes/:id",
+        name: "verExpedientes",
+        component: verExpediente,
+        meta: { requiresAuth: true, requiresD: true }
+    },
+    {
+        path: "/Delito",
+        name: "Delito",
+        component: Delito,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+    {
+        path: "/Juez",
+        name: "Juez",
+        component: Juez,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+    {
+        path: "/MedidasProteccion",
+        name: "MedidasProteccion",
+        component: MedidasProteccion,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+    {
+        path: "/Medidas",
+        name: "Medidas",
+        component: Medidas,
+        meta: { requiresAuth: true, requiresAdmin: true }
     },
     {
         path: "/:catchAll(.*)",
         name: "NotFound",
         component: PaginaNoEncontrada,
+        meta: { requiresAuth: true, requiresAdmin: true }
     },
-    {
-        path: "/registrar/cuentadiaria",
-        name: "CuentaDiaria",
-        component: CuentaDiaria
-    },
-    {
-        path: "/Catalogos",
-        name: "Catalogos",
-        component: CuentaDiaria
-    },
-    {
-        path: "/defensores",
-        name: "Defensores",
-        component: Defensores
-    }
 ];
 
 const router = createRouter({
@@ -98,7 +162,52 @@ const router = createRouter({
     routes
 });
 
- /* router.beforeEach((to, from, next) => {
+/*
+router.beforeEach((to, from, next) => {
+
+    const rol = window.rol;
+    const isAdmin = (rol == 1) ? true : false;
+    const isDG = (rol == 2) ? true : false;
+    const isDD = (rol == 3) ? true : false;
+    const isDA = (rol == 4) ? true : false;
+    const isJA = (rol == 5) ? true : false;
+    const isD = (rol == 6) ? true : false;
+    const isA = (rol == 7) ? true : false;
+
+    
+    if(rol == undefined ){
+        next('/login');
+        console.log( from );
+    }
+
+    if (to.meta.requiresAdmin && !isAdmin) {
+        next('/denegado');
+    } else if (to.meta.requiresDG && !isDG) {
+        next('/denegado');
+    } else if (to.meta.requiresDD && !isDD) {
+        next('/denegado');
+    } else if (to.meta.requiresDA && !isDA) {
+        next('/denegado');
+    } else if (to.meta.requiresJA && !isJA) {
+        next('/denegado');
+    } else if (to.meta.requiresD && !isD) {
+        next('/denegado');
+    } else if (to.meta.requiresA && !isA) {
+        next('/denegado');
+    } else {
+        console.log("ENTRE AQUI ");
+        console.log("ROL " + rol);
+        console.log("Admin: " + isAdmin );
+        console.log("Director General: " + isDG );
+        console.log("Director Defensorias: " + isDD );
+        console.log("Director Asesorias: " + isDA );
+        console.log("Jefe Asesorias: " + isJA );
+        console.log("Defensor: " + isD );
+        console.log("Asesor: " + isA );
+        next();
+    }
+
+
     //check page is protected or not
 
     const baseUrl = "/" + to.fullPath.split('/')[1]
@@ -116,6 +225,11 @@ const router = createRouter({
         next('/denegado');
     }
 
-  });
+    console.log("ROL");
+    console.log( window.rol );
+    next();
+
+});
 */
+
 export default router;

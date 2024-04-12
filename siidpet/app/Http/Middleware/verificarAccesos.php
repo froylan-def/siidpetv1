@@ -20,18 +20,25 @@ class verificarAccesos
      */
     public function handle(Request $request, Closure $next)
     {   
-        /*if (Auth::check()) {
+        
+        if (Auth::check()) {
             $rol = Auth::user()->IDRol;
             
-            $permisos = DB::table('rol_permiso')
+            /* $permisos = DB::table('rol_permiso')
             ->select('*')
             ->join('permisos', 'rol_permiso.idpermiso', '=', 'permisos.id')
             ->where('rol_permiso.idrol', $rol)
-            ->get();
+            ->get(); */ 
 
-            Session::put('permisos', json_encode($permisos) );
-        }*/
+            Session::put('rol', json_encode($rol) );
+        }
 
-        return $next($request);
+        // console.log("MIDDLE WARE VERIFICAR ACCESOS");
+         
+        /* if (!Auth::check() && !$request->is('login') ) {
+            return redirect()->route('login'); // Redirigir a la ruta de inicio de sesión
+        } */
+
+        return $next($request); 
     }
 }

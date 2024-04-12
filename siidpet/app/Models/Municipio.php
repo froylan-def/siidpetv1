@@ -12,19 +12,19 @@ class Municipio extends Model
 {
     use HasFactory;
 
-    protected $table = 'p_municipio';
+    protected $table = 'municipios';
 
     protected $fillable = [
         'nombre',
-        'id_estado',
+        'estado',
         // ... otras propiedades ...
     ];
 
-    public function defensores()
+   /* public function defensores()
     {
         // Especifica el nombre de la clave foránea si es diferente de la convención
         return $this->hasMany(Defensor::class, 'id_municipio'); 
     }
-
+*/
 
 }

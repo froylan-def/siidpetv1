@@ -13,6 +13,7 @@ class Delito extends Model
 
     protected $fillable = [
         'nombre',
+        'observaciones',
         // ... otras propiedades ...
     ];
 

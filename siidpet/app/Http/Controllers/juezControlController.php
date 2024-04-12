@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Juez;
-class juezControlController extends Controller
+
+class JuezControlController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,9 @@ class juezControlController extends Controller
     public function index()
     {
         //
-        $juez = Juez::all();
-        return response( $juez );
+        $Juez = Juez::orderBy('activo', 'DESC')->get();
+        return response($Juez);
+        //return csrf_token(); 
     }
 
     /**
@@ -23,9 +25,9 @@ class juezControlController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        //return csrf_token(); 
     }
 
     /**
@@ -36,17 +38,19 @@ class juezControlController extends Controller
      */
     public function store(Request $request)
     {
-        //Se validan los datos a traves de laravel
+         
+        //
+        //
         $request->validate([
             'nombre' => 'required',
             'id_municipio' => 'required',
+            'activo' => 'required',
         ]);
 
-        //Se usa la función create() con el request que guarda el objeto
-        $juez = Juez::create( $request->all() );
+        $Juez = Juez::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Datos guardados con éxito', 'juez' => $juez ], 201);
+        return response()->json(['mensaje' => 'Objeto creado con éxito', 'objeto' => $Juez ], 201);
     }
 
     /**
@@ -57,16 +61,14 @@ class juezControlController extends Controller
      */
     public function show($id)
     {
-        //Se obtiene el registro de la base de datos
-        $juez = Juez::find($id);
+        //
+        $Juez = Juez::where('id', $id)->where('activo', 1);
 
-        //Compara si la consulta encontró datos
-        if (!$juez) {
-            return response()->json(['mensaje' => 'Juez no encontrado'], 404);
+        if (!$Juez) {
+            return response()->json(['mensaje' => 'Ugi no encontrado'], 404);
         }
 
-        //Lo retorna con un código 201
-        return response()->json(['juez' => $juez], 201);
+        return response()->json(['ugi' => $Juez], 201);
     }
 
     /**
@@ -77,7 +79,20 @@ class juezControlController extends Controller
      */
     public function edit($id)
     {
-        //
+        $Juez = Juez::find($id);
+
+        if ($Juez) {
+            // Eliminar el usuario
+            //$ugi->delete();
+        
+      
+            $Juez->activo = 1;
+            $Juez->save();
+        
+            return response()->json(['mensaje' => 'Ugi activado correctamente'], 201);
+        } else {
+            return response()->json(['mensaje' => 'No se ha encontrado el Ugi correspondiente'], 201);
+        }
     }
 
     /**
@@ -90,15 +105,15 @@ class juezControlController extends Controller
     public function update(Request $request, $id)
     {
         // Encontramos el dato con el id
-        $juez = Juez::find($id);
+        $Juez = Juez::find($id);
 
         // Verifica si el usuario existe
-        if (!$juez) {
-            return response()->json(['mensaje' => 'Juez no encontrado'], 404);
+        if (!$Juez) {
+            return response()->json(['mensaje' => 'Ugi no encontrado'], 404);
         }
 
         // Actualiza los datos con los nuevos datos proporcionados
-        $juez->update($request->all());
+        $Juez->update($Juez->all());
 
         // Puedes devolver una respuesta JSON, un mensaje de éxito, etc.
         return response()->json(['mensaje' => 'Datos actualizados con éxito']);
@@ -112,16 +127,46 @@ class juezControlController extends Controller
      */
     public function destroy($id)
     {
+         // return response()->json(['mensaje' => 'ALGO DE RESPUESTA EN DELETE'], 201);
         // Buscar el usuario por su ID
-        $juez = Juez::find($id);
+        $Juez = Juez::find($id);
 
         // Verificar si el usuario existe
-        if ($juez) {
+        if ($Juez) {
             // Eliminar el usuario
-            $juez->delete();
-            return response()->json(['mensaje' => 'Juez eliminado correctamente'], 201);
+            //$ugi->delete();
+        
+      
+            $Juez->activo = 0;
+            $Juez->save();
+        
+            return response()->json(['mensaje' => 'Ugi eliminado correctamente'], 201);
         } else {
-            return response()->json(['mensaje' => 'No se ha encontrado el juez'], 201);
+            return response()->json(['mensaje' => 'No se ha encontrado el Ugi correspondiente'], 201);
         }
+    }
+
+
+    public function activar()
+    {
+        return response()->json(['mensaje' => 'Hola mundo'], 201);
+        /*
+         // return response()->json(['mensaje' => 'ALGO DE RESPUESTA EN DELETE'], 201);
+        // Buscar el usuario por su ID
+        $ugi = Ugi::find($id);
+
+        // Verificar si el usuario existe
+        if ($ugi) {
+            // Eliminar el usuario
+            //$ugi->delete();
+        
+      
+            $ugi->activo = 1;
+            $ugi->save();
+        
+            return response()->json(['mensaje' => 'Ugi activado correctamente'], 201);
+        } else {
+            return response()->json(['mensaje' => 'No se ha encontrado el Ugi correspondiente'], 201);
+        }*/
     }
 }

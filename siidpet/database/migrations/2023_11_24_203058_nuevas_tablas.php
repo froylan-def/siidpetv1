@@ -17,14 +17,12 @@ return new class extends Migration
         Schema::create('ugi', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
-        Schema::create('pais', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre')->nullable();
-            $table->timestamps();
-        });
+        
+        
 
         Schema::create('estado', function (Blueprint $table) {
             $table->id();
@@ -93,6 +91,7 @@ return new class extends Migration
         Schema::create('p_delito', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -123,6 +122,7 @@ return new class extends Migration
         Schema::create('medida_proteccion', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 

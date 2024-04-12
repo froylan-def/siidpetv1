@@ -45,7 +45,7 @@ class DefensorController extends Controller
             'nombres' => 'required',
             'apellido_paterno' => 'required',
             'apellido_materno' => 'required',
-            'telefono' => 'required',
+            'telefono' => 'required|numeric|min:10',
             'id_municipio' => 'required',
             'sexo' => 'required',
         ]);

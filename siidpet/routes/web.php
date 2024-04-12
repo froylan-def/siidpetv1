@@ -42,6 +42,7 @@ use App\Http\Controllers\DetencionController;
 use App\Http\Controllers\ordenAprencionController;
 use App\Http\Controllers\expedienteController;
 use App\Http\Controllers\CoordinacionController;
+use App\Http\Controllers\DelitoProcesoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,11 +55,16 @@ use App\Http\Controllers\CoordinacionController;
 |
 */
 
-Auth::routes();
+// Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
 //, 'middleware' => ['access']
+Auth::routes();
 
-Route::group(['middleware' => ['auth'], 'middleware' => ['access'] ], function() {
-   
+
+
+// Route::group(['middleware' => ['auth']], 
+Route::group(['middleware' => ['auth'] ], 
+function() {
+
     Route::get('/', function () {
         return view('home');
     });
@@ -81,7 +87,7 @@ Route::group(['middleware' => ['auth'], 'middleware' => ['access'] ], function()
     Route::get('/obtenerdelitos', [CuentaDiariaController::class, 'obtenerDelitos']);
     Route::get('/obteneraudiencias', [CuentaDiariaController::class, 'obtenerAudiencias']);
 
-
+    
     Route::resource('cuentadiaria', CuentaDiariaController::class);
     Route::resource('peticionario', PeticionarioController::class);
     Route::resource('users', UserController::class);
@@ -92,7 +98,8 @@ Route::group(['middleware' => ['auth'], 'middleware' => ['access'] ], function()
     Route::resource('etapaProcesal', etapaProcesalController::class);
     Route::resource('sexo', sexoController::class);
 
-    
+
+    Route::get('activarugi', [UgiController::class, 'activar']);
     //Nuevos controladores
     Route::resource('ugi', UgiController::class);
     Route::resource('defensor', DefensorController::class);
@@ -123,6 +130,8 @@ Route::group(['middleware' => ['auth'], 'middleware' => ['access'] ], function()
     Route::resource('ordenaprencion', ordenAprencionController::class);
     Route::resource('expediente', expedienteController::class);
     Route::resource('coordinacion', CoordinacionController::class);
+
+    Route::resource('delitoproceso', DelitoProcesoController::class);
 
     Route::get('/{any}', function () {
         return view('home');

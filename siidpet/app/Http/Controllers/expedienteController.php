@@ -15,7 +15,7 @@ class expedienteController extends Controller
     public function index()
     {
         //Se obtienen todos los objetos de la tabla
-        $expediente = Expediente::all();
+        $expediente = Expediente::with('ugi', 'defensor', 'entrevista', 'imputado', 'delito', 'victima', 'flagrancia', 'asignacionmedidas', 'acuerdosedeministerial', 'juez', 'defensoraudiencia', 'acuerdoreparatorio', 'delitoproceso', 'investigacioncomplementaria', 'prorrogaplazoinvestigacioncomplementaria', 'medidacautelar', 'suspencioncondicionalproceso', 'procedimientoabreviado', 'tribunalenjuiciamiento', 'conclusion', 'impugnacion', 'ordenaprencion')->get();
         return response( $expediente );
     }
 
@@ -39,11 +39,11 @@ class expedienteController extends Controller
     {
         //Se validan los datos a traves de laravel
         $request->validate([
-            'foja' => 'required',
+            // 'foja' => 'required',
             'id_ugi' => 'required',
             'id_defensor' => 'required',
             'id_entrevista' => 'required',
-            'nuc' => 'required',
+            // 'nuc' => 'required',
             'id_imputado' => 'required',
             'id_delito' => 'required',
             'id_victima' => 'required',
@@ -52,7 +52,7 @@ class expedienteController extends Controller
             'id_asignacion_medidas' => 'required',
             'id_acuerdo_sede_ministerial' => 'required',
             'carpeta_procesal' => 'required',
-            'audiencia_inicial' => 'required',
+            'audiencia_inicial' => 'required', //Este da problemas
             'id_juez_control' => 'required',
             'id_defensor_audiencia' => 'required',
             'cita_mecanismos' => 'required',
@@ -74,12 +74,15 @@ class expedienteController extends Controller
             'id_impugnacion' => 'required',
             'id_orden_aprencion' => 'required',
         ]);
+        
+        // return response()->json( ['request' => $request->all()], 201);
 
-        //Se usa la función create() con el request que guarda el objeto
+        // Se usa la función create() con el request que guarda el objeto
         $expediente = Expediente::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
         return response()->json(['mensaje' => 'Datos guardados con éxito', 'expediente' => $expediente ], 201);
+
     }
 
     /**
@@ -91,7 +94,7 @@ class expedienteController extends Controller
     public function show($id)
     {
         //Se obtiene el registro de la base de datos
-        $expediente = Expediente::find($id);
+        $expediente = Expediente::with('ugi', 'defensor', 'entrevista', 'imputado', 'delito', 'victima', 'flagrancia', 'asignacionmedidas', 'acuerdosedeministerial', 'juez', 'defensoraudiencia', 'acuerdoreparatorio', 'delitoproceso', 'investigacioncomplementaria', 'prorrogaplazoinvestigacioncomplementaria', 'medidacautelar', 'suspencioncondicionalproceso', 'procedimientoabreviado', 'tribunalenjuiciamiento', 'conclusion', 'impugnacion', 'ordenaprencion')->find($id);
 
         //Compara si la consulta encontró datos
         if (! $expediente ) {

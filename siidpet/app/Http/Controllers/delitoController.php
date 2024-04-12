@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Delito;
+use App\Models\P_Delito;
 
 class delitoController extends Controller
 {
@@ -15,8 +15,9 @@ class delitoController extends Controller
     public function index()
     {
         //
-        $juez = Delito::all();
-        return response( $juez );
+        $delito = P_Delito::orderBy('activo', 'DESC')->get();
+
+        return response( $delito );
     }
 
     /**
@@ -41,10 +42,11 @@ class delitoController extends Controller
         //Se validan los datos a traves de laravel
         $request->validate([
             'nombre' => 'required',
+            'activo' => 'required',
         ]);
 
         //Se usa la función create() con el request que guarda el objeto
-        $delito = Delito::create( $request->all() );
+        $delito = P_Delito::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
         return response()->json(['mensaje' => 'Datos guardados con éxito', 'delito' => $delito ], 201);
@@ -78,7 +80,20 @@ class delitoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $delito = P_Delito::find($id);
+
+        if ($delito) {
+            // Eliminar el usuario
+            //$ugi->delete();
+        
+      
+            $delito->activo = 1;
+            $delito->save();
+        
+            return response()->json(['mensaje' => 'Ugi activado correctamente'], 201);
+        } else {
+            return response()->json(['mensaje' => 'No se ha encontrado el Ugi correspondiente'], 201);
+        }
     }
 
     /**
@@ -91,7 +106,7 @@ class delitoController extends Controller
     public function update(Request $request, $id)
     {
         // Encontramos el dato con el id
-        $delito = Delito::find($id);
+        $delito = P_Delito::find($id);
 
         // Verifica si el usuario existe
         if (!$delito) {
@@ -113,17 +128,20 @@ class delitoController extends Controller
      */
     public function destroy($id)
     {
-        //
-        // Buscar el registro por su ID
-        $delito = Delito::find($id);
+        $delito = P_Delito::find($id);
 
         // Verificar si el usuario existe
         if ($delito) {
-            // Eliminar el registro
-            $delito->delete();
-            return response()->json(['mensaje' => 'Delito eliminado correctamente'], 201);
+            // Eliminar el usuario
+            //$ugi->delete();
+        
+      
+            $delito->activo = 0;
+            $delito->save();
+        
+            return response()->json(['mensaje' => 'Registo desactivado correctamente'], 201);
         } else {
-            return response()->json(['mensaje' => 'No se ha encontrado el delito'], 201);
+            return response()->json(['mensaje' => 'No se ha encontrado el registro correspondiente'], 201);
         }
     }
 }
