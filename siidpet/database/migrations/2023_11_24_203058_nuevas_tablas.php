@@ -28,6 +28,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre')->nullable();
             $table->foreignId('id_pais')->constrained('pais')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -35,6 +36,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre')->nullable();
             $table->foreignId('id_estado')->constrained('estado')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -47,6 +49,7 @@ return new class extends Migration
             $table->string('telefono')->nullable();
             $table->foreignId('id_municipio')->constrained('p_municipio')->nullable();
             $table->string('sexo')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -55,18 +58,21 @@ return new class extends Migration
             $table->foreignId('id_defensor')->constrained('defensor')->nullable();
             $table->date('fecha')->nullable();
             $table->text('observaciones')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
         Schema::create('escolaridad', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
         Schema::create('ocupacion', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -85,6 +91,7 @@ return new class extends Migration
             $table->string('fecha_de_nacimiento')->nullable();
             $table->foreignId('id_escolaridad')->constrained('escolaridad')->nullable();
             $table->foreignId('id_ocupacion')->constrained('ocupacion')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
         
@@ -109,6 +116,7 @@ return new class extends Migration
             $table->string('estado_civil')->nullable();
             $table->string('fecha_nacimiento')->nullable();
             $table->foreignId('id_ocupacion')->constrained('ocupacion')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -116,6 +124,7 @@ return new class extends Migration
             $table->id();
             $table->string('fecha')->nullable();
             $table->string('hora')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -131,12 +140,14 @@ return new class extends Migration
             $table->string('fecha_inicio')->nullable();
             $table->string('fecha_vencimiento')->nullable();
             $table->foreignId('id_medida_proteccion')->constrained('medida_proteccion')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
         Schema::create('estatus_sede_ministerial', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -147,6 +158,7 @@ return new class extends Migration
             $table->string('fecha_fin')->nullable();
             $table->foreignId('id_estatus_sede_ministerial')->constrained('estatus_sede_ministerial')->nullable();
             $table->string('fecha')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         }); 
 
@@ -154,6 +166,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre')->nullable();
             $table->foreignId('id_municipio')->constrained('p_municipio')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -163,6 +176,7 @@ return new class extends Migration
             $table->string('fecha_fin')->nullable();
             $table->string('resultado')->nullable();
             $table->string('observaciones')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -172,6 +186,7 @@ return new class extends Migration
             $table->string('fecha_fin')->nullable();
             $table->string('resultado')->nullable();
             $table->string('observaciones')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -179,6 +194,7 @@ return new class extends Migration
             $table->id();
             $table->string('fecha')->nullable();
             $table->string('hora')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -187,12 +203,14 @@ return new class extends Migration
             $table->id();
             $table->string('fecha')->nullable();
             $table->string('hora')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
         Schema::create('medida_cautelar', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -200,6 +218,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre')->nullable();
             $table->foreignId('id_medida_cautelar')->constrained('medida_cautelar')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -209,6 +228,7 @@ return new class extends Migration
             $table->string('fecha_fin')->nullable();
             $table->string('resultado')->nullable();
             $table->string('reporte_cumplimiento')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -216,6 +236,7 @@ return new class extends Migration
             $table->id();
             $table->string('fecha')->nullable();
             $table->string('sentencia')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -223,6 +244,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre')->nullable();
             $table->foreignId('id_municipio')->constrained('p_municipio')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -230,6 +252,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre')->nullable();
             $table->string('fecha_conclusion')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -237,6 +260,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre')->nullable();
             $table->string('fecha_impugnacion')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -245,6 +269,7 @@ return new class extends Migration
             $table->string('fecha')->nullable();
             $table->string('hora')->nullable();
             $table->text('resultado_examen')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
@@ -253,6 +278,7 @@ return new class extends Migration
             $table->string('fecha')->nullable();
             $table->string('hora')->nullable();
             $table->text('observaciones')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
         
@@ -292,6 +318,7 @@ return new class extends Migration
             $table->string('visita_carcelaria')->nullable();
             $table->foreignId('id_impugnacion')->constrained('impugnacion')->nullable();
             $table->foreignId('id_orden_aprencion')->constrained('orden_aprencion')->nullable();
+            $table->boolean('activo')->nullable();
             $table->timestamps();
         });
 
