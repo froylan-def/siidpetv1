@@ -3,42 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\P_Delito;
+use App\Models\Delito;
 
-class delitoController extends Controller
+class DelitoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         //
-        $delito = P_Delito::orderBy('activo', 'DESC')->get();
+        $delito = Delito::orderBy('activo', 'DESC')->get();
 
         return response( $delito );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('delitos.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
         //Se validan los datos a traves de laravel
         $request->validate([
             'nombre' => 'required',
@@ -46,7 +30,7 @@ class delitoController extends Controller
         ]);
 
         //Se usa la función create() con el request que guarda el objeto
-        $delito = P_Delito::create( $request->all() );
+        Delito::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
         return response()->json(['mensaje' => 'Datos guardados con éxito', 'delito' => $delito ], 201);
@@ -61,15 +45,15 @@ class delitoController extends Controller
     public function show($id)
     {
         //Se obtiene el registro de la base de datos
-        $juez = Delito::find($id);
+        $delito = Delito::find($id);
 
         //Compara si la consulta encontró datos
-        if (!$juez) {
+        if ($delito) {
             return response()->json(['mensaje' => 'Delito no encontrado'], 404);
         }
 
         //Lo retorna con un código 201
-        return response()->json(['delito' => $juez], 201);
+        return response()->json(['delito' => $delito], 201);
     }
 
     /**
@@ -80,19 +64,19 @@ class delitoController extends Controller
      */
     public function edit($id)
     {
-        $delito = P_Delito::find($id);
+        $delito = Delito::find($id);
 
         if ($delito) {
             // Eliminar el usuario
-            //$ugi->delete();
+            //$delito->delete();
         
       
             $delito->activo = 1;
             $delito->save();
         
-            return response()->json(['mensaje' => 'Ugi activado correctamente'], 201);
+            return response()->json(['mensaje' => 'Delito activado correctamente'], 201);
         } else {
-            return response()->json(['mensaje' => 'No se ha encontrado el Ugi correspondiente'], 201);
+            return response()->json(['mensaje' => 'No se ha encontrado el Delito correspondiente'], 201);
         }
     }
 
@@ -106,7 +90,7 @@ class delitoController extends Controller
     public function update(Request $request, $id)
     {
         // Encontramos el dato con el id
-        $delito = P_Delito::find($id);
+        $delito = Delito::find($id);
 
         // Verifica si el usuario existe
         if (!$delito) {
@@ -128,12 +112,12 @@ class delitoController extends Controller
      */
     public function destroy($id)
     {
-        $delito = P_Delito::find($id);
+        $delito = Delito::find($id);
 
         // Verificar si el usuario existe
         if ($delito) {
             // Eliminar el usuario
-            //$ugi->delete();
+            //$delito->delete();
         
       
             $delito->activo = 0;

@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'IDRol',
+        'activo',
     ];
 
     /**
@@ -43,7 +44,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $appends = [ 'IDRol'];
+    // protected $appends = [ 'IDRol'];
 
 
 

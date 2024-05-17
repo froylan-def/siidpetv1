@@ -208,7 +208,7 @@ export default {
                 id_municipio: '',
                 telefono: '',
                 sexo: '',
-
+                activo:1,
             })
         }
     },
@@ -297,7 +297,8 @@ export default {
                         this.obtenerDefensores();
                         $('#modalAgregarPeticionario').modal('hide');
 
-                        Swal.fire({
+                        Swal.fire({ 
+                            
                             position: 'top-end',
                             icon: 'success',
                             title: 'Usuario eliminado con éxito',

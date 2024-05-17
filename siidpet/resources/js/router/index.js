@@ -162,9 +162,8 @@ const router = createRouter({
     routes
 });
 
-/*
+///*
 router.beforeEach((to, from, next) => {
-
     const rol = window.rol;
     const isAdmin = (rol == 1) ? true : false;
     const isDG = (rol == 2) ? true : false;
@@ -174,7 +173,6 @@ router.beforeEach((to, from, next) => {
     const isD = (rol == 6) ? true : false;
     const isA = (rol == 7) ? true : false;
 
-    
     if(rol == undefined ){
         next('/login');
         console.log( from );
@@ -195,21 +193,9 @@ router.beforeEach((to, from, next) => {
     } else if (to.meta.requiresA && !isA) {
         next('/denegado');
     } else {
-        console.log("ENTRE AQUI ");
-        console.log("ROL " + rol);
-        console.log("Admin: " + isAdmin );
-        console.log("Director General: " + isDG );
-        console.log("Director Defensorias: " + isDD );
-        console.log("Director Asesorias: " + isDA );
-        console.log("Jefe Asesorias: " + isJA );
-        console.log("Defensor: " + isD );
-        console.log("Asesor: " + isA );
         next();
     }
-
-
-    //check page is protected or not
-
+    
     const baseUrl = "/" + to.fullPath.split('/')[1]
     let permitirAcceso = false;
     for (let index = 0; index < window.permisosSession.length; index++) {
@@ -230,6 +216,6 @@ router.beforeEach((to, from, next) => {
     next();
 
 });
-*/
+//*/
 
 export default router;

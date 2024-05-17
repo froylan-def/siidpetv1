@@ -9,7 +9,7 @@ class imputado extends Model
 {
     use HasFactory;
 
-    protected $table = 'p_imputado';
+    protected $table = 'imputado';
 
     protected $fillable = [
         'nombres',
@@ -25,5 +25,6 @@ class imputado extends Model
         'fecha_de_nacimiento',
         'id_escolaridad',
         'id_ocupacion',
+        'activo',
     ];
 }

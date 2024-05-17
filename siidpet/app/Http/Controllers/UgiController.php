@@ -15,7 +15,7 @@ class UgiController extends Controller
     public function index()
     {
         //
-        $ugis = Ugi::orderBy('activo', 'DESC')->get();
+        $ugis = Ugi::where('activo', 1)->get();
         return response($ugis);
         //return csrf_token(); 
     }

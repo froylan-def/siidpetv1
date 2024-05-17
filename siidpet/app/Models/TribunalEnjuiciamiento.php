@@ -14,6 +14,7 @@ class TribunalEnjuiciamiento extends Model
     protected $fillable = [
         'nombre',
         'id_municipio',
+        'activo',
         // ... otras propiedades ...
     ];
 

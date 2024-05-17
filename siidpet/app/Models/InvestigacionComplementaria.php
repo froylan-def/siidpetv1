@@ -14,6 +14,7 @@ class InvestigacionComplementaria extends Model
     protected $fillable = [
         'fecha',
         'hora',
+        'activo',
         // ... otras propiedades ...
     ];
 

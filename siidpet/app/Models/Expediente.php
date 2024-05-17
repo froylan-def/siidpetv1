@@ -68,6 +68,7 @@ class Expediente extends Model
         "visita_carcelaria",
         "id_impugnacion",
         "id_orden_aprencion",
+        'activo',
         // ... otras propiedades ...
     ];
     

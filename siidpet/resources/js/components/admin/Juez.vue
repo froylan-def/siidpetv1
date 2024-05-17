@@ -105,7 +105,7 @@
 
                             </div>     
 
-                           <!--<div class="form-group">
+                          <div class="form-group">
                              <label for="Municipio">  Municipio:</label>
                              <select v-model="form.id_municipio" id="id_municipio" type="text" class="form-control " name="id_municipio">
                                     <option v-for="municipio in municipios" :value="municipio.id">
@@ -115,7 +115,8 @@
 
                                 <div style="color: red;" v-if="form.errors.has('id_municipio')"
                                     v-html="form.errors.get('id_municipio')" />
-                            </div> -->
+                            </div>  
+                            
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                 <i class="fas fa-times"></i> Cancelar
@@ -183,7 +184,7 @@ export default {
 
         obtenerDatos() {
             this.items = [];
-            this.axios.get('/juez').then( (response) => {
+            this.axios.get('/juez/').then( (response) => {
                // console.log("Usuarios obtenidos");
  
                 for (let i = 0; i < response.data.length; i++) {
@@ -239,7 +240,7 @@ export default {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Usuario actualizado con éxito',
+                    title: 'Juez actualizado con éxito',
                     showConfirmButton: false,
                     timer: 1500
                 })
@@ -248,7 +249,7 @@ export default {
             });
         },
 
-        desactivar($usuario) {
+        desactivar($juez) {
        
             Swal.fire({
                 title: '¿Está seguro de desactivar este Registro??',
@@ -257,7 +258,7 @@ export default {
                 denyButtonText: `Cancelar`,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.axios.delete('/juez/' + $usuario.id).then((response) => {
+                    this.axios.delete('/juez/' + $juez.id).then((response) => {
                         console.log("Respuesta de la eliminacion");
                         console.log(response);
                         this.obtenerDatos();

@@ -16,6 +16,7 @@ class SuspencionCondicionalProceso extends Model
         'fecha_fin',
         'resultado',
         'reporte_cumplimiento',
+        'activo',
         // ... otras propiedades ...
     ];
 

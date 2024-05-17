@@ -31,13 +31,18 @@ class verificarAccesos
             ->get(); */ 
 
             Session::put('rol', json_encode($rol) );
+        }else{
+
+            if (!$request->is('login') ) {
+               // return redirect()->route('login'); // Redirigir a la ruta de inicio de sesión
+            }
+
+
         }
 
         // console.log("MIDDLE WARE VERIFICAR ACCESOS");
          
-        /* if (!Auth::check() && !$request->is('login') ) {
-            return redirect()->route('login'); // Redirigir a la ruta de inicio de sesión
-        } */
+        
 
         return $next($request); 
     }

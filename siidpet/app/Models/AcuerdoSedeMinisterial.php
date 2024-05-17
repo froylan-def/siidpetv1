@@ -16,6 +16,8 @@ class AcuerdoSedeMinisterial extends Model
         'fecha_inicio',
         'fecha_fin',
         'id_estatus_sede_ministerial',
-        'fecha'
+        'fecha',
+        'activo',
+
     ];
 }

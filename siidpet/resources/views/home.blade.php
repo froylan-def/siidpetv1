@@ -3,8 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
   <title> SIIDPET </title>
   @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+  <!-- Favico -->
+  <link rel="icon" type="image/x-icon" href="{{ asset('favicon/favicon.ico') }}" />
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -30,42 +34,33 @@
 
 
   <link rel="stylesheet" href="{{ asset('plugins/fullcalendar/main.css') }}"> 
-
   <link rel="stylesheet" href="{{ asset('css/main.css') }}">
-
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-
   <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <link href=' http://fonts.googleapis.com/css?family=Encode+Sans' rel='stylesheet' type='text/css'>
-
-    <style>
-      body {
+  <link href=' http://fonts.googleapis.com/css?family=Encode+Sans' rel='stylesheet' type='text/css'>
+  <style>
+    body {
         font-family: 'Encode Sans', serif;
-      }
-    </style>
+         }
+  </style>
 
   <script>
     window.rol = "{{ Session::get('rol'); }}"
     //window.permisosSession = JSON.parse(window.permisosSession.replace(/&quot;/g,'"'))
   </script>
 
-</head>
-<body class="hold-transition sidebar-mini layout-fixed" style="background-color: #D1E7E0;">
-<div class="wrapper" id="app">
+  </head>
+  <body class="hold-transition sidebar-mini layout-fixed" style="background-color: #D1E7E0;">
+  <div class="wrapper" id="app">
 
-
-
-  <!-- Navbar -->
+  <!-- Barra de Navegación -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
+  <!-- Left navbar links -->
+  <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      
-    </ul>
+  </ul>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
@@ -141,50 +136,6 @@
             
 
 
-            <!-- <li class="nav-item">
-                <router-link to="/nsjpao" class="nav-link" active-class="active"  >
- 
-                <i class="nav-icon fas fa-scale-balanced"></i>
-                    <p>
-                        NSJPAO
-                    </p>
-                </router-link>
-            </li> -->
-
-            <!-- <li class="nav-item">
-                <router-link to="/reportesNSJPAO" class="nav-link" active-class="active"  >
-                 <i class="nav-icon fas fa-clipboard-list "></i>
-                    <p>
-                        Reportes
-                    </p>
-                </router-link>
-            </li> -->
-
-            
-
-
-
-            <!-- <li class="nav-item">
-                <router-link to="/peticionarios" class="nav-link" active-class="active"  >
-                <i class="nav-icon fa-solid fa-users"></i>
-                    <p>
-                        Peticionarios
-                    </p>
-                </router-link>
-            </li> --> 
-
-          
-            
-            <!-- <li class="nav-item">
-                <router-link to="/registrar/cuentadiaria" class="nav-link" active-class="active" >
-                <i class="nav-icon fa-solid fa-book"></i>
-                    <p>
-                        Cuenta diaria
-                    </p>
-                </router-link>
-            </li> -->
-            
-
             
             <li class="nav-item ">
             <a href="#" class="nav-link">
@@ -223,20 +174,19 @@
             </ul>
           </li>
 
-          <!-- DATOS SISTEMA ACUSATORIO -->
+<!-- DATOS SISTEMA ACUSATORIO -->
           
           <li class="nav-item ">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <i class="nav-icon fas fa-chart-bar"></i>
+
+
               <p>
                 Datos Sistema Acusatorio
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
-<!-- AGREGAR ICONO PENDIENTE Y COLORES -->
-
-
 <!-- Catalogo 1 -->
             <li class="nav-item">
                   <router-link to="/Defensores" class="nav-link" active-class="active"  >
@@ -247,7 +197,6 @@
                     </p>
                 </router-link>
             </li> 
-
 <!-- Catalogo 2 -->
             <li class="nav-item">
                   <router-link to="/Delito" class="nav-link" active-class="active"  >
@@ -279,9 +228,7 @@
                     </p>
                 </router-link>
             </li> 
-
 <!-- Catalogo 5 -->     
-
 <li class="nav-item">
                   <router-link to="/Juez" class="nav-link" active-class="active"  >
                     
@@ -291,22 +238,7 @@
                     </p>
                 </router-link>
             </li>
-
 <!-- Catalogo 6 -->     
-<!--
-<li class="nav-item">
-                  <router-link to="/Delito" class="nav-link" active-class="active"  >
-                    
-                  <i class="nav-icon fas fa-caret-right fa-solid"></i>
-                    <p>
-                        Delito
-                    </p>
-                </router-link>
-            </li>
--->
-
-<!-- Catalogo 7 -->     
-
 <li class="nav-item">
                   <router-link to="/Medida" class="nav-link" active-class="active"  >
                     
@@ -316,9 +248,7 @@
                     </p>
                 </router-link>
             </li>
-
-<!-- Catalogo 8 -->     
-
+<!-- Catalogo 7 -->     
 <li class="nav-item">
                   <router-link to="/Tribunal" class="nav-link" active-class="active"  >
                     
@@ -328,9 +258,7 @@
                     </p>
                 </router-link>
             </li>
-
-<!-- Catalogo 9 -->     
-
+<!-- Catalogo 8 -->     
   <li class="nav-item">
                   <router-link to="/Conclusion" class="nav-link" active-class="active"  >
                     
@@ -340,11 +268,6 @@
                     </p>
                 </router-link>
             </li>
-
-
-
- 
-
 <!-- ---------------------------------------------------------------- -->
             </ul>
           </li>
@@ -358,30 +281,29 @@
                   </p>
               </router-link>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('logout') }}"   href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">                         
-              <i class="nav-icon fas fa-solid fa-right-from-bracket"></i>
-              <p>
-                Cerrar sesión
-              </p>
-            </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
-          </li>
-        </ul>
-      </nav>
-    </div>
+<!-- Cerrar Sesión -->
+  <li class="nav-item">
+    <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">                         
+    <i class="nav-icon fas fa-solid fa-right-from-bracket"></i>
+    <p>Cerrar sesión</p>
+    </a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+    @csrf
+    </form>
+  </li>          
+  </ul>
+  </nav>
+  </div>
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-          
-        </div>
+  <!-- Main content -->
+  <section class="content">
+  <div class="container-fluid">
+  <!-- Small boxes (Stat box) -->
+  <div class="row">
+  </div>
         <!-- /.row -->
         <!-- Main row -->
         <div class="row" >

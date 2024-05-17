@@ -54,6 +54,9 @@ const app = createApp({
 
 import { setupCalendar, Calendar, DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';
+import vSelect from "vue-select";
+import "vue-select/dist/vue-select.css";
+
 
 // Use plugin defaults (optional)
 app.use(setupCalendar, {})
@@ -65,6 +68,7 @@ app.component('VDatePicker', DatePicker)
 app.component('EasyDataTable', Vue3EasyDataTable);
 app.use(router)
 app.use(VueAxios, axios)
+app.component("v-select", vSelect);
 app.mount('#app');
 
 

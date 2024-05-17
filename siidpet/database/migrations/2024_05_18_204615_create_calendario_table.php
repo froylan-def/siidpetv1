@@ -26,6 +26,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_calendario')->constrained('calendario');
             $table->foreignId('id_imputado')->constrained('imputado');
+            $table->foreignId('id_defensor')->constrained('defensor');
         });
     }
 

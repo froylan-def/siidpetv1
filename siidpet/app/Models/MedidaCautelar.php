@@ -13,6 +13,7 @@ class MedidaCautelar extends Model
 
     protected $fillable = [
         'nombre',
+        'activo',
     ];
 
 

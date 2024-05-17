@@ -17,12 +17,9 @@
                 <!-- Custom Tabs -->
                 <div class="card">
                     <div class="card-header d-flex p-0">
-
-                        
-                        
-                      <h3 class="card-title p-3"> Expediente <span class="badge badge-success"> #1234 </span> </h3>
+                      <h3 class="card-title p-3"> <b> Foja: </b> {{ this.expediente.foja }} |  <b> Ugi: </b> {{ this.expediente.id_ugi }} | <b> Nuc: </b> {{ this.expediente.nuc }} </h3>
                       <ul class="nav nav-pills ml-auto p-2">
-                        <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">General</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab"> Entrevista </a></li>
                         <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab"> Etapa 2 </a></li>
                         <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab"> Etapa 3</a></li>
                       </ul>
@@ -30,37 +27,16 @@
                     <div class="card-body">
                       <div class="tab-content">
                         <div class="tab-pane active" id="tab_1">
-                            <form>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label for="foja">
-                                            Foja
-                                        </label>
-                                        <input type="text" class="form-control" id="foja" name="foja">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="id_ugi"> 
-                                            UGI
-                                        </label>
-                                        <input type="text" class="form-control" id="id_ugi" name="id_ugi">
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label for="id_defensor">
-                                            Defensor
-                                        </label>
-                                        <input type="text" class="form-control" id="id_defensor" name="id_defensor">
-                                    </div>
-                                </div>
-
-                            </form> 
+                            <!-- Componente de entrevista -->
+                            <entrevista> </entrevista>
+                            <!-- Fin componente de entrevista -->
                         </div>
                         <!-- /.tab-pane -->
                         <div class="tab-pane" id="tab_2">
                             <form>
                                 
+                                
+
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                     <label for="id_entrevista">ID Entrevista</label>
@@ -323,119 +299,23 @@
                   <!-- ./card -->
             </div>
         </div>
-        <div class="modal fade" id="modalAgregarDefensor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <form
-                    @submit.prevent="actualizarDefensorCheck === false ? registrarDefensor : actualizarDefensor" @keydown="form.onKeydown($event)">
-                        <div class="modal-header">
-                            <h5 v-if="!actualizarDefensorCheck" class="modal-title" id="modalAgregarDefensor"> Nuevo </h5>
-                            <h5 v-else class="modal-title" id="modalAgregarDefensor"> Actualizar usuario </h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-
-                            <div class="form-group">
-                                <label for="Nombres">Nombres</label>
-                                <input v-model="form.nombres" type="text" class="form-control" id="nombres"
-                                    aria-describedby="emailHelp" placeholder="Nombres">
-
-                                <div style="color: red;" v-if="form.errors.has('nombres')" v-html="form.errors.get('nombres')" />
-
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Apellido paterno">Apellido Paterno</label>
-                                <input v-model="form.apellido_paterno" type="text" class="form-control" id="apellido_paterno"
-                                    placeholder="Apellido Paterno">
-
-                                <div style="color: red;" v-if="form.errors.has('apellido_paterno')"
-                                    v-html="form.errors.get('apellido_paterno')" />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Apellido Materno">Apellido Materno</label> <span  v-if="actualizarDefensorCheck" style="color: red;"> *  </span>
-                                <input v-model="form.apellido_materno" type="text" class="form-control" id="apellido_materno"
-                                    placeholder="Apellido Materno">
-                                <div style="color: red;" v-if="form.errors.has('apellido_materno')"
-                                    v-html="form.errors.get('apellido_materno')" />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Telefono">Telefono</label> <span  v-if="actualizarDefensorCheck" style="color: red;"> *  </span>
-                                <input v-model="form.telefono" type="text" class="form-control" id="telefono"
-                                    placeholder="8341234567">
-                                <div style="color: red;" v-if="form.errors.has('telefono')"
-                                    v-html="form.errors.get('telefono')" />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Sexo">Sexo</label>
-
-                                <select v-model="form.sexo" id="sexo" type="text" class="form-control " name="IDRol">
-                                    <option value="Masculino">
-                                       Masculino
-                                    </option>
-                                    <option value="Femenino">
-                                        Femenino
-                                     </option>
-                                </select>
-
-                                <div style="color: red;" v-if="form.errors.has('sexo')"
-                                    v-html="form.errors.get('sexo')" />
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="Municipio de trabajo">Municipio:</label>
-                                <select v-model="form.id_municipio" id="rol" type="text" class="form-control " name="id_municipio">
-                                    <option v-for="municipio in municipios" :value="municipio.id">
-                                        {{ municipio.nombre }}
-                                    </option>
-                                </select>
-
-                                <div style="color: red;" v-if="form.errors.has('id_municipio')"
-                                    v-html="form.errors.get('id_municipio')" />
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                <i class="fas fa-times"></i> Cancelar
-                            </button>
-
-                            <button  v-if="!actualizarDefensorCheck" type="submit" :disabled="form.busy" class="btn btn-primary" @click="registrarDefensor">
-                                <i class="fas fa-save"></i> Registrar
-                            </button>
-                            <button v-else type="submit" :disabled="form.busy" class="btn btn-warning" @click="editarDefensor">
-                                <i class="fas fa-save"></i> Actualizar
-                            </button>
-
-
-
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
     </div>
 </template>
 
 <script lang="ts">
+
+import entrevista from './componentes/Entrevista.vue';
+
 import { ref } from "vue";
-import type { Header, Item } from "vue3-easy-data-table";
+import "vue-select/dist/vue-select.css";
 import Form from 'vform'
 import Swal from 'sweetalert2'
 export default {
+    components: {
+        entrevista
+    },
     data() {
         return {
-            actualizarDefensorCheck: ref(false),
-            searchField: ref("name"),
-            searchValue: ref(""),
-            themeColor: "#AB0033",
             datos: [
                 { text: "Nombres", value: "nombres" },
                 { text: "Apellido Materno", value: "apellido_materno" },
@@ -445,8 +325,6 @@ export default {
                 { text: "Telefono", value: "telefono"},
                 { text: "Opciones", value: "operation" },
             ],
-            items: [],
-            municipios: [],
             form: new Form({
                 id: '',
                 nombres: '',
@@ -455,110 +333,18 @@ export default {
                 id_municipio: '',
                 telefono: '',
                 sexo: '',
-
-            })
+            }),
+            expediente: ref({}),
         }
     },
     mounted() {
-        this.obtenerDefensores();
-        this.obtenerMunicipios();
+        this.obtenerExpediente();
     },
     methods: {
-        abrirModalRegistro() {
-            this.actualizarDefensorCheck = false;
-            this.form.reset();
-            this.form.clear();
-        },
-
-        obtenerMunicipios() {
-            this.axios.get('/municipios').then((response) => {
-                this.municipios= response.data.filter(objeto => objeto.id_estado === 28);
-                console.log("Municipios");
-                console.log(this.municipios);
+        obtenerExpediente() {
+            this.axios.get('/expediente/' + this.$route.params.id ).then((response) => {
+                this.expediente = response.data.expediente; 
             })
-        },
-
-        obtenerDefensores() {
-            this.axios.get('/defensor').then( (response) => {
-                this.items = response.data;
-            })
-        },
-
-        async registrarDefensor() {
-            await this.form.post('/defensor').then((response) => {
-                console.log(response);
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: response.data.mensaje,
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                this.obtenerDefensores();
-                $('#modalAgregarDefensor').modal('hide');
-            }).catch(error => {
-                console.log(error);
-            });
-        },
-        async editarDefensor() {
-            await this.form.put('/defensor/' + this.form.id, this.form).then((response) => {
-                console.log(response);
-                this.obtenerDefensores();
-                $('#modalAgregarDefensor').modal('hide');
-
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Usuario actualizado con éxito',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-            }).catch(error => {
-                console.log(error);
-            });
-        },
-        async actualizarDefensor(defensor) {
-            console.log("Datos del defensor a actualizar");
-            console.log(defensor);
-            console.log("Formulario");
-            console.log(this.form);
-            console.log("Municipios");
-            console.log(this.municipios);
-
-            $('#modalAgregarDefensor').modal('show');
-            this.form.fill(defensor);
-            this.actualizarDefensorCheck = true;
-        },
-        eliminarUsuario($usuario) {
-
-            Swal.fire({
-                title: '¿Está seguro de eliminar este usuario?',
-                showDenyButton: true,
-                confirmButtonText: 'Aceptar',
-                denyButtonText: `Cancelar`,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.axios.delete('/defensor/' + $usuario.id).then((response) => {
-                        console.log("Respuesta de la eliminacion");
-                        console.log(response);
-                        this.obtenerDefensores();
-                        $('#modalAgregarPeticionario').modal('hide');
-
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: 'Usuario eliminado con éxito',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                    }).catch(error => {
-                        console.log(error);
-                    });
-                } else if (result.isDenied) {
-                    //Swal.fire('Changes are not saved', '', 'info')
-                }
-            })
-
         }
     }
 }

@@ -24,6 +24,7 @@ class Victima extends Model
         'estado_civil',
         'fecha_nacimiento',
         'id_ocupacion',
+        'activo',
         'created_at',
         'updated_at',
 

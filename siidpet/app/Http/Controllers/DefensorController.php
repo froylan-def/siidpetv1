@@ -17,7 +17,7 @@ class DefensorController extends Controller
     {
         //
         // $defensor = Defensor::all();
-        $defensores = Defensor::with('municipio')->get();
+        $defensores = Defensor::with('municipio', 'user')->get();
         return response($defensores);
     }
 
@@ -50,6 +50,12 @@ class DefensorController extends Controller
             'sexo' => 'required',
         ]);
 
+
+        // Separar los campos del request 
+        // Almacenar la info en cada tabla
+        // Una parte va estar en la tabla user y otra en la tabla defensor
+        // Hacer una relación entre las tablas 
+
         //Se usa la función create() con el request que guarda el objeto
         $defensor = Defensor::create( $request->all() );
 
@@ -65,6 +71,12 @@ class DefensorController extends Controller
      */
     public function show($id)
     {
+        $defensores = Defensor::with('municipio')->get();
+        return response($defensores);
+
+
+        $expediente = Defensor::with('ugi')->get();
+
         //
         //Se obtiene el registro de la base de datos
         $defensor = Defensor::find($id);

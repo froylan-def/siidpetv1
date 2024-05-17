@@ -9,11 +9,13 @@ class Delito extends Model
 {
     use HasFactory;
 
-    protected $table = 'p_delito';
+    protected $table = 'delito';
 
     protected $fillable = [
         'nombre',
         'observaciones',
+        'activo',
+
         // ... otras propiedades ...
     ];
 
