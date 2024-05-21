@@ -55,6 +55,9 @@ Route::group(['middleware' => ['auth']], function () {
         return redirect('/');
     });
 
+    // ruta personalizada
+    
+
     Route::get('/permisos/{id}', [PermisosController::class, 'obtenerPermisosPorRol']);
     Route::get('/users/eliminar/{id}', [UserController::class, 'eliminarUsuario']);
     Route::get('/permisos/{id}', [PermisosController::class, 'obtenerPermisosPorRol']);
@@ -65,7 +68,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/peticionario/eliminar/{id}', [PeticionarioController::class, 'eliminarPeticionario']);
     Route::get('/obenerimputados', [CuentaDiariaController::class, 'obenerImputados']);
     Route::get('/obtenerdelitos', [CuentaDiariaController::class, 'obtenerDelitos']);
-    Route::get('/obteneraudiencias', [CuentaDiariaController::class, 'obtenerAudiencias']);
+    
+    
+    //Route::get('/obteneraudienciass', [CuentaDiariaController::class, 'obtenerAudiencias']);
+    Route::get('/123', [CuentaDiariaController::class, 'obtenerAudiencias']);
+
+    
     Route::resource('cuentadiaria', CuentaDiariaController::class);
     Route::resource('peticionario', PeticionarioController::class);
     Route::resource('users', UserController::class);

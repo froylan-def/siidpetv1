@@ -164,6 +164,7 @@ const router = createRouter({
 
 ///*
 router.beforeEach((to, from, next) => {
+    /*
     const rol = window.rol;
     const isAdmin = (rol == 1) ? true : false;
     const isDG = (rol == 2) ? true : false;
@@ -213,6 +214,8 @@ router.beforeEach((to, from, next) => {
 
     console.log("ROL");
     console.log( window.rol );
+    next();
+    */
     next();
 
 });

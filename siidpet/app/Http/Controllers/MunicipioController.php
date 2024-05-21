@@ -18,9 +18,10 @@ class municipioController extends Controller
      */
     public function index()
     {
-        $municipios = Municipio::all();
-        return response( $municipios );
-    
+        //$municipios = Municipio::all();
+        //return response( $municipios );
+        $Municipios = Municipio::where('id_estado', 28)->get();
+        return response($Municipios);
     }
 
     /**

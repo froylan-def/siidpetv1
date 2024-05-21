@@ -87,7 +87,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="ugi">UGI</label>
-                                <v-select v-model="form.id_ugi" :reduce="(option) => option.id" :options="ugis" ></v-select>
+                                <v-select 
+                                    v-model="form.id_ugi"
+                                    :reduce="(option) => option.id" :options="ugis" >
+
+                                </v-select>
                                 {{ form.id_ugi }}
                                 <div style="color: red;" v-if="form.errors.has('ugi')" v-html="form.errors.get('ugi')" />
                             </div>
