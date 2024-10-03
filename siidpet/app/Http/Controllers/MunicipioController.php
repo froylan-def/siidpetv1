@@ -20,7 +20,7 @@ class municipioController extends Controller
     {
         //$municipios = Municipio::all();
         //return response( $municipios );
-        $Municipios = Municipio::where('id_estado', 28)->get();
+        $Municipios =  Municipio::all();
         return response($Municipios);
     }
 
@@ -63,13 +63,13 @@ class municipioController extends Controller
     public function show($id)
     {
         //
-        $municipio = Municipio::find($id);
+        $municipios = Municipio::where('id_estado', $id)->get();
 
-        if (!$municipio) {
-            return response()->json(['mensaje' => 'Estado no encontrado'], 404);
+        if (!$municipios) {
+            return response()->json(['mensaje' => 'Municipios no encontrados'], 404);
         }
 
-        return response()->json(['municipio' => $municipio], 201);
+        return response()->json(['municipio' => $municipios], 201);
     }
 
     /**

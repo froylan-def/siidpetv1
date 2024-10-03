@@ -157,7 +157,7 @@ export default {
             themeColor: "#AB0033",
             datos: [
                 { text: "Nombre", value: "nombre" },
-               // { text: "Municipio", value: "municipio" },
+                { text: "Municipio", value: "municipio" },
                 { text: "Opciones", value: "operation" }
             ],
             items: [],
@@ -185,13 +185,9 @@ export default {
         obtenerDatos() {
             this.items = [];
             this.axios.get('/juezcontrol').then( (response) => {
-               // console.log("Usuarios obtenidos");
- 
                 for (let i = 0; i < response.data.length; i++) {
                     let element = response.data[i];
                     element.rol = this.roles[ element.IDRol - 1 ]
-                    //console.log("usuario "+i + " : ");
-                  //  console.log(element);
                     this.items.push( element );
                 }
             })
@@ -206,7 +202,7 @@ export default {
         },
         async registrar() {
 
-            await this.form.post('/juezcontrol/').then((response) => {
+            await this.form.post('/juezcontrol').then((response) => {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
@@ -230,10 +226,13 @@ export default {
         },
         async actualizarRegistro(juez) {
             $('#modalAgregar').modal('show');
+            console.log(juez);
             this.form.fill(juez);
             this.actualizarCheck = true;
         },
         async editarRegistro() {
+            console.log("se va a mandar");
+            console.log(this.id);
             await this.form.put('/juezcontrol/' + this.form.id, this.form).then((response) => {
                 console.log(response);
                 this.obtenerDatos();

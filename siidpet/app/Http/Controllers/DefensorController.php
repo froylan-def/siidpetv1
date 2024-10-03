@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Municipio;
 use Illuminate\Http\Request;
 use App\Models\Defensor;
+use App\Models\User;
+
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+
 
 class DefensorController extends Controller
 {
@@ -15,9 +21,7 @@ class DefensorController extends Controller
      */
     public function index()
     {
-        //
-        // $defensor = Defensor::all();
-        $defensores = Defensor::with('municipio', 'user')->get();
+        $defensores = Defensor::with('municipio', 'user', 'coordinacion')->where('activo', 1)->get();
         return response($defensores);
     }
 
@@ -41,20 +45,13 @@ class DefensorController extends Controller
     {
         //
         //Se validan los datos a traves de laravel
-        $request->validate([
-            'nombres' => 'required',
-            'apellido_paterno' => 'required',
-            'apellido_materno' => 'required',
-            'telefono' => 'required|numeric|min:10',
+
+        $this->validate($request, [
+            'id_usuario' => 'required',
             'id_municipio' => 'required',
-            'sexo' => 'required',
+            'id_coordinacion' => 'required',
+            'activo' => 'required'
         ]);
-
-
-        // Separar los campos del request 
-        // Almacenar la info en cada tabla
-        // Una parte va estar en la tabla user y otra en la tabla defensor
-        // Hacer una relación entre las tablas 
 
         //Se usa la función create() con el request que guarda el objeto
         $defensor = Defensor::create( $request->all() );
@@ -133,16 +130,16 @@ class DefensorController extends Controller
      */
     public function destroy($id)
     {
-        // Buscar el usuario por su ID
+        // Encontramos el dato con el id
         $defensor = Defensor::find($id);
 
-        // Verificar si el usuario existe
-        if ( $defensor ) {
-            // Eliminar el usuario
-            $defensor->delete();
-            return response()->json(['mensaje' => 'Datos del defensor eliminados correctamente'], 201);
-        } else {
-            return response()->json(['mensaje' => 'No se ha encontrado el dato'], 201);
+        // Verifica si el usuario existe
+        if (! $defensor ) {
+            return response()->json(['mensaje' => 'Datos del defensor no encontrados'], 404);
         }
+        $defensor->activo = 0;
+        $defensor->save();
+        return response()->json(['mensaje' => 'Datos actualizados con éxito']);
+
     }
 }

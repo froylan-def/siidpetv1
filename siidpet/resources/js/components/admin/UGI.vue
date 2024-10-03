@@ -45,7 +45,6 @@
                                             <span class="">Buscar por: </span>
                                             <select class="custom-select " v-model="searchField">
                                                 <option value="nombre">Nombre</option>
-                                                
                                             </select>
                                         </div>
                                         <div class="col-6">
@@ -106,8 +105,7 @@
                             
                         
                             </div>
-                                     
-                        <div class="modal-footer">
+                            <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                 <i class="fas fa-times"></i> Cancelar
                             </button>
@@ -171,14 +169,10 @@ export default {
         obtenerDatos() {
             this.items = [];
             this.axios.get('/ugi').then( (response) => {
-               // console.log("Usuarios obtenidos");
-
                 let usuarios = [];
                 for (let i = 0; i < response.data.length; i++) {
                     let element = response.data[i];
                     element.rol = this.roles[ element.IDRol - 1 ]
-                    //console.log("usuario "+i + " : ");
-                  //  console.log(element);
                     this.items.push( element );
                 }
             })

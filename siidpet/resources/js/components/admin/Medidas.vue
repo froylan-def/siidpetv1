@@ -170,13 +170,9 @@ export default {
         obtenerDatos() {
             this.items = [];
             this.axios.get('/medidacautelar').then( (response) => {
-               // console.log("Usuarios obtenidos");
- 
                 for (let i = 0; i < response.data.length; i++) {
                     let element = response.data[i];
                     element.rol = this.roles[ element.IDRol - 1 ]
-                    //console.log("usuario "+i + " : ");
-                  //  console.log(element);
                     this.items.push( element );
                 }
             })

@@ -25,7 +25,7 @@
                         <div class="row">
                             <a class="text-right mb-2" data-toggle="collapse" href="#collapseExample" role="button"
                                 aria-expanded="false" aria-controls="collapseExample">
-                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <i class="fa-solid fa-magnifying-glass"></i> Buscar
                             </a>
                             <div class="collapse" id="collapseExample">
                                 <div class="card card-body">
@@ -85,15 +85,15 @@
                                     aria-describedby="emailHelp" placeholder="foja">
                                 <div style="color: red;" v-if="form.errors.has('foja')" v-html="form.errors.get('foja')" />
                             </div>
-                            <div class="form-group">
-                                <label for="ugi">UGI</label>
-                                <v-select 
-                                    v-model="form.id_ugi"
-                                    :reduce="(option) => option.id" :options="ugis" >
+                            
 
+                            <div class="form-group">
+                                <label for="audiencia_inicial"> UGI </label>
+                                <v-select v-model="this.form.id_ugi" :reduce="(option) => option.id"
+                                    :options="ugis">
                                 </v-select>
-                                {{ form.id_ugi }}
-                                <div style="color: red;" v-if="form.errors.has('ugi')" v-html="form.errors.get('ugi')" />
+                                <div style="color: red;" v-if="form.errors.has('id_ugi')"
+                                    v-html="form.errors.get('id_ugi')" /> 
                             </div>
                             <div class="form-group">
                                 <label for="nuc">NUC</label>
@@ -194,17 +194,9 @@ export default {
         this.obtenerUgis();
     },
     methods: {
-
-        cambioUgi(value){
-
-            console.log("Cambio select ugi");
-        },
         async editarExpediente(){
 
             await this.form.put('/expediente/' + this.form.id, this.form).then((response) => {
-                this.obtenerDefensores();
-                $('#modalAgregarExpediente').modal('hide');
-
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
@@ -212,39 +204,56 @@ export default {
                     showConfirmButton: false,
                     timer: 1500
                 })
+                $('#modalAgregarExpediente').modal('hide');
+                this.obtenerExpedientes();
             }).catch(error => {
                 console.log(error);
             });
 
         },
-        actualizarExpediente(expediente){
-            console.log("Expediente");
-            console.log( expediente );
-            
+        actualizarExpediente(expediente){            
             $('#modalAgregarExpediente').modal('show');
             this.form.fill(expediente);
             this.actualizarExpedienteCheck = true;
-            
         },
-        async obtenerUgis(){
-            this.axios.get('/ugi').then((response) => {
-                for (let i = 0; i < response.data.length; i++) {
-                    const element = response.data[i];
-                    this.ugiOptions.push( { label: element.nombre, value: element.id } );
-                }
-            })
+
+        async obtenerUgis() {
+            try {
+                const response = await this.axios.get('/ugi');
+                this.ugis = response.data.map(ugi => ({
+                    id: ugi.id,
+                    label: ugi.nombre
+                }));
+            } catch (error) {
+                console.error('Error fetching ocupaciones:', error);
+            }
         },
+
+
         abrirModalRegistro(){
             this.actualizarExpedienteCheck = false;
             this.form.reset();
             this.form.clear();
         },
         registrarExpediente(){
-            this.form.id_ugi = this.form.id_ugi.id;
             this.form.post('/expediente').then((response) => {
                 this.obtenerExpedientes();
-            })
+
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Expediente guardado con éxito',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+
+
+            }).catch(error => {
+                console.log(error);
+            });
+
             $('#modalAgregarExpediente').modal('hide');
+        
         },
         obtenerExpedientes() {
             this.axios.get('/expediente').then( (response) => {

@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- <title>{{ config('app.name', 'Laravel') }}</title> -->
-    <title> SIIDEPT </title>
+    <title> Sistema Inegral del Instituto de Defensoría Pública del Estado de Tamaulipas </title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -74,12 +74,23 @@ body {
 <div class="login-form animate__animated animate__fadeInDown">
 <div class="login-box" style="width: 30rem;">
 <div class="login-logo mt-5 ">
-      
+    
+    <div class="row">
+        <div class="col-6">
+            <img src="{{ asset('img/logoTam.png') }}" class="rounded mx-auto d-block" width="100" height="100"  alt="Logo tam" >
+        </div>
+        <div class="col-6 mt-4">
+            <img src="{{ asset('img/logoIDPET.PNG') }}" class="rounded mx-auto d-block" width="200" height="50"  alt="Logo tam" >
+        </div>
+    </div>
+
+
+    
+    
+
 </div>
   <!-- /.login-logo -->
-  <div class="card" style="background-color: transparent; border: none; border-radius: 10px;">
-
-
+  <div class="card" style="background-color: white; border: none; border-radius: 10px;">
 
    <!-- /. forma -->
   <div class="animation-container">
@@ -88,9 +99,10 @@ body {
   <div class="lightning red"></div>
   </div>
   </div>
-  <img src="{{ asset('img/logo_tam_1.jpg') }}" class="rounded mx-auto d-block" width="150" height="150"  alt="Logo tam" >
-      
-  <a style="text-align: center;">SIIDPET</a>
+  
+  <h5 class="mx-2 mt-4" style="text-align: center;">
+    Sistema Inegral del Instituto de Defensoría Pública del Estado de Tamaulipas
+  </h5>
   <div class="card-body login-card-body" style="background-color: transparent; border: none; border-radius: 10px;" >
 
 

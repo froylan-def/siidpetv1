@@ -20,6 +20,8 @@ import Delito from '../components/admin/Delito.vue';
 import MedidasProteccion from '../components/admin/MedidasProteccion.vue';
 import Juez from '../components/admin/Juez.vue';
 import Medidas from '../components/admin/Medidas.vue';
+
+import Test from '../components/defensor/componentes/CmpTestChart.vue';
 const routes = [
     {
         path: '/',
@@ -28,7 +30,7 @@ const routes = [
     },
     {
         path: '/usuarios',
-        name: 'usuarios',
+        name: ' ',
         component: Usuarios,
         meta: { requiresAuth: true, requiresAdmin: true }
     },
@@ -150,6 +152,13 @@ const routes = [
         meta: { requiresAuth: true, requiresAdmin: true }
     },
     {
+        path: "/testgraf",
+        name: "testgraf",
+        component: Test,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+
+    {
         path: "/:catchAll(.*)",
         name: "NotFound",
         component: PaginaNoEncontrada,
@@ -162,9 +171,9 @@ const router = createRouter({
     routes
 });
 
-///*
+/*
 router.beforeEach((to, from, next) => {
-    /*
+    
     const rol = window.rol;
     const isAdmin = (rol == 1) ? true : false;
     const isDG = (rol == 2) ? true : false;
@@ -215,10 +224,9 @@ router.beforeEach((to, from, next) => {
     console.log("ROL");
     console.log( window.rol );
     next();
-    */
-    next();
+    
 
 });
-//*/
+*/
 
 export default router;

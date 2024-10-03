@@ -15,7 +15,11 @@ class JuezControlController extends Controller
     public function index()
     {
         //
-        $Juez = Juez::orderBy('activo', 'DESC')->get();
+       // $Juez = Juez::orderBy('activo', 'DESC')->get();
+       $Juez = Juez::join('municipio', 'juez_control.id_municipio', '=', 'municipio.id')
+            ->select('juez_control.*', 'municipio.nombre as municipio')
+            ->orderBy('juez_control.activo', 'DESC')
+            ->get();
         return response($Juez);
         //return csrf_token(); 
     }
@@ -43,8 +47,8 @@ class JuezControlController extends Controller
         //
         $request->validate([
             'nombre' => 'required',
-            'id_municipio' => 'required',
             'activo' => 'required',
+            'id_municipio' => 'required',
         ]);
 
         $Juez = Juez::create( $request->all() );
@@ -52,6 +56,7 @@ class JuezControlController extends Controller
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
         return response()->json(['mensaje' => 'Objeto creado con éxito', 'objeto' => $Juez ], 201);
     }
+    
 
     /**
      * Display the specified resource.
@@ -113,7 +118,7 @@ class JuezControlController extends Controller
         }
 
         // Actualiza los datos con los nuevos datos proporcionados
-        $Juez->update($Juez->all());
+        $Juez->update($request->all());
 
         // Puedes devolver una respuesta JSON, un mensaje de éxito, etc.
         return response()->json(['mensaje' => 'Datos actualizados con éxito']);

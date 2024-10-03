@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Entrevista;
 use Illuminate\Http\Request;
-use App\Models\EstatusSedeMinisterial;
 
-class estatusSedeMinisterialController extends Controller
+class entrevistaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,9 @@ class estatusSedeMinisterialController extends Controller
      */
     public function index()
     {
-        //.
-        $sedeMinisterial = EstatusSedeMinisterial::all();
-        return response($sedeMinisterial);
+        //
+        $entrevista = Entrevista::all();
+        return response( $entrevista );
     }
 
     /**
@@ -38,15 +38,17 @@ class estatusSedeMinisterialController extends Controller
     public function store(Request $request)
     {
         //
+        //Se validan los datos a traves de laravel
         $request->validate([
-            'nombre' => 'required',
+            'id_defensor' => 'required',
+            'fecha'  => 'required',
         ]);
 
-        $estatusSedeMinisterial = EstatusSedeMinisterial::create( $request->all() );
+        //Se usa la función create() con el request que guarda el objeto
+        $entrevista = Entrevista::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Datos de la sede ministerial creado con éxito', 'objeto' => $estatusSedeMinisterial ], 201);
-
+        return response()->json(['mensaje' => 'Datos guardados con éxito', 'entrevista' => $entrevista ], 201);
     }
 
     /**
@@ -58,13 +60,16 @@ class estatusSedeMinisterialController extends Controller
     public function show($id)
     {
         //
-        $estatusSedeMinisterial = EstatusSedeMinisterial::find($id);
+        //Se obtiene el registro de la base de datos
+        $entrevista = Entrevista::find($id);
 
-        if (!$estatusSedeMinisterial) {
-            return response()->json(['mensaje' => 'Datos de la sede ministerial no encontrada'], 404);
+        //Compara si la consulta encontró datos
+        if (! $entrevista ) {
+            return response()->json(['mensaje' => 'Datos de la entrevista no encontrados'], 404);
         }
 
-        return response()->json(['sede' => $estatusSedeMinisterial], 201);
+        //Lo retorna con un código 201
+        return response()->json(['entrevista' => $entrevista ], 201);
     }
 
     /**
@@ -87,16 +92,21 @@ class estatusSedeMinisterialController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'id_defensor' => 'required',
+            'fecha'  => 'required',
+        ]);
+        
         // Encontramos el dato con el id
-        $sedeMinisterial = EstatusSedeMinisterial::find($id);
+        $entrevista = Entrevista::find($id);
 
         // Verifica si el usuario existe
-        if (!$sedeMinisterial) {
-            return response()->json(['mensaje' => 'Sede ministerial no encontrada'], 404);
+        if (! $entrevista ) {
+            return response()->json(['mensaje' => 'Datos de la entrevista no encontrados'], 404);
         }
 
         // Actualiza los datos con los nuevos datos proporcionados
-        $sedeMinisterial->update($request->all());
+        $entrevista->update($request->all());
 
         // Puedes devolver una respuesta JSON, un mensaje de éxito, etc.
         return response()->json(['mensaje' => 'Datos actualizados con éxito']);
@@ -110,16 +120,16 @@ class estatusSedeMinisterialController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $sedeMinisterial = EstatusSedeMinisterial::find($id);
+        // Buscar el usuario por su ID
+        $entrevista = Entrevista::find($id);
 
         // Verificar si el usuario existe
-        if ($sedeMinisterial) {
+        if ( $entrevista ) {
             // Eliminar el usuario
-            $sedeMinisterial->delete();
-            return response()->json(['mensaje' => 'Datos de sede ministerial eliminados correctamente'], 201);
+            $entrevista->delete();
+            return response()->json(['mensaje' => 'Datos de la entrevista eliminados correctamente'], 201);
         } else {
-            return response()->json(['mensaje' => 'No se ha encontrado registro de la sede ministerial'], 201);
+            return response()->json(['mensaje' => 'No se ha encontrado el dato'], 201);
         }
     }
 }

@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Session;
 
 class verificarAccesos
@@ -21,29 +21,38 @@ class verificarAccesos
     public function handle(Request $request, Closure $next)
     {   
         
+        // $rol = Auth::user()->IDRol;
+        // $user = Auth::user();
+
+        // Session::put('rol', json_encode($rol) );
+        // Session::put('user', json_encode($user) );
+        // session(['user' => $user]);
+
+        
         if (Auth::check()) {
             $rol = Auth::user()->IDRol;
+            $user = Auth::user();
             
-            /* $permisos = DB::table('rol_permiso')
+            /*
+            $permisos = DB::table('rol_permiso')
             ->select('*')
             ->join('permisos', 'rol_permiso.idpermiso', '=', 'permisos.id')
             ->where('rol_permiso.idrol', $rol)
-            ->get(); */ 
+            ->get(); 
+            */
 
             Session::put('rol', json_encode($rol) );
+            Session::put('user', json_encode($user) );
         }else{
 
             if (!$request->is('login') ) {
-               // return redirect()->route('login'); // Redirigir a la ruta de inicio de sesión
+               return redirect()->route('login'); // Redirigir a la ruta de inicio de sesión
             }
 
 
         }
-
-        // console.log("MIDDLE WARE VERIFICAR ACCESOS");
-         
-        
-
+    
+       
         return $next($request); 
     }
 }

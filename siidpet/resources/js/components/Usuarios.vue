@@ -15,13 +15,13 @@
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
-    <!-- /.content-header -->
+    
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title mt-2">Registro de usuarios </h3>
+                        <h3 class="card-title mt-2">Registro de Usuarios </h3>
                         <div class="card-tools">
                             <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarUsuario"
                                 @click="abrirModalRegistro">
@@ -40,9 +40,7 @@
                             </p>
                             <div class="collapse" id="collapseExample">
                                 <div class="card card-body">
-
                                     <div class="row">
-
                                         <div class="col-6 ">
                                             <span class="">Campo de busqueda: </span>
                                             <select class="custom-select " v-model="searchField">
@@ -53,29 +51,30 @@
                                         <div class="col-6">
                                             <span class=""> Valor: </span>
                                             <input class="form-control  border-width-2 mr-2" v-model="searchValue"
-                                                placeholder="Nombre" type="search" />
+                                            :placeholder=searchField type="search" />
                                         </div>
-
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                         <EasyDataTable buttons-pagination :headers="datos" :items="items" :theme-color="themeColor"
                             :search-field="searchField" :search-value="searchValue">
-
                             <template #item-operation="item">
                                 <div class="operation-wrapper">
+
                                     <button class="btn btn-warning btn-sm mt-2 mb-2 mr-1" @click="actualizarUsuario(item)">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
 
-                                    <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1" @click="eliminarUsuario(item)">
+                                    <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1 " @click="desactivar(item)">
                                         <i class="fa-solid fa-trash"></i>
+                                    </button>
+
+                                    <button class="btn btn-success btn-sm mt-2 mb-2 mr-1 " @click="activar(item)">
+                                        <i class="<fa-solid fa-plus"></i>
                                     </button>
                                 </div>
                             </template>
-
                         </EasyDataTable>
                     </div>
                 </div>
@@ -96,49 +95,75 @@
                         </div>
                         <div class="modal-body">
 
-                            <div class="form-group">
-                                <label for="Nombre del usuario">Nombre</label>
-                                <input v-model="form.name" type="text" class="form-control" id="nombre"
-                                    aria-describedby="emailHelp" placeholder="Juan Pérez">
-
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="Nombre">Nombre</label>
+                                    <input v-model="form.name" type="text" class="form-control" id="nombre"
+                                    aria-describedby="emailHelp" placeholder="Nombre">
                                 <div style="color: red;" v-if="form.errors.has('name')" v-html="form.errors.get('name')" />
+                                </div>
 
-                            </div>
-                            <div class="form-group">
-                                <label for="Correo del usuario">Correo</label>
-                                <input v-model="form.email" type="text" class="form-control" id="correo"
-                                    placeholder="algo@correo.com">
+                                <div class="form-group col-md-4">
+                                    <label for="Apellido Paterno">Apellido paterno</label>
+                                    <input v-model="form.fathername" type="text" class="form-control" id="apellido_paterno"
+                                    aria-describedby="emailHelp" placeholder="Apellido paterno">
+                                <div style="color: red;" v-if="form.errors.has('fathername')" v-html="form.errors.get('fathername')" />
+                                </div>
 
-                                <div style="color: red;" v-if="form.errors.has('email')"
-                                    v-html="form.errors.get('email')" />
-
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Contraseña del usuario">Contraseña</label> <span  v-if="actualizarUsuarioCheck" style="color: red;"> *  </span>
-                                <input v-model="form.password" type="password" class="form-control" id="contrasena"
-                                    placeholder="Ingrese contraseña">
-                                <div style="color: red;" v-if="form.errors.has('password')"
-                                    v-html="form.errors.get('password')" />
+                                <div class="form-group col-md-4">
+                                    <label for="Nombre del usuario">Apellido materno</label>
+                                    <input v-model="form.mothername" type="text" class="form-control" id="apellido_materno"
+                                    aria-describedby="emailHelp" placeholder="Apellido materno">
+                                <div style="color: red;" v-if="form.errors.has('mothername')" v-html="form.errors.get('mothername')" />
+                                </div>
                             </div>
                             
 
-                            <div class="form-group">
-                                <label for="Contraseña del usuario">Rol:</label>
-                                <select v-model="form.IDRol" id="rol" type="text" class="form-control " name="IDRol">
-                                    <option value=""> Seleccione una opcion </option>
-                                    <option value="1"> Administrador </option>
-                                    <option value="2"> Director General </option>
-                                    <option value="3"> Director Defensoria </option>
-                                    <option value="4"> Director Asesoria </option>
-                                    <option value="5"> Jefe de Asesorias </option>
-                                    <option value="6"> Defensor </option>
-                                    <option value="7"> Asesor </option>
-                                </select>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="Correo del usuario">Correo</label>
+                                    <input v-model="form.email" type="text" class="form-control" id="correo"
+                                    placeholder="algo@correo.com">
+                                    <div style="color: red;" v-if="form.errors.has('email')"
+                                        v-html="form.errors.get('email')" />
+                                </div>
 
-                                <div style="color: red;" v-if="form.errors.has('IDRol')"
-                                    v-html="form.errors.get('IDRol')" />
+
+
+                                <div class="form-group col-md-4">
+                                    <label for="Contraseña del usuario">Contraseña</label> <span  v-if="actualizarUsuarioCheck" style="color: red;"> *  </span>
+                                    <input v-model="form.password" type="password" class="form-control" id="contrasena"
+                                        placeholder="Ingrese contraseña">
+                                    <div style="color: red;" v-if="form.errors.has('password')"
+                                        v-html="form.errors.get('password')" />
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label for="Contraseña del usuario">Rol:</label>
+                                    <select v-model="form.IDRol" id="rol" type="text" class="form-control " name="IDRol">
+                                        <option value=""> Seleccione una opcion </option>
+                                        <option value="1"> Administrador </option>
+                                        <option value="2"> Director General </option>
+                                        <option value="3"> Director Defensoria </option>
+                                        <option value="4"> Director Asesoria </option>
+                                        <option value="5"> Jefe de Asesorias </option>
+                                        <option value="6"> Defensor </option>
+                                        <option value="7"> Asesor </option>
+                                    </select>
+    
+                                    <div style="color: red;" v-if="form.errors.has('IDRol')"
+                                        v-html="form.errors.get('IDRol')" />
+                                </div>
+
+
                             </div>
+
+                            
+
+                            
+                            
+
+                            
 
                             <span  v-if="actualizarUsuarioCheck" style="color: red;"> * Solo llene si desea cambiar la contraseña </span>
 
@@ -163,7 +188,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -192,13 +216,13 @@ export default {
             form: new Form({
                 id: '',
                 name: '',
+                fathername: '',
+                mothername: '',
+                phone: '',
                 email: '',
                 password: '',
-                remember_token: '',
-                email_verified_at: '',
-                created_at: '',
-                updated_at: '',
                 IDRol: '',
+                gender: '',
             })
         }
     },
@@ -206,6 +230,7 @@ export default {
         this.obtenerUsuarios();
     },
     methods: {
+
         abrirModalRegistro() {
             this.actualizarUsuarioCheck = false;
             this.form.reset();
@@ -215,21 +240,16 @@ export default {
         obtenerUsuarios() {
             this.items = [];
             this.axios.get('/users').then( (response) => {
-                console.log("Usuarios obtenidos");
-
                 let usuarios = [];
                 for (let i = 0; i < response.data.length; i++) {
                     let element = response.data[i];
                     element.rol = this.roles[ element.IDRol - 1 ]
-                    console.log("usuario "+i + " : ");
-                    console.log(element);
                     this.items.push( element );
                 }
             })
         },
 
         async registrarUsuario() {
-
             await this.form.post('/users').then((response) => {
                 Swal.fire({
                     position: 'top-end',
@@ -239,20 +259,16 @@ export default {
                     timer: 1500
                 }) 
                 this.obtenerUsuarios();
-
                 $('#modalAgregarUsuario').modal('hide');
-
             }).catch(error => {
                 console.log(error);
 
             });
-
-            
         },
+
         async editarUsuario() {
-            console.log("Actualizar peticionario");
+            console.log("Actualizar Usuario");
             await this.form.put('/users/' + this.form.id, this.form).then((response) => {
-                console.log(response);
                 this.obtenerUsuarios();
                 $('#modalAgregarUsuario').modal('hide');
 
@@ -267,14 +283,15 @@ export default {
                 console.log(error);
             });
         },
+
         async actualizarUsuario(usuario) {
             $('#modalAgregarUsuario').modal('show');
             this.form.fill(usuario);
             this.actualizarUsuarioCheck = true;
             this.form.password = "";
         },
-        eliminarUsuario($usuario) {
 
+        desactivar($usuario) {
             Swal.fire({
                 title: '¿Está seguro de eliminar este usuario?',
                 showDenyButton: true,
@@ -282,9 +299,7 @@ export default {
                 denyButtonText: `Cancelar`,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.axios.get('/users/eliminar/' + $usuario.id).then((response) => {
-                        console.log("Respuesta de la eliminacion");
-                        console.log(response);
+                    this.axios.get('/users/' + $usuario.id).then((response) => {
                         this.obtenerUsuarios();
                         $('#modalAgregarPeticionario').modal('hide');
 
@@ -302,8 +317,8 @@ export default {
                     //Swal.fire('Changes are not saved', '', 'info')
                 }
             })
-
         }
+
     }
 }
 </script>

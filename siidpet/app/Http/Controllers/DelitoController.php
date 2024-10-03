@@ -33,7 +33,7 @@ class DelitoController extends Controller
         Delito::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Datos guardados con éxito', 'delito' => $delito ], 201);
+        return response()->json(['mensaje' => 'Datos guardados con éxito', 'delito' => $request ], 201);
     }
 
     /**
@@ -127,5 +127,16 @@ class DelitoController extends Controller
         } else {
             return response()->json(['mensaje' => 'No se ha encontrado el registro correspondiente'], 201);
         }
+    }
+
+    public function showPorExpediente($id)
+    {
+        $id_expediente = $id; // Este es el valor con el que deseas comparar
+        $delitos = Delito::join('expediente_delito', 'delito.id', '=', 'expediente_delito.delito_id')
+                 ->where('expediente_delito.expediente_id', $id_expediente)
+                 ->where('delito.activo', 1)
+                 ->get();
+
+        return response($imputados);
     }
 }

@@ -42,20 +42,30 @@ class UserController extends Controller
         //
         $this->validate($request, [
             'name' => 'required|max:30',
+            'fathername' => 'required|max:50',
+            'mothername' => 'required|max:50',
+            'phone' => 'required|max:15',
             'email' => 'required|email',
             'password' => 'required',
-            'IDRol' => 'required'
+            'IDRol' => 'required',
+            'gender' => 'required'
         ]);
         
-        DB::table('users')->insert([
+        $id = DB::table('users')->insertGetId([
             'email' => $request->input('email'),
+            'gender' => $request->input('gender'),
+            'activo' => $request->input('activo'),
+            'phone' => $request->input('phone'),
             'name' => $request->input('name'),
-            'password' =>  Hash::make( $request->input('password') ) ,
+            'fathername' => $request->input('fathername'),
+            'mothername' => $request->input('mothername'),
+            'password' => Hash::make($request->input('password')),
             'created_at' => date('Y-m-d'),
             'IDRol' => $request->input('IDRol')
         ]);
 
-        return response("Usuario guardado con éxito", 200);
+        // return response("Usuario guardado con éxito", 200);
+        return response()->json(['mensaje' => 'Datos guardados con éxito', 'defensor' => $id ], 201);
     }
 
     /**
@@ -90,7 +100,11 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required|max:255',
+            'name' => 'required',
+            'fathername' => 'required',
+            'mothername' => 'required',
+            'phone' => 'required',
+            'gender' => 'required',
             'email' => 'required|email',
             'IDRol' => 'required'
         ]);
@@ -98,6 +112,11 @@ class UserController extends Controller
         $usuario = User::find($id);
         $usuario->name = $request->input('name');
         $usuario->email = $request->input('email');
+        $usuario->fathername = $request->input('fathername');
+        $usuario->mothername = $request->input('mothername');
+        $usuario->phone = $request->input('phone');
+        $usuario->gender = $request->input('gender');
+        $usuario->IDRol = $request->input('IDRol');
         
         if( $request->input('password') != "" ){
             $usuario->password = Hash::make( $request->input('password') );
