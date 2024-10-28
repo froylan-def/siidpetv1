@@ -1,13 +1,13 @@
 {
-  "_html2canvas-2dc68a0f.js": {
-    "file": "assets/html2canvas-2dc68a0f.js",
+  "_html2canvas-dcfca0f2.js": {
+    "file": "assets/html2canvas-dcfca0f2.js",
     "imports": [
       "resources/js/app.js"
     ],
     "isDynamicEntry": true
   },
   "node_modules/canvg/lib/index.es.js": {
-    "file": "assets/index.es-a5ba1831.js",
+    "file": "assets/index.es-d124547f.js",
     "imports": [
       "resources/js/app.js"
     ],
@@ -28,11 +28,11 @@
       "assets/app-178e4775.css"
     ],
     "dynamicImports": [
-      "_html2canvas-2dc68a0f.js",
+      "_html2canvas-dcfca0f2.js",
       "node_modules/dompurify/dist/purify.es.js",
       "node_modules/canvg/lib/index.es.js"
     ],
-    "file": "assets/app-969af465.js",
+    "file": "assets/app-79340ac0.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   },

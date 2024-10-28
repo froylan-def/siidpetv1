@@ -96,8 +96,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('imputado', imputadoController::class);
     Route::resource('etapaProcesal', etapaProcesalController::class);
     Route::resource('sexo', sexoController::class);
+
     Route::get('activarugi', [UgiController::class, 'activar']);
     Route::resource('ugi', UgiController::class);
+    
     Route::resource('defensor', DefensorController::class);
     Route::resource('entrevista', EntrevistaController::class);
     Route::resource('victima', VictimaController::class);

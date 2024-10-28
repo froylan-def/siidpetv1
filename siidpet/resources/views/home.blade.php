@@ -80,10 +80,12 @@
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <!-- Navbar Search -->
+                <!--
                 <li class="nav-item">
                     <a class="nav-link" data-widget="navbar-search" href="#" role="button">
                         <i class="fas fa-search"></i>
                     </a>
+                    
                     <div class="navbar-search-block">
                         <form class="form-inline">
                             <div class="input-group input-group-sm">
@@ -101,6 +103,7 @@
                         </form>
                     </div>
                 </li>
+                -->
                 <li class="nav-item">
                     <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                         <i class="fas fa-expand-arrows-alt"></i>
@@ -178,19 +181,41 @@
                         data-accordion="false">
                         <li class="nav-item">
                             <router-link to="/" class="nav-link" active-class="active">
-                                <i class="nav-icon fas fa-solid fa-house"></i>
+                                <i class="nav-icon fas fa-solid fa-chart-line"></i>
                                 <p>
-                                    Inicio
+                                    Resumen
                                 </p>
                             </router-link>
                         </li>
 
+                        
+                        
+                        <li class="nav-item">
+                            <router-link to="/expedientes" class="nav-link" active-class="active">
+                                <i class="nav-icon fas fa-file"></i>
+                                <p>
+                                    Expedientes 
+                                </p>
+                            </router-link>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <router-link to="/calendario" class="nav-link" active-class="active">
+                                <i class="nav-icon fas fa-calendar-days"></i>
+                                <p>
+                                    Calendario 
+                                </p>
+                            </router-link>
+                        </li>
+
+                        <!-- Catalogo -->
                         @if (session('rol') === '1' || session('rol') === 'administrador' )
                             <li class="nav-item ">
                                 <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-chart-bar"></i>
+                                    <i class="nav-icon fas fa-database"></i>
                                     <p>
-                                        Datos Sistema Acusatorio
+                                        Sistema Acusatorio
                                         <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
@@ -199,7 +224,7 @@
                                     <li class="nav-item">
                                         <router-link to="/Defensores" class="nav-link" active-class="active">
 
-                                            <i class="nav-icon fas fa-caret-right fa-solid"></i>
+                                            <i class="nav-icon fas fa-users fa-solid"></i>
                                             <p>
                                                 Defensores
                                             </p>
@@ -222,7 +247,7 @@
                                     <li class="nav-item">
                                         <router-link to="/Delito" class="nav-link" active-class="active">
 
-                                            <i class="nav-icon fas fa-caret-right fa-solid "></i>
+                                            <i class="nav-icon fas fa-handcuffs fa-solid "></i>
                                             <p>
                                                 Delito
                                             </p>
@@ -232,7 +257,7 @@
                                     <li class="nav-item">
                                         <router-link to="/Ugi" class="nav-link" active-class="active">
 
-                                            <i class="nav-icon fas fa-caret-right fa-solid"></i>
+                                            <i class="nav-icon fas fa-table fa-solid"></i>
                                             <p>
                                                 UGI
                                             </p>
@@ -242,7 +267,7 @@
                                     <li class="nav-item">
                                         <router-link to="/MedidasProteccion" class="nav-link" active-class="active">
 
-                                            <i class="nav-icon fas fa-caret-right fa-solid"></i>
+                                            <i class="nav-icon fas fa-table fa-solid"></i>
 
                                             <p>
                                                 Medidas de Protección
@@ -253,7 +278,7 @@
                                     <li class="nav-item">
                                         <router-link to="/Juez" class="nav-link" active-class="active">
 
-                                            <i class="nav-icon fas fa-caret-right fa-solid"></i>
+                                            <i class="nav-icon fas fa-gavel fa-solid"></i>
                                             <p>
                                                 Juez de Control
                                             </p>
@@ -263,7 +288,7 @@
                                     <li class="nav-item">
                                         <router-link to="/Medidas" class="nav-link" active-class="active">
 
-                                            <i class="nav-icon fas fa-caret-right fa-solid"></i>
+                                            <i class="nav-icon fas fa-table fa-solid"></i>
                                             <p>
                                                 Medida Cautelar
                                             </p>
@@ -273,19 +298,31 @@
                                     <li class="nav-item">
                                         <router-link to="/Tribunal" class="nav-link" active-class="active">
 
-                                            <i class="nav-icon fas fa-caret-right fa-solid"></i>
+                                            <i class="nav-icon fas fa-table fa-solid"></i>
                                             <p>
-                                                Tribunal de Enjuiciamiento
+                                                T. de Enjuiciamiento
                                             </p>
                                         </router-link>
                                     </li>
                                     <!-- Catalogo 8 -->
+                                    <!-- 
                                     <li class="nav-item">
                                         <router-link to="/Conclusion" class="nav-link" active-class="active">
 
-                                            <i class="nav-icon fas fa-caret-right fa-solid"></i>
+                                            <i class="nav-icon fas fa-table fa-solid"></i>
                                             <p>
                                                 Conclusión
+                                            </p>
+                                        </router-link>
+                                    </li>
+                                    -->
+                                    <!-- Catalogo 9 -->
+                                    <li class="nav-item">
+                                        <router-link to="/coordinaciones" class="nav-link" active-class="active">
+
+                                            <i class="nav-icon fas fa-table fa-solid"></i>
+                                            <p>
+                                                Coordinaciones
                                             </p>
                                         </router-link>
                                     </li>
@@ -293,16 +330,7 @@
                                 </ul>
                             </li>
                         @endif
-                        
-                        <li class="nav-item">
-                            <router-link to="/expedientes" class="nav-link" active-class="active">
 
-                                <i class="nav-icon fas fa-scale-balanced"></i>
-                                <p>
-                                    Expedientes 
-                                </p>
-                            </router-link>
-                        </li>
                         <!-- Cerrar Sesión -->
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('logout') }}"

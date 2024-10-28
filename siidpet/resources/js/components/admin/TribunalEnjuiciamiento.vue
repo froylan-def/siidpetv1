@@ -4,14 +4,14 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Juez de Control</h1>
+                    <h1 class="m-0"> Tribunal de enjuiciamiento </h1>
                 </div><!-- /.col -->
                   <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#"> Datos Sistema Acusatorio</a></li>
-                        <li class="breadcrumb-item active"> Juez de Control </li>
+                        <li class="breadcrumb-item active"> Tribunal enjuiciamiento </li>
                     </ol>
-                </div>  
+                </div>
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -21,7 +21,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                         <h3 class="card-title mt-2"> Registro de Jueces de Control </h3>  
+                         <h3 class="card-title mt-2"> Tribunales de enjuiciamiento </h3>  
                         <div class="card-tools">
                             <button class="btn btn-success" data-toggle="modal" data-target="#modalAgregar"
                                 @click="abrirModalRegistro">
@@ -70,7 +70,6 @@
                                     <button class="btn btn-success btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===0" @click="desactivar(item, 'activar')">
                                         <i class="fa-solid fa-power-off"></i>
                                     </button>
-                                    
                                 </div>
                             </template>
                         </EasyDataTable>
@@ -83,10 +82,10 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <form
-                    @submit.prevent="actualizarCheck === false ? registrarJuez : actualizarRegistro" @keydown="form.onKeydown($event)">
+                    @submit.prevent="actualizarCheck === false ? registrarDefensor : actualizarRegistro" @keydown="form.onKeydown($event)">
                         <div class="modal-header">
                             <h5 v-if="!actualizarCheck" class="modal-title" id="modalAgregar"> Nuevo </h5>
-                            <h5 v-else class="modal-title" id="modalAgregar"> Actualizar Juez </h5>
+                            <h5 v-else class="modal-title" id="modalAgregar"> Actualizar coordinacion </h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -99,36 +98,31 @@
                                     aria-describedby="emailHelp" placeholder="Nombre">
                                 <div style="color: red;" v-if="form.errors.has('nombre')" v-html="form.errors.get('nombre')" />
                             </div>
-                            <input id="activo" name="activo" type="hidden" value="1" />
 
-                            </div>     
-
-                          <div class="form-group">
-                             <label for="Municipio">  Municipio:</label>
-                             <select v-model="form.id_municipio" id="id_municipio" type="text" class="form-control " name="id_municipio">
+                            <div class="form-group">
+                                <label for="Municipio de trabajo">Municipio</label>
+                                <select v-model="form.id_municipio" id="rol" type="text" class="form-control " name="id_municipio">
                                     <option v-for="municipio in municipios" :value="municipio.id">
                                         {{ municipio.nombre }}
                                     </option>
                                 </select>
-
                                 <div style="color: red;" v-if="form.errors.has('id_municipio')"
                                     v-html="form.errors.get('id_municipio')" />
-                            </div>  
-                            
+                            </div>
+
+
+
+                        </div>     
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                 <i class="fas fa-times"></i> Cancelar
                             </button>
-
                             <button  v-if="!actualizarCheck" type="submit" :disabled="form.busy" class="btn btn-primary" @click="registrar">
                                 <i class="fas fa-save"></i> Registrar
                             </button>
                             <button v-else type="submit" :disabled="form.busy" class="btn btn-warning" @click="editarRegistro">
                                 <i class="fas fa-save"></i> Actualizar
                             </button>
-
-
-
                         </div>
                     </form>
                 </div>
@@ -148,14 +142,13 @@ export default {
 
     data() {
         return {
-            roles: ref(["Administrador", "Director General", "Director Defensoría", "Director Asesorias", "Jefe Asesorias", "Defensor", "Asesor"]),
             actualizarCheck: ref(false),
             searchField: ref("nombre"),
-           // searchValue: ref(""),
+            searchValue: ref(""),
             themeColor: "#AB0033",
             datos: [
                 { text: "Nombre", value: "nombre" },
-                { text: "Municipio", value: "municipio" },
+                { text: "Municipio", value: "municipio.nombre"},
                 { text: "Opciones", value: "operation" }
             ],
             items: [],
@@ -163,17 +156,25 @@ export default {
             form: new Form({
                 id: '',
                 nombre: '',
-                //id_municipio:"",
+                id_municipio: '',
                 activo:1,
-            })
+            }),
+            
         }
     },
     mounted() {
         this.obtenerDatos();
         this.obtenerMunicipios();
-
     },
     methods: {
+
+        obtenerMunicipios() {
+            this.axios.get('/municipios').then((response) => {
+                this.municipios = response.data.filter(objeto => objeto.id_estado === 28);
+            })
+        },
+
+
         abrirModalRegistro() {
             this.actualizarCheck = false;
             this.form.reset();
@@ -182,36 +183,23 @@ export default {
 
         obtenerDatos() {
             this.items = [];
-            this.axios.get('/juezcontrol').then( (response) => {
-                for (let i = 0; i < response.data.length; i++) {
-                    let element = response.data[i];
-                    element.rol = this.roles[ element.IDRol - 1 ]
-                    this.items.push( element );
-                }
+            this.axios.get('/tribunalenjuiciamiento').then( (response) => {
+                this.items = response.data;
             })
         },
- 
-     obtenerMunicipios() {
-            this.axios.get('/municipios').then((response) => {
-                this.municipios= response.data;
-                console.log("Municipios");
-                console.log(this.municipios);
-            })
-        },
+
         async registrar() {
 
-            await this.form.post('/juezcontrol').then((response) => {
+            await this.form.post('/tribunalenjuiciamiento').then((response) => {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Usuario guardado con éxito',
+                    title: 'Coordinacion guardado con éxito',
                     showConfirmButton: false,
                     timer: 1500
                 }) 
-                console.log("entra")
                  console.log(response.data)
-                 console.log("entra")
-               // this.obtenerDatos();
+                this.obtenerDatos();
 
                 $('#modalAgregar').modal('hide');
 
@@ -222,16 +210,14 @@ export default {
 
             
         },
-        async actualizarRegistro(juez) {
+        async actualizarRegistro(tribunal) {
             $('#modalAgregar').modal('show');
-            console.log(juez);
-            this.form.fill(juez);
+            this.form.fill(tribunal);
             this.actualizarCheck = true;
         },
+
         async editarRegistro() {
-            console.log("se va a mandar");
-            console.log(this.id);
-            await this.form.put('/juezcontrol/' + this.form.id, this.form).then((response) => {
+            await this.form.put('/tribunalenjuiciamiento/' + this.form.id, this.form).then((response) => {
                 console.log(response);
                 this.obtenerDatos();
                 $('#modalAgregar').modal('hide');
@@ -239,7 +225,7 @@ export default {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Juez actualizado con éxito',
+                    title: 'Coordinacion actualizado con éxito',
                     showConfirmButton: false,
                     timer: 1500
                 })
@@ -248,16 +234,18 @@ export default {
             });
         },
 
-        desactivar($juez, mensaje) {
+        desactivar($coordinacion, tipo) {
+       
             Swal.fire({
-                title: '¿Está seguro de ' + mensaje + ' este registro?',
+                title: '¿Está seguro que desea '+ tipo +' este Registro?',
                 showDenyButton: true,
                 confirmButtonText: 'Aceptar',
                 denyButtonText: `Cancelar`,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.axios.delete('/juezcontrol/' + $juez.id).then((response) => {
-                        
+                    this.axios.delete('/tribunalenjuiciamiento/' + $coordinacion.id ).then((response) => {
+                        console.log("Respuesta de la eliminacion");
+                        console.log(response);
                         this.obtenerDatos();
                         $('#modalAgregar').modal('hide');
 
@@ -275,39 +263,8 @@ export default {
                     //Swal.fire('Changes are not saved', '', 'info')
                 }
             }) 
+
         },
-
-        /*
-        activar($elemento) {
-       
-            Swal.fire({
-                title: '¿Está seguro de activar este Registro?',
-                showDenyButton: true,
-                confirmButtonText: 'Aceptar',
-                denyButtonText: `Cancelar`,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.axios.get('/juezcontrol/'+ $elemento.id+"/edit").then((response) => {
-                        console.log("Respuesta de la activacion");
-                        console.log(response);
-                        this.obtenerDatos();
-                        $('#modalAgregar').modal('hide');
-
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: 'Registro activado con éxito',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                    }).catch(error => {
-                        console.log(error);
-                    });
-                } else if (result.isDenied) {
-                    //Swal.fire('Changes are not saved', '', 'info')
-                }
-            }) 
-        }*/
     }
 }
 </script>

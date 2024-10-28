@@ -21,6 +21,10 @@ import MedidasProteccion from '../components/admin/MedidasProteccion.vue';
 import Juez from '../components/admin/Juez.vue';
 import Medidas from '../components/admin/Medidas.vue';
 
+import Coordinaciones from '../components/admin/Coordinaciones.vue';
+
+import TribunalEnjuiciamiento from '../components/admin/TribunalEnjuiciamiento.vue';
+
 import Test from '../components/defensor/componentes/CmpTestChart.vue';
 const routes = [
     {
@@ -151,6 +155,23 @@ const routes = [
         component: Medidas,
         meta: { requiresAuth: true, requiresAdmin: true }
     },
+
+    {
+        path: "/Coordinaciones",
+        name: "Coordinaciones",
+        component: Coordinaciones,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+
+
+    {
+        path: "/Tribunal",
+        name: "Tribunal",
+        component: TribunalEnjuiciamiento,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+
+
     {
         path: "/testgraf",
         name: "testgraf",

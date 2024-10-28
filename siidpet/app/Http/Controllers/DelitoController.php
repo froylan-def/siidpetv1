@@ -120,9 +120,13 @@ class DelitoController extends Controller
             //$delito->delete();
         
       
-            $delito->activo = 0;
+            if( $delito->activo == 0 ){
+                $delito->activo = 1;
+            }else{
+                $delito->activo = 0;
+            }
+            
             $delito->save();
-        
             return response()->json(['mensaje' => 'Registo desactivado correctamente'], 201);
         } else {
             return response()->json(['mensaje' => 'No se ha encontrado el registro correspondiente'], 201);

@@ -40,6 +40,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
+        
         $this->validate($request, [
             'name' => 'required|max:30',
             'fathername' => 'required|max:50',
@@ -50,6 +51,7 @@ class UserController extends Controller
             'IDRol' => 'required',
             'gender' => 'required'
         ]);
+        
         
         $id = DB::table('users')->insertGetId([
             'email' => $request->input('email'),
@@ -137,15 +139,31 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $usuario = User::find($id);
+
+        // Verificar si el usuario existe
+        if ($usuario) {
+
+            if( $usuario->activo == 0 ){
+                $usuario->activo = 1;
+            }else{
+                $usuario->activo = 0;
+            }
+            
+            $usuario->save();
+        
+            return response()->json(['mensaje' => 'Usuario desactivado correctamente'], 201);
+        } else {
+            return response()->json(['mensaje' => 'No se ha encontrado el registro correspondiente'], 201);
+        }
+
+
     }
 
     public function eliminarUsuario($id)
     {
-
         $usuario = User::find($id);
         $usuario->delete();
         return response(["Usuario eliminado correctamente"]);
-
     }
 }

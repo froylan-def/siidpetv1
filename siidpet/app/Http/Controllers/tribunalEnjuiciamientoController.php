@@ -14,8 +14,14 @@ class tribunalEnjuiciamientoController extends Controller
      */
     public function index()
     {
+        // $defensores = Defensor::with('municipio', 'user', 'coordinacion')->where('activo', 1)->get();
+        // return response($defensores);
+
+
         //Se obtienen todos los objetos de la tabla flagrancia
-        $tribunalEnjuiciamiento = TribunalEnjuiciamiento::all();
+        // $tribunalEnjuiciamiento = TribunalEnjuiciamiento::all();
+
+        $tribunalEnjuiciamiento = TribunalEnjuiciamiento::with('municipio')->get();
         return response( $tribunalEnjuiciamiento );
     }
 
@@ -113,16 +119,28 @@ class tribunalEnjuiciamientoController extends Controller
      */
     public function destroy($id)
     {
+
         // Buscar el usuario por su ID
         $tribunalEnjuiciamiento = TribunalEnjuiciamiento::find($id);
 
         // Verificar si el usuario existe
         if ( $tribunalEnjuiciamiento ) {
             // Eliminar el usuario
-            $tribunalEnjuiciamiento->delete();
+            // $tribunalEnjuiciamiento->delete();
+
+            if( $tribunalEnjuiciamiento->activo == 0 ){
+                $tribunalEnjuiciamiento->activo = 1;
+            }else{
+                $tribunalEnjuiciamiento->activo = 0;
+            }
+
+            $tribunalEnjuiciamiento->save();
+
+
             return response()->json(['mensaje' => 'Datos del tribunal de enjuiciamiento eliminados correctamente'], 201);
         } else {
             return response()->json(['mensaje' => 'No se ha encontrado el dato'], 201);
         }
+
     }
 }

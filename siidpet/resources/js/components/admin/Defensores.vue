@@ -155,12 +155,18 @@
 
                                 <div class="form-group col-md-12">
                                     <label for="fathername">Contraseña</label>
+
+                                    <span  v-if="actualizarDefensorCheck" style="color: red;"> *  </span>
+
+
                                     <input v-model="form.password" type="password" class="form-control" id="password"
                                         placeholder="contraseña">
 
                                     <div style="color: red;" v-if="form.errors.has('password')"
                                         v-html="form.errors.get('password')" />
                                 </div>
+
+                                <span  v-if="actualizarDefensorCheck" style="color: red;"> * Solo llene si desea cambiar la contraseña </span>
 
 
 
@@ -238,23 +244,24 @@ export default {
         this.obtenerCoordinaciones();
     },
     methods: {
-        abrirModalRegistro() {
-            this.actualizarDefensorCheck = false;
+        resetearFormulario(){
             this.form.reset();
             this.form.clear();
+            this.defensor.reset();
+            this.defensor.clear();
+        },
+        abrirModalRegistro() {
+            this.actualizarDefensorCheck = false;
+            this.resetearFormulario();
         },
         obtenerCoordinaciones() {
             this.axios.get('/coordinacion').then((response) => {
                 this.coordinaciones = response.data;
-                console.log("Coordinacion");
-                console.log(this.coordinaciones);
             })
         },
         obtenerMunicipios() {
             this.axios.get('/municipios').then((response) => {
                 this.municipios = response.data.filter(objeto => objeto.id_estado === 28);
-                console.log("Municipios");
-                console.log(this.municipios);
             })
         },
 
@@ -265,9 +272,6 @@ export default {
         },
 
         async registrarDefensor() {
-
-            console.log("Metodo registrar defensor");
-
             this.defensor.errors.clear();
             if( this.defensor.id_coordinacion === null || this.defensor.id_coordinacion === "" ){
                 this.defensor.errors.set('id_coordinacion', 'Este campo es requerido');

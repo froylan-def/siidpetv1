@@ -115,13 +115,11 @@ class medidasProteccionController extends Controller
      */
     public function destroy($id)
     {
-        //
         // Buscar el usuario por su ID
         $medidaProteccion = MedidaProteccion::find($id);
 
         // Verificar si el usuario existe
         if ( $medidaProteccion ) {
-            // Eliminar el usuario
             $medidaProteccion->delete();
             return response()->json(['mensaje' => 'Asignacion medidas eliminado correctamente'], 201);
         } else {

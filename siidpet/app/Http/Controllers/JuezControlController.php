@@ -137,14 +137,13 @@ class JuezControlController extends Controller
         $Juez = Juez::find($id);
 
         // Verificar si el usuario existe
-        if ($Juez) {
-            // Eliminar el usuario
-            //$ugi->delete();
-        
-      
-            $Juez->activo = 0;
+        if ($Juez) {        
+            if( $Juez->activo == 0 ){
+                $Juez->activo = 1;
+            }else{
+                $Juez->activo = 0;
+            }
             $Juez->save();
-        
             return response()->json(['mensaje' => 'Ugi eliminado correctamente'], 201);
         } else {
             return response()->json(['mensaje' => 'No se ha encontrado el Ugi correspondiente'], 201);

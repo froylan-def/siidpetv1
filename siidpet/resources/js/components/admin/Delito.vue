@@ -66,11 +66,11 @@
                                     </button>
 
                                     <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===1" @click="desactivar(item)">
-                                        <i class="fa-solid fa-trash"></i>
+                                        <i class="fa-solid fa-power-off"></i>
                                     </button>
 
                                     <button class="btn btn-success btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===0" @click="activar(item)">
-                                        <i class="<fa-solid fa-plus"></i>
+                                        <i class="fa-solid fa-power-off"></i>
                                     </button>
                                     
                                 </div>
