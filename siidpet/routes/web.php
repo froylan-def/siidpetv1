@@ -44,12 +44,17 @@ use App\Http\Controllers\DelitoController;
 use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\ImputadosExpedienteController;
+use App\Http\Controllers\TribunalEnjuiciamientoExpedienteController;
 
 use App\Http\Controllers\ExpedientedelitoController;
 
 use App\Http\Controllers\medidasProteccionController;
 
 use App\Http\Controllers\victimaExpedienteController;
+
+use App\Http\Controllers\ExamenDetencionController;
+
+use App\Http\Controllers\coordinacionMunicipioController;
 
 
 
@@ -64,6 +69,11 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::get('/home', function () {
+        return redirect('/');
+    });
+
+
+    Route::get('/favicon.ico', function () {
         return redirect('/');
     });
 
@@ -101,6 +111,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('ugi', UgiController::class);
     
     Route::resource('defensor', DefensorController::class);
+
+    Route::get('/obtenerDefensoresMunicipio/{id}', [DefensorController::class, 'obtenerDefensoresMunicipio']);
+
     Route::resource('entrevista', EntrevistaController::class);
     Route::resource('victima', VictimaController::class);
     Route::resource('flagrancia', FlagranciaController::class);
@@ -120,6 +133,14 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     Route::get('/estado/{id}', [estadoController::class, 'show']);
+
+    // obtenerTribunalPorExpediente 
+
+    Route::delete('/eliminartribunalenjuiciamiento/{id}', [tribunalEnjuiciamientoController::class, 'eliminar']);
+
+    Route::get('/obtenertribunalporexpediente/{id}', [tribunalEnjuiciamientoController::class, 'obtenerTribunalPorExpediente']);
+
+
     Route::resource('estado', estadoController::class);
     
     
@@ -136,19 +157,33 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('delitoproceso', DelitoProcesoController::class);
     Route::resource('delito', DelitoController::class);
 
+    Route::resource('examendetencion', ExamenDetencionController::class);
+
     Route::resource('medidasprotecciones', medidasProteccionController::class);
 
+    Route::resource('coordinacionMunicipio', coordinacionMunicipioController::class);
+    
+    // obtenerDefensorPorIdUsuario
 
-    
-    
+    Route::get('/obtenerdefensorporidusuario/{id}/', [DefensorController::class, 'obtenerDefensorPorIdUsuario']);
+
+
+
+    Route::post('/busquedaconfiltros', [ExpedienteController::class, 'busquedaConFiltros']);
+
+
 
     Route::resource('imputadosExpediente', ImputadosExpedienteController::class);
     Route::resource('victimasExpediente', victimaExpedienteController::class);
 
+    Route::get('/delitosPorExpediente/{id}/', [ ExpedientedelitoController::class , 'delitosExpediente']);
+
 
     Route::get('/imputadosPorExpediente/{id}/', [ImputadosExpedienteController::class, 'showPorExpediente']);
     Route::get('/imputadosPorExpediente/eliminar/{idExpediente}/{idImputado}', [ImputadosExpedienteController::class, 'destroy']);
-
+    
+    Route::get('tribunalPorExpediente/{id}', [TribunalEnjuiciamientoExpedienteController::class, 'showPorExpediente']);
+   
 
     Route::get('/victimasPorExpediente/{id}/', [victimaExpedienteController::class, 'showPorExpediente']);
 

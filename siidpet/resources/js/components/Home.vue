@@ -1,31 +1,13 @@
 <template>
     <!-- Content Header (Page header) -->
     <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h5 class="m-0">Inicio | </h5>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
+      <div class="d-flex justify-content-between align-items-center ">
+          <h1 class="h4">Inicio</h1>
+      </div>
+  </div>
     <!-- /.content-header -->
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header border-0"></div>
-
-                    <div class="card-body">
-                        <h1> Sistema Integral del Instituto de Defensoría Pública </h1>
-                        Sesión iniciada como {{ this.nombres  }}
-                    </div>
-                </div>
-            </div>
-        </div>
+        
         
         <div class="row">
           <div class="col-lg-3 col-6">

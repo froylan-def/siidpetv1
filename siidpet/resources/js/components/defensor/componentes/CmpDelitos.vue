@@ -12,40 +12,37 @@
     </div>
     <!-- /.content-header -->
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">  
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-9">
-                            Delito
-                            <v-select v-model="form.id_delito" :reduce="(option) => option.id"
-                                :options="delitosOpciones"
-                                 @update:model-value="seleccionarDelito()"
-                                >
-                            </v-select>
-                            <div style="color: red;" v-if="form.errors.has('id_delito')"
-                                v-html="form.errors.get('id_delito')" />
-                        </div>
-                        <div class="col-3">
-                            <button class="btn btn-primary w-100 mt-3"
-                                style="height:43px;"
-                                @click="registrarDelito">
-                                Agregar
-                            </button>
-                        </div>
-                    </div>
+        
+        <div class="form-group">
+            <div class="row">
+                <div class="col-6">
+                    
+                    <v-select v-model="form.id_delito" :reduce="(option) => option.id"
+                        :options="delitosOpciones"
+                            @update:model-value="seleccionarDelito()"
+                        >
+                    </v-select>
+                    <div style="color: red;" v-if="form.errors.has('id_delito')"
+                        v-html="form.errors.get('id_delito')" />
                 </div>
-                <EasyDataTable :headers="datos" :items="items" border-cell>
-                    <template #item-operation="item">
-                        <div class="operation-wrapper">
-                            <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1" @click="eliminarDelito(item)">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </template>
-                </EasyDataTable>
+                <div class="col-6">
+                    <button class="btn btn-primary w-100 " @click="registrarDelito">
+                        <i class="fa-regular fa-square-check"></i>
+                        Agregar
+                    </button>
+                </div>
             </div>
         </div>
+        <EasyDataTable border-cell  :headers="datos" :items="items" >
+            <template #item-operation="item">
+                <div class="operation-wrapper">
+                    <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1" @click="eliminarDelito(item)">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </template>
+        </EasyDataTable>
+            
     </div>
 </template>
 
@@ -76,6 +73,10 @@ export default {
         this.obtenerDelitosExpediente();
     },
     methods: {
+        actualizarInformacion(){
+            this.$emit('llamar-funcion');
+        },
+
         async obtenerDelitos() {
             try {
                 const response = await this.axios.get('/delito');
@@ -91,6 +92,7 @@ export default {
             try {
                 const response = await this.axios.get('/delitosPorExpediente/' + this.$route.params.id );
                 this.items = response.data;
+                
             } catch (error) {
                 console.error('Error obteniendo los delitos:', error);
             }
@@ -111,6 +113,7 @@ export default {
                         }
                     });
                     this.obtenerDelitosExpediente();
+                    this.actualizarInformacion();
                 } catch (error) {
                     Swal.fire({
                         title: 'Error al guardar',
@@ -176,6 +179,12 @@ export default {
 }
 </script>
 <style>
+
+    .customize-table {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
     .swal2-popup {
         font-size: 17px !important;
         font-family: 'Encode Sans', serif;
@@ -201,4 +210,9 @@ export default {
         padding: 10px 30px; /* Cambia el tamaño del botón "Cancelar" */
         font-size: 16px;
     }
+
+    .customize-table {
+        border-radius: 10px; /* Cambia a la medida deseada */
+        overflow: hidden; /* Esto asegura que los bordes de la tabla no sobresalgan */
+      }
 </style>

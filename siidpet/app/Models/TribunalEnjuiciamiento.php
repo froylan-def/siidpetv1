@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\Municipio;
+
+use App\Models\Juez;
+use App\Models\Expediente;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,16 +15,22 @@ class TribunalEnjuiciamiento extends Model
     protected $table = 'tribunal_enjuiciamiento';
 
     protected $fillable = [
-        'nombre',
-        'id_municipio',
+        'id_expediente',
+        'id_juez',
         'activo',
         // ... otras propiedades ...
     ];
 
 
-    public function municipio()
+    public function expediente()
     {
-        return $this->belongsTo(Municipio::class, 'id_municipio'); 
+        return $this->belongsTo(Expediente::class, 'id_expediente'); 
+    }
+
+
+    public function juez()
+    {
+        return $this->belongsTo(Juez::class, 'id_juez'); 
     }
 
 

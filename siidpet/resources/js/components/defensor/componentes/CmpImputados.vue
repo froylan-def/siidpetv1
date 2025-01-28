@@ -14,15 +14,12 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                <button class="btn btn-success mb-2" data-toggle="modal" data-target="#modalAgregarImputado"
-                    @click="abrirModalRegistro">
-                    <i class="fas fa-user-plus"></i> Registrar nuevo
-                </button>
-
-                <button class="btn btn-primary mb-2 ml-2" data-toggle="modal" data-target="#modalSeleccionarImputado"
-                    @click="obtenerImputadosModal">
-                    <i class="fas fa-user-plus"></i> Agregar
-                </button>
+                <div class="btn-group d-flex mb-3">
+                    <button class="btn btn-success flex-grow-1" data-toggle="modal" data-target="#modalAgregarImputado"
+                    @click="abrirModalRegistro"> <i class="fa-solid fa-floppy-disk"> </i> Registrar Nuevo</button>
+                    <button class="btn btn-primary flex-grow-1" data-toggle="modal" data-target="#modalSeleccionarImputado"
+                    @click="obtenerImputadosModal"> <i class="fa-regular fa-square-check"></i> Agregar existente</button>
+                </div>
                 
                 <div class="row">
                     <div class="collapse" id="collapseExample">
@@ -30,13 +27,13 @@
                         </div>
                     </div>
                 </div>
-                <EasyDataTable :headers="datos" :items="items" border-cell>
+                <EasyDataTable :headers="datos" :items="items"  border-cell>
                     <template #item-operation="item">
                         <div class="operation-wrapper">
-                            <button class="btn btn-warning btn-sm mt-2 mb-2 mr-1" @click="actualizarUsuario(item)">
+                            <button class="btn btn-warning btn-sm mr-1" @click="actualizarUsuario(item)">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
-                            <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1" @click="eliminarUsuario(item)">
+                            <button class="btn btn-danger btn-sm " @click="eliminarUsuario(item)">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
@@ -44,9 +41,9 @@
                 </EasyDataTable>
             </div>
         </div>
-        <div class="modal fade" id="modalAgregarImputado" tabindex="-1" role="dialog"
+        <div class="modal fade " id="modalAgregarImputado" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <form @submit.prevent="actualizarUsuarioCheck === false ? registrarImputado : actualizarUsuario"
                         @keydown="form.onKeydown($event)">
@@ -99,14 +96,17 @@
 
                                 <div class="form-group col-md-6">
                                     <label for="Telefono">Teléfono *</label>
-                                    <input  v-model="form.telefono" type="number" min="10" max="100" class="form-control" id="telefono"
-                                        aria-describedby="telefono" placeholder="">
+
+                                    <MaskInput class="form-control" v-model="this.form.telefono" mask="(###) ###-##-##" placeholder="(###) ###-##-##" />
+
+
+                                    
                                     <div style="color: red;" v-if="form.errors.has('telefono')"
                                         v-html="form.errors.get('telefono')" />
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-6">
                                     <label for="Telefono">Domicilio *</label>
                                     <input v-model="form.domicilio" type="text" maxlength="255" class="form-control" id="domicilio"
                                         aria-describedby="domicilio" placeholder="">
@@ -118,50 +118,6 @@
 
                                     <div style="color: red;" v-if="form.errors.has('domicilio')"
                                         v-html="form.errors.get('domicilio')" />
-                                </div>
-    
-                                
-                            
-                            </div>
-                            
-
-                            <div class="form-row">
-
-                                <div class="form-group col-md-6">
-                                    <label for="Pais">Pais *</label>
-                                    <v-select v-model="form.id_pais" :reduce="(option) => option.id"
-                                        :options="paisesOpciones" 
-                                        @update:model-value="seleccionarEstado(form.id_pais)"
-                                        >
-                                    </v-select>
-                                    <div style="color: red;" v-if="form.errors.has('id_pais')"
-                                        v-html="form.errors.get('id_pais')" />
-                                </div>
-    
-                                <div class="form-group col-md-6">
-                                    <label for="Estado">Estado *</label>
-                                    <v-select v-model="form.id_estado" :reduce="(option) => option.id"
-                                        :options="estadosOpciones"
-                                        
-                                        @update:model-value="seleccionarMunicipio(form.id_estado)">
-                                    </v-select>
-                                    <div style="color: red;" v-if="form.errors.has('id_estado')"
-                                        v-html="form.errors.get('id_estado')" />
-                                </div>
-
-                            </div>
-
-
-                            <div class="form-row">
-
-                                <div class="form-group col-md-6">
-                                    <label for="Municipio">Municipio *</label>
-                                    <v-select v-model="this.form.id_municipio" :reduce="(option) => option.id"
-                                        :options="municipiosOpciones"
-                                        >
-                                    </v-select>
-                                    <div style="color: red;" v-if="form.errors.has('id_municipio')"
-                                        v-html="form.errors.get('id_municipio')" />
                                 </div>
     
                                 <div class="form-group col-md-6">
@@ -177,8 +133,46 @@
                                     </select>
                                     <div style="color: red;" v-if="form.errors.has('estado_civil')" v-html="form.errors.get('estado_civil')"></div>
                                 </div>
+                            
+                            </div>
+                            
+
+                            <div class="form-row">
+
+                                <div class="form-group col-md-4">
+                                    <label for="Pais">Pais *</label>
+                                    <v-select v-model="form.id_pais" :reduce="(option) => option.id"
+                                        :options="paisesOpciones" 
+                                        @update:model-value="seleccionarEstado(form.id_pais)"
+                                        >
+                                    </v-select>
+                                    <div style="color: red;" v-if="form.errors.has('id_pais')"
+                                        v-html="form.errors.get('id_pais')" />
+                                </div>
+    
+                                <div class="form-group col-md-4">
+                                    <label for="Estado">Estado *</label>
+                                    <v-select v-model="form.id_estado" :reduce="(option) => option.id"
+                                        :options="estadosOpciones"
+                                        
+                                        @update:model-value="seleccionarMunicipio(form.id_estado)">
+                                    </v-select>
+                                    <div style="color: red;" v-if="form.errors.has('id_estado')"
+                                        v-html="form.errors.get('id_estado')" />
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label for="Municipio">Municipio *</label>
+                                    <v-select v-model="this.form.id_municipio" :reduce="(option) => option.id"
+                                        :options="municipiosOpciones"
+                                        >
+                                    </v-select>
+                                    <div style="color: red;" v-if="form.errors.has('id_municipio')"
+                                        v-html="form.errors.get('id_municipio')" />
+                                </div>
 
                             </div>
+
 
                             
                             <div class="form-row">
@@ -240,12 +234,14 @@
 
                     
 
-                    <form @submit.prevent="actualizarUsuarioCheck === false ? registrarImputado : actualizarUsuario"
+                    <form @submit.prevent="actualizarUsuarioCheck === false ? registrarImputado : actualizarUsuario" 
                         @keydown="form.onKeydown($event)">
                         <div class="modal-header">
-                            <h5 v-if="!actualizarUsuarioCheck" class="modal-title" id="modalSeleccionarImputado"> 
+                            <h5 class="modal-title" id="modalSeleccionarImputado"> 
                                 Seleccionar imputado
                             </h5>
+
+                            
                            
 
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -256,19 +252,19 @@
                         <div class="modal-body">
                             
                             <div class="form-row">
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-12 ">
                                     <label for="Nombre del usuario">Nombre(s): </label>
                                     
 
                                     <v-select v-model="imputadoSeleccionadoEnModal" :reduce="(option) => option.id"
                                         :options="imputadosOpciones" 
                                         @update:model-value="seleccionarImputado()"
-                                        @clear="limpiarSelectImputado"
+                                        
                                         >
                                     </v-select>
                                     
-                                    <table class="table table-striped">
-                                        <thead>
+                                    <table class="table table-bordered mt-2">
+                                        <thead class="table-primary">
                                             <tr>
                                                 <th>Campo</th>
                                                 <th>Valor</th>
@@ -315,22 +311,7 @@
                                                     {{ this.datosImputadoSeleccionado.fecha_de_nacimiento }}
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>
-                                                    OCUPACIÓN
-                                                </td>
-                                                <td>
-                                                    {{ this.datosImputadoSeleccionado.ocupacion.nombre }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    ESCOLARIDAD
-                                                </td>
-                                                <td>
-                                                    {{ this.datosImputadoSeleccionado.escolaridad.nombre }}
-                                                </td>
-                                            </tr>
+                                            
                                         </tbody>
                                     </table>
 
@@ -343,7 +324,7 @@
                                 <i class="fas fa-times"></i> Cancelar
                             </button>
 
-                            <button v-if="!actualizarUsuarioCheck" type="submit" :disabled="form.busy"
+                            <button type="submit" :disabled="form.busy"
                                 class="btn btn-primary" @click="agregarImputadoAExpediente">
                                 <i class="fas fa-save"></i> Agregar
                             </button>
@@ -379,8 +360,8 @@ export default {
             themeColor: "#AB0033",
             datos: [
                 { text: "Nombre", value: "nombres" },
-                { text: "Apellido Paterno", value: "apellido_paterno" },
-                { text: "Apellido Materno", value: "apellido_materno" },
+                { text: "Ap. Pat", value: "apellido_paterno" },
+                { text: "Ap. Mat", value: "apellido_materno" },
                 { text: "Telefono", value: "telefono" },
                 { text: "Domicilio", value: "domicilio" },
                 { text: "Sexo", value: "sexo" },
@@ -435,7 +416,6 @@ export default {
         },
 
         limpiarSelectImputado(){
-            console.log("Campo limpiado");
             this.datosImputadoSeleccionado = null;
         },
         agregarImputadoAExpediente(){
@@ -460,6 +440,7 @@ export default {
                 });
                 $('#modalSeleccionarImputado').modal('hide');
                 this.obtenerImputados();
+                this.actualizarInformacion();
 
             }
         },
@@ -574,7 +555,7 @@ export default {
             try {
                 this.axios.get('/imputadosPorExpediente/'+ this.$route.params.id +'/' ).then((response) => {
                 this.items = response.data;
-                this.actualizarInformacion();
+                
             })
             } catch (error) {
                 console.error('Error obteniendo los imputadors:', error);
@@ -621,6 +602,7 @@ export default {
                 });
                 $('#modalAgregarImputado').modal('hide');
                 this.obtenerImputados();
+                this.actualizarInformacion();
             } catch (error) {
                 console.error('Error al guardar el imputado:', error);
             }
@@ -629,6 +611,7 @@ export default {
         async editarUsuario() {
             await this.form.put('/imputado/' + this.form.id, this.form).then((response) => {
                 this.obtenerImputados();
+                this.actualizarInformacion();
                 $('#modalAgregarImputado').modal('hide');
                 Swal.fire({
                     position: 'top-end',
@@ -684,6 +667,7 @@ export default {
                         });
                         $('#modalAgregarPeticionario').modal('hide');
                         this.obtenerImputados();
+                        this.actualizarInformacion();
                     }).catch(error => {
                         console.log(error);
                     });
@@ -696,12 +680,12 @@ export default {
 }
 </script>
 <style>
-    .alinear-derecha {
-        display: block;
-        text-align: right;
+    
+    
+      .btn-group {
+        gap: 0.5rem;
     }
-    .custom-swal-success {
-        width: 300px;
-        height: 400px;
-    }
+
     </style>
+
+    

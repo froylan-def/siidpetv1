@@ -5,11 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <base href="/">
+
     <title> SIIDPET </title>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
     <!-- Favico -->
-    
+
     <link rel="icon" type="image/x-icon" href="{{ asset('img/logos/logo_2.png') }}" />
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -54,19 +56,21 @@
     <style>
         body {
             font-family: 'Encode Sans', serif;
+            /* font-family: 'Roboto', serif; */
         }
     </style>
 
     <script>
         window.rol = "{{ session::get('rol') }}"
         window.usuario = "{{ session::get('user') }}"
+        window.id_usuario = "{{ session::get('id_user') }}"
+        window.defensor = "{{ session::get('defensor') }}";
     </script>
 
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed" style="background-color: #D1E7E0;">
+<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper" id="app">
-
         <!-- Barra de Navegación -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
@@ -76,36 +80,10 @@
                             class="fas fa-bars"></i></a>
                 </li>
             </ul>
-
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <!-- Navbar Search -->
-                <!--
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                        <i class="fas fa-search"></i>
-                    </a>
-                    
-                    <div class="navbar-search-block">
-                        <form class="form-inline">
-                            <div class="input-group input-group-sm">
-                                <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                                    aria-label="Search">
-                                <div class="input-group-append">
-                                    <button class="btn btn-navbar" type="submit">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </li>
-                -->
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                    <a class="nav-link" data-widget="fullscreen" role="button">
                         <i class="fas fa-expand-arrows-alt"></i>
                     </a>
                 </li>
@@ -121,60 +99,52 @@
                 <img src="{{ asset('img/logos/logo_2.png') }}" alt="Logo TAM" class="brand-image ">
                 <span class="brand-text font-weight-light"> SIIDPET </span>
             </a>
-
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-2 pb-3 mb-3 d-flex">
-                    <div class="image">
+                <div class="user-panel pt-3 pb-3 d-flex">
+                    <div class="image mt-2">
                         <img src="{{ asset('img/user2-160x160.jpg') }}" class="img-circle elevation-2"
                             alt="User Image">
                     </div>
                     <div class="info ">
-                        
-
-                        <a href="#" class="d-block"> {{ Auth::user()->name }} </a>
+                        <a class="text-wrap" style="font-size: smaller;"> {{ Auth::user()->name }}
+                            {{ Auth::user()->fathername }} {{ Auth::user()->mothername }} </a>
 
                         @switch(Auth::user()->IDRol)
                             @case(1)
-                                <a class="d-block text-white" > Administrador </a>
-                                @break
+                                <a style="font-size: smaller;" class="d-block text-white"> Administrador </a>
+                            @break
 
                             @case(2)
-                                
-                                <a class="d-block text-white" > Director General </a>
-                                @break
+                                <a style="font-size: smaller;" class="d-block text-white"> Director General </a>
+                            @break
 
                             @case(3)
-                                
-                                <a class="d-block text-white" > Director Defensorías </a>
-                                @break
+                                <a style="font-size: smaller;" class="d-block text-white"> Director Defensorías </a>
+                            @break
 
                             @case(4)
-                                <a class="d-block text-white" > Director Asesorías </a>
-                                @break
+                                <a style="font-size: smaller;" class="d-block text-white"> Director Asesorías </a>
+                            @break
 
                             @case(5)
-                                <a class="d-block text-white" > Jefe de Asesorías </a>
-                                @break
+                                <a style="font-size: smaller;" class="d-block text-white"> Jefe de Asesorías </a>
+                            @break
 
                             @case(6)
-                                <a class="d-block text-white" > Defensor </a>
-                                @break
+                                <a style="font-size: smaller;" class="d-block text-white"> Defensor </a>
+                            @break
 
                             @case(7)
-                                <a class="d-block text-white" > Asesor </a>
-                                @break
+                                <a style="font-size: smaller;" class="d-block text-white"> Asesor </a>
+                            @break
 
                             @default
-                                <a class="d-block text-white" > Rol no identificado </a>
+                                <a style="font-size: smaller;" class="d-block text-white"> Rol no identificado </a>
                         @endswitch
-
-
-                        
                     </div>
                 </div>
-
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
@@ -187,30 +157,24 @@
                                 </p>
                             </router-link>
                         </li>
-
-                        
-                        
                         <li class="nav-item">
                             <router-link to="/expedientes" class="nav-link" active-class="active">
                                 <i class="nav-icon fas fa-file"></i>
                                 <p>
-                                    Expedientes 
+                                    Expedientes
                                 </p>
                             </router-link>
                         </li>
-
-
                         <li class="nav-item">
                             <router-link to="/calendario" class="nav-link" active-class="active">
                                 <i class="nav-icon fas fa-calendar-days"></i>
                                 <p>
-                                    Calendario 
+                                    Audiencias
                                 </p>
                             </router-link>
                         </li>
-
                         <!-- Catalogo -->
-                        @if (session('rol') === '1' || session('rol') === 'administrador' )
+                        @if (session('rol') === '1' || session('rol') === 'administrador')
                             <li class="nav-item ">
                                 <a href="#" class="nav-link">
                                     <i class="nav-icon fas fa-database"></i>
@@ -226,23 +190,10 @@
 
                                             <i class="nav-icon fas fa-users fa-solid"></i>
                                             <p>
-                                                Defensores
+                                                Usuarios
                                             </p>
                                         </router-link>
                                     </li>
-
-                                    <li class="nav-item">
-                                        <router-link to="/Usuarios" class="nav-link" active-class="active">
-
-
-                                            <i class="nav-icon fas fa-solid fa-user"></i>
-                                            <p>
-                                                Cuentas
-                                            </p>
-                                        </router-link>
-                                    </li>
-
-
                                     <!-- Catalogo 2 -->
                                     <li class="nav-item">
                                         <router-link to="/Delito" class="nav-link" active-class="active">
@@ -305,18 +256,6 @@
                                         </router-link>
                                     </li>
                                     <!-- Catalogo 8 -->
-                                    <!-- 
-                                    <li class="nav-item">
-                                        <router-link to="/Conclusion" class="nav-link" active-class="active">
-
-                                            <i class="nav-icon fas fa-table fa-solid"></i>
-                                            <p>
-                                                Conclusión
-                                            </p>
-                                        </router-link>
-                                    </li>
-                                    -->
-                                    <!-- Catalogo 9 -->
                                     <li class="nav-item">
                                         <router-link to="/coordinaciones" class="nav-link" active-class="active">
 
@@ -326,7 +265,6 @@
                                             </p>
                                         </router-link>
                                     </li>
-                                    <!-- ---------------------------------------------------------------- -->
                                 </ul>
                             </li>
                         @endif
@@ -348,14 +286,10 @@
         </aside>
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
+        <div class="content-wrapper pb-3">
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <!-- Small boxes (Stat box) -->
-                    <div class="row">
-                    </div>
-                    <!-- /.row -->
                     <!-- Main row -->
                     <div class="row">
                         <div class="container">
@@ -370,18 +304,13 @@
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
-        <footer class="main-footer">
-            <!-- <strong>Copyright &copy; 2023 <a href="https://adminlte.io"> IDPET </a>.</strong> -->
-            <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 0.1.0
+        <footer class="main-footer ">
+            <div class="float-right d-none d-sm-inline-block mb-2 mr-3">
+                Version 1.0.0
             </div>
         </footer>
 
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
+
     </div>
     <!-- ./wrapper -->
 

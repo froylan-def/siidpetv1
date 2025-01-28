@@ -14,6 +14,7 @@ class Impugnacion extends Model
     protected $fillable = [
         'nombre',
         'fecha_impugnacion',
+        'observaciones',
         'activo',
     ];
 

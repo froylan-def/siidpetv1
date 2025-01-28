@@ -14,15 +14,15 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                <button class="btn btn-success mb-2" data-toggle="modal" data-target="#modalAgregarVictima"
-                    @click="abrirModalRegistro">
-                    <i class="fas fa-user-plus"></i> Registrar nuevo
-                </button>
 
-                <button class="btn btn-primary mb-2 ml-2" data-toggle="modal" data-target="#modalSeleccionarVictima"
-                    @click="obtenerVictimasModal">
-                    <i class="fas fa-user-plus"></i> Agregar
-                </button>
+                <div class="btn-group d-flex mb-3">
+                    <button class="btn btn-success mb-2" data-toggle="modal" data-target="#modalAgregarVictima"
+                    @click="abrirModalRegistro"> <i class="fa-solid fa-floppy-disk"> </i> Registrar Nuevo</button>
+                    <button class="btn btn-primary mb-2 ml-2" data-toggle="modal" data-target="#modalSeleccionarVictima"
+                    @click="obtenerVictimasModal"> <i class="fa-regular fa-square-check"></i> Agregar existente</button>
+                </div>
+                
+                
                 
                 <div class="row">
                     <div class="collapse" id="collapseExample">
@@ -46,7 +46,7 @@
         </div>
         <div class="modal fade" id="modalAgregarVictima" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
                 <div class="modal-content">
                     <form @submit.prevent="actualizarUsuarioCheck === false ? registrarVictima : actualizarUsuario"
                         @keydown="form.onKeydown($event)">
@@ -424,9 +424,6 @@ export default {
                 Swal.fire('Debe seleccionar un imputado', '', 'info')
             }else{
                 try {
-                    // console.log("Victimas seleccionada en modal");
-                    // console.log( this.victimaSeleccionadoEnModal );
-                    
                     const response = this.axios.post('/victimasExpediente', {
                         id_expediente: this.$route.params.id,
                         id_victima: this.victimaSeleccionadoEnModal
@@ -444,6 +441,7 @@ export default {
                 });
                 $('#modalSeleccionarVictima').modal('hide');
                 this.obtenerVictimas();
+                this.actualizarInformacion();
 
             }
         },
@@ -562,7 +560,7 @@ export default {
             try {
                 this.axios.get('/victimasPorExpediente/'+ this.$route.params.id +'/' ).then((response) => {
                 this.items = response.data;
-                this.actualizarInformacion();
+                
             })
             } catch (error) {
                 console.error('Error obteniendo los imputadors:', error);
@@ -693,4 +691,9 @@ export default {
         width: 300px;
         height: 400px;
     }
+
+    .customize-table {
+        border-radius: 10px; /* Cambia a la medida deseada */
+        overflow: hidden; /* Esto asegura que los bordes de la tabla no sobresalgan */
+      }
     </style>

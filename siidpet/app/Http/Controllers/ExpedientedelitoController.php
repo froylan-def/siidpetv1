@@ -60,18 +60,16 @@ class ExpedientedelitoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function delitosExpediente($id)
     {
-        //
-        //Se obtiene el registro de la base de datos
-        $delito = ExpedienteDelito::find($id);
+        $delitos = ExpedienteDelito::with('expediente', 'delito')
+        ->where('id_expediente', $id)
+        ->get();
 
-        //Compara si la consulta encontró datos
         if ($delito) {
             return response()->json(['mensaje' => 'Delito no encontrado'], 404);
         }
 
-        //Lo retorna con un código 201
         return response()->json(['delito' => $delito], 201);
     }
 

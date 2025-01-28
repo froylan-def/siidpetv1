@@ -53,8 +53,27 @@ class UserController extends Controller
         ]);
         
         
-        $id = DB::table('users')->insertGetId([
+        $id_usuario = DB::table('users')->insertGetId([
             'email' => $request->input('email'),
+            'gender' => $request->input('gender'),
+            'activo' => $request->input('activo'),
+            'phone' => $request->input('phone'),
+            'name' => $request->input('name'),
+            'fathername' => $request->input('fathername'),
+            'mothername' => $request->input('mothername'),
+            'password' => Hash::make($request->input('password')),
+            'created_at' => date('Y-m-d'),
+            'IDRol' => $request->input('IDRol')
+        ]);
+
+
+        $id = DB::table('defensor')->insertGetId([
+
+            'id_usuario' => $request->input('email'),
+            'id_municipio' => $request->input('email'),
+            'id_coordinacion' => $request->input('email'),
+            'activo' => 1,
+
             'gender' => $request->input('gender'),
             'activo' => $request->input('activo'),
             'phone' => $request->input('phone'),

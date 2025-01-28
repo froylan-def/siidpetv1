@@ -1,251 +1,246 @@
 <template>
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Expediente </h1>
+    <div class="row">
+        <div class="content-header">
+            <div class="bg-primary text-white p-3 rounded d-flex justify-content-between align-items-center">
+                <h1 class="h5">Expediente {{ expediente.nuc }} </h1>
+                <span>UGI: {{ expediente.id_ugi }} </span>
+            </div>
+        </div>
+        <div class="container" >
+            <div class="nav-tabs-wrapper" style="overflow-x: auto; white-space: nowrap;" ref="tabsContainer">
+                <ul class="nav nav-pills mb-4">
+                    <a @click="this.$router.push('/expedientes')" class="btn btn-link mr-2"> <i
+                            class="fa-solid fa-angle-left"></i> Regresar</a>
+                    <li class="nav-item">
+                        <a @click="changeOption(1)" class="nav-link" :class="{ active: isActiveTab(1) }" href="#tab_1"
+                            data-toggle="tab">
+                            Grupo 1
+                        </a>
+                    </li>
+                    <li class="nav-item"><a @click="changeOption(2)" class="nav-link"
+                            :class="{ active: isActiveTab(2) }" href="#tab_2" data-toggle="tab"> Grupo 2 </a></li>
+                    <li class="nav-item"><a @click="changeOption(3)" class="nav-link"
+                            :class="{ active: isActiveTab(3) }" href="#tab_3" data-toggle="tab">
+                            Grupo 3 </a>
+                    </li>
+                    <li class="nav-item"><a @click="changeOption(4)" class="nav-link"
+                            :class="{ active: isActiveTab(4) }" href="#tab_4" data-toggle="tab">
+                            Grupo 4 </a>
+                    </li>
+
+                    <li class="nav-item"><a @click="changeOption(5)" class="nav-link"
+                            :class="{ active: isActiveTab(5) }" href="#tab_5" data-toggle="tab">
+                            Grupo 5 </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <!-- Columna 3 -->
+                <div class="col-md-3 col-12 d-flex flex-column">
+                    <div class="card flex-fill mb-2">
+                        <div class="card-body">
+                            <h6 class="text-primary">Imputado</h6>
+
+                            <ul v-if="this.imputados.length === 0" style="font-size: smaller; list-style: none;"
+                                class="pl-0">
+                                <li>No hay procesados registrados</li>
+                            </ul>
+
+                            <ul v-else style="font-size: smaller; list-style: none;" v-for="imputado in this.imputados"
+                                :key="imputado.nombres" class="pl-0">
+                                <li>
+                                    {{ imputado.nombres }}
+                                    {{ imputado.apellido_paterno }}
+                                    {{ imputado.apellido_materno }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card flex-fill mb-2">
+                        <div class="card-body">
+                            <h6 class="text-primary ">Víctimas</h6>
+                            <ul v-if="this.victimas.length == 0" style="font-size: smaller; list-style: none;"
+                                class="pl-0">
+                                <li>No hay victimas registradas</li>
+                            </ul>
+                            <ul v-for="victima in this.victimas" :key="victima.nombres"
+                                style="font-size: smaller; list-style: none;" class="pl-0">
+                                <li>
+                                    {{ victima.nombres }}
+                                    {{ victima.apellido_paterno }}
+                                    {{ victima.apellido_materno }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card flex-fill mb-2">
+                        <div class="card-body">
+                            <h6 class="text-primary">Delito</h6>
+                            <ul v-if="this.delitos.length === 0" style="font-size: smaller; list-style: none;"
+                                class="pl-0">
+                                <li>No hay delitos registrados</li>
+                            </ul>
+                            <ul v-for="delito in this.delitos" :key="delitos.id"
+                                style="font-size: smaller; list-style: none;" class="pl-0">
+                                <li>
+                                    {{ delito.nombre }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card flex-fill mb-2">
+                        <div class="card-body">
+                            <h6 class="text-primary">Carpeta Procesal </h6>
+                            <ul v-if="this.expediente.carpeta_procesal === '' || this.expediente.carpeta_procesal === null"
+                                style="font-size: smaller; list-style: none;" class="pl-0">
+                                <li>No hay C.P. registrada</li>
+                            </ul>
+
+                            <ul style="font-size: smaller; list-style: none;" class="pl-0">
+                                <li>
+                                    {{ this.expediente.carpeta_procesal }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna 9 -->
+                <div class="col-md-9 col-12 d-flex flex-column">
+                    <div class="card h-100 mb-2">
+                        <div class="card-body ">
+                            <div class="tab-content">
+                                <div class="tab-pane" :class="{ active: isActiveTab(1) }" id="tab_1">
+
+                                    <Tabs :tabs="tabsGrupo1">
+                                        <template #entrevista>
+                                            <entrevista></entrevista>
+                                        </template>
+                                        <template #imputado>
+                                            <CmpImputados @llamar-funcion="obtenerExpediente"></CmpImputados>
+                                        </template>
+                                        <template #delito>
+                                            <CmpDelito @llamar-funcion="obtenerExpediente"></CmpDelito>
+                                        </template>
+                                        <template #victima>
+                                            <CmpVictima @llamar-funcion="obtenerExpediente"></CmpVictima>
+                                        </template>
+                                        <template #flagrancia>
+                                            <CmpFlagrancia></CmpFlagrancia>
+                                        </template>
+                                        <template #determinacion_mp>
+                                            <CmpDeterminacion></CmpDeterminacion>
+                                        </template>
+                                    </Tabs>
+
+                                </div>
+                                <div class="tab-pane" :class="{ active: isActiveTab(2) }" id="tab_2">
+                                    <Tabs :tabs="tabsGrupo2">
+                                        <template #orden_aprehension>
+                                            <CmpOrdenAprehension></CmpOrdenAprehension>
+                                        </template>
+                                        <template #medidas_proteccion>
+                                            <CmpAsignacionMedidas></CmpAsignacionMedidas>
+                                        </template>
+                                        <template #acuerdo_sede_ministerial>
+                                            <CmpAcuerdoSedeMinisterial></CmpAcuerdoSedeMinisterial>
+                                        </template>
+                                        <template #carpeta_procesal>
+                                            <CmpCarpetaProcesal @llamar-funcion="obtenerExpediente">
+                                            </CmpCarpetaProcesal>
+                                        </template>
+                                        <template #audiencia_inicial>
+                                            <CmpAudienciaInicial></CmpAudienciaInicial>
+                                        </template>
+                                    </Tabs>
+                                </div>
+                                <div class="tab-pane" :class="{ active: isActiveTab(3) }" id="tab_3">
+                                    <Tabs :tabs="tabsGrupo3">
+                                        <template #cita_mecanismos>
+                                            <CmpCitaMecanismos></CmpCitaMecanismos>
+                                        </template>
+                                        <template #acuerdo_reparatorio>
+                                            <CmpAcuerdoReparatorio></CmpAcuerdoReparatorio>
+                                        </template>
+                                        <template #imputacion>
+                                            <CmpImputadacion></CmpImputadacion>
+                                        </template>
+                                        <template #investigacion_complementaria>
+                                            <CmpInvestigacionComplementaria></CmpInvestigacionComplementaria>
+                                        </template>
+                                        <template #plazo_investigacion_complementaria>
+                                            <CmpProrrogaPlazoInvestigacionComplementaria>
+                                            </CmpProrrogaPlazoInvestigacionComplementaria>
+                                        </template>
+                                        <template #medida_cautelar>
+                                            <CmpMedidaCautelar></CmpMedidaCautelar>
+                                        </template>
+                                    </Tabs>
+                                </div>
+                                <div class="tab-pane" :class="{ active: isActiveTab(4) }" id="tab_4">
+                                    <Tabs :tabs="tabsGrupo4">
+                                        <template #audiencia_intermedia>
+                                            <CmpAudienciaIntermedia></CmpAudienciaIntermedia>
+                                        </template>
+                                        <template #suspension_condicional_proceso>
+                                            <CmpSuspencionCondicionalProceso></CmpSuspencionCondicionalProceso>
+                                        </template>
+                                        <template #procedimiento_abreviado>
+                                            <CmpProcedimientoAbreviado></CmpProcedimientoAbreviado>
+                                        </template>
+                                        <template #juicio>
+                                            <CmpJuicio></CmpJuicio>
+                                        </template>
+                                        <template #tribunal_enjuiciamiento>
+                                            <CmpTribunalEnjuiciamiento></CmpTribunalEnjuiciamiento>
+                                        </template>
+                                        <template #sentencia_juicio>
+                                            <CmpSentenciaJuicio></CmpSentenciaJuicio>
+                                        </template>
+                                    </Tabs>
+                                </div>
+                                <div class="tab-pane" :class="{ active: isActiveTab(5) }" id="tab_5">
+                                    <Tabs :tabs="tabsGrupo5">
+                                        <template #conclusion>
+                                            <CmpConclusion></CmpConclusion>
+                                        </template>
+                                        <template #visita_carcelaria>
+                                            <CmpVisitaCarcelaria></CmpVisitaCarcelaria>
+                                        </template>
+                                        <template #impugnacion>
+                                            <CmpImpugnacion></CmpImpugnacion>
+                                        </template>
+                                        <template #examen_detencion>
+                                            <CmpExamenDetencion></CmpExamenDetencion>
+                                        </template>
+                                        <template #ppl>
+                                            <CmpPpl></CmpPpl>
+                                        </template>
+                                    </Tabs>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- /.content-header -->
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-header d-flex p-0">    
-                        <a  @click="this.$router.push('/expedientes')" class="cursor-pointer mt-3 mb-3 ml-3 " style="cursor: pointer;">
-                            <i class="fa-solid fa-arrow-left"></i>
-                            Volver a expedientes
-                        </a>
+    <!-- Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
                     </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        
-                        <div class="row">
-                            <div class="col-6 text-left">
-                                <small > Foja </small>
-                            </div>
-                            <div class="col-6 text-right">
-                                <span class="badge" style="background-color: #af1e44">{{ expediente.foja }}</span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6 text-left">
-                                <small > UGI </small>
-                            </div>
-                            <div class="col-6 text-right">
-                                <span class="badge" style="background-color: #af1e44">{{ expediente.id_ugi }} 
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6 text-left">
-                                <small > NUC </small>
-                            </div>
-                            <div class="col-6 text-right">
-                                <span class="badge" style="background-color: #af1e44"> {{ expediente.nuc }} </span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6 text-left">
-                                <small > Imputados </small>
-                            </div>
-                            <div class="col-12 text-right mt-2">
-
-                                <span v-if="this.imputados.length == 0">No hay imputados registrados</span>
-                                <table class="table table-small">
-                                    
-                                    <tbody>
-                                      <tr v-for="imputado in this.imputados" :key="imputado.nombres">
-                                        <td>{{ imputado.nombres }}
-                                        {{ imputado.apellido_paterno }}
-                                        {{ imputado.apellido_materno }}</td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6 text-left">
-                                <small > Victimas </small>
-                            </div>
-                            <div class="col-12 text-right mt-2">
-
-                                <span v-if="this.imputados.length == 0">No hay victimas registrados</span>
-                                <table class="table table-small">
-                                    
-                                    <tbody>
-                                      <tr v-for="victima in this.victimas" :key="victima.nombres">
-                                        <td>{{ victima.nombres }}
-                                        {{ victima.apellido_paterno }}
-                                        {{ victima.apellido_materno }}</td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                            </div>
-                        </div>
-
-
-                    </div>
-                    <!-- /.card-body -->
+                    <p class="mt-3">Cargando expediente, por favor espere ...</p>
                 </div>
             </div>
-            <div class="col-md-9">
-                <!-- Custom Tabs -->
-                <div class="card">
-                    
-                    <div class="nav-tabs-wrapper" style="overflow-x: auto; white-space: nowrap;" ref="tabsContainer">
-                        
-
-                        <button class="scroll-btn scroll-left" @click="scrollTabs(-100)">
-                            &#10094;
-                        </button>
-
-                        <ul class="nav nav-tabs ml-auto p-2" style="flex-wrap: nowrap;">
-                            <li class="nav-item">
-                                <a @click="changeOption(1)" class="nav-link" :class="{ active: isActiveTab(1) }" href="#tab_1" data-toggle="tab">
-                                     Entrevista
-                                </a>
-                            </li>
-
-                            <li class="nav-item"><a @click="changeOption(2)" class="nav-link" :class="{ active: isActiveTab(2) }" href="#tab_2" data-toggle="tab">  Imputado</a></li>
-
-                            <li class="nav-item"><a @click="changeOption(3)" class="nav-link" :class="{ active: isActiveTab(3) }" href="#tab_3" data-toggle="tab">
-                                
-                                Delito</a>
-                            </li>
-                            
-                            <li class="nav-item"><a @click="changeOption(4)" class="nav-link" :class="{ active: isActiveTab(4) }" href="#tab_4" data-toggle="tab">
-                                
-                                Victima</a>
-                            </li>
-                            
-                            <li class="nav-item"><a @click="changeOption(5)" class="nav-link" :class="{ active: isActiveTab(5) }" href="#tab_5" data-toggle="tab">
-                                
-                                Flagrancia</a>
-                            </li>
-
-                            <li class="nav-item"><a @click="changeOption(6)" class="nav-link" :class="{ active: isActiveTab(6) }" href="#tab_6" data-toggle="tab">
-                                
-                                
-
-                                Determinación MP</a></li>
-                            <li class="nav-item"><a @click="changeOption(7)" class="nav-link" :class="{ active: isActiveTab(7) }" href="#tab_7" data-toggle="tab">
-                                
-                                
-
-                                Asignación de medidas</a></li>
-                            <li class="nav-item"><a @click="changeOption(8)" class="nav-link" :class="{ active: isActiveTab(8) }" href="#tab_8" data-toggle="tab">
-                                
-                                
-
-                                Acuerdo sede ministerial</a></li>
-                            <li class="nav-item"><a @click="changeOption(9)" class="nav-link" :class="{ active: isActiveTab(9) }" href="#tab_9" data-toggle="tab">
-                                
-                                
-                                
-
-                                Carpeta procesal</a></li>
-                            <li class="nav-item"><a @click="changeOption(10)" class="nav-link" :class="{ active: isActiveTab(10) }" href="#tab_10" data-toggle="tab">
-                                
-                                
-
-
-                                Audiencia inicial</a></li>
-                            <li class="nav-item"><a @click="changeOption(11)" class="nav-link" :class="{ active: isActiveTab(11) }" href="#tab_11" data-toggle="tab">
-                                
-
-
-                                Juez de control</a></li>
-                            <li class="nav-item"><a @click="changeOption(12)" class="nav-link" :class="{ active: isActiveTab(12) }" href="#tab_12" data-toggle="tab">
-                                
-
-                                Defensor en audiencia</a></li>
-                            <li class="nav-item"><a @click="changeOption(13)" class="nav-link" :class="{ active: isActiveTab(13) }" href="#tab_13" data-toggle="tab">
-                                
-
-                                Cita mecanismos</a></li>
-                            <li class="nav-item"><a @click="changeOption(14)" class="nav-link" :class="{ active: isActiveTab(14) }" href="#tab_14" data-toggle="tab">
-                                
-                                Acuerdo reparatorio</a></li>
-                            <li class="nav-item"><a @click="changeOption(15)" class="nav-link" :class="{ active: isActiveTab(15) }" href="#tab_15" data-toggle="tab">
-                                
-                                Imputación</a></li>
-                        </ul>
-
-                        <!-- Botón para desplazar a la derecha -->
-                        <button class="scroll-btn scroll-right" @click="scrollTabs(100)">
-                            &#10095;
-                        </button>
-
-
-
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <div class="tab-content">
-                            
-                            <div class="tab-pane" :class="{ active: isActiveTab(1) }" id="tab_1">
-                                <entrevista></entrevista>
-                            </div>
-                            <div class="tab-pane" :class="{ active: isActiveTab(2) }" id="tab_2">
-                                <CmpImputados @llamar-funcion="obtenerExpediente"></CmpImputados>
-                            </div>
-                            <div class="tab-pane" :class="{ active: isActiveTab(3) }" id="tab_3">
-                                <CmpDelito></CmpDelito>
-                            </div>
-                            <div class="tab-pane" :class="{ active: isActiveTab(4) }" id="tab_4">
-                                <CmpVictima @llamar-funcion="obtenerExpediente"></CmpVictima>
-                            </div>
-                            <div class="tab-pane" :class="{ active: isActiveTab(5) }" id="tab_5">
-                                <CmpFlagrancia></CmpFlagrancia>
-                            </div>
-                            <div class="tab-pane" :class="{ active: isActiveTab(6) }" id="tab_6">
-                                <CmpDeterminacion></CmpDeterminacion>
-                            </div>
-                            <div class="tab-pane" :class="{ active: isActiveTab(7) }" id="tab_7">
-                                <CmpAsignacionMedidas></CmpAsignacionMedidas>
-                            </div>
-                            <div class="tab-pane" :class="{ active: isActiveTab(8) }" id="tab_8">
-                                <CmpAcuerdoSedeMinisterial></CmpAcuerdoSedeMinisterial>
-                            </div>
-                            <div class="tab-pane" :class="{ active: isActiveTab(9) }" id="tab_9">
-                                <CmpCarpetaProcesal></CmpCarpetaProcesal>
-                            </div>
-                            <div class="tab-pane" :class="{ active: isActiveTab(10) }" id="tab_10">
-                                <CmpAudienciaInicial></CmpAudienciaInicial>
-                            </div>
-                            <div class="tab-pane" :class="{ active: isActiveTab(11) }" id="tab_11">
-                                <CmpJuezControl></CmpJuezControl>
-                            </div>
-                            <div class="tab-pane" :class="{ active: isActiveTab(12) }" id="tab_12">
-                                <CmpDefensorAudicencia></CmpDefensorAudicencia>
-                            </div>
-                            <div class="tab-pane" :class="{ active: isActiveTab(13) }" id="tab_13">
-                                <CmpCitaMecanismos></CmpCitaMecanismos>
-                            </div>
-                            <div class="tab-pane" :class="{ active: isActiveTab(14) }" id="tab_14">
-                                <CmpAcuerdoReparatorio></CmpAcuerdoReparatorio>
-                            </div>
-                            <div class="tab-pane" :class="{ active: isActiveTab(15) }" id="tab_15">
-                               <CmpImputadacion></CmpImputadacion>
-                            </div>
-                        </div>
-                        <!-- /.tab-content -->
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- ./card -->
-            </div>
-            <!-- /.col -->
         </div>
-        <!-- /.row -->
     </div>
 </template>
 
@@ -266,12 +261,29 @@ import CmpJuezControl from './componentes/CmpJuezControl.vue';
 import CmpDefensorAudicencia from './componentes/CmpDefensorAudiencia.vue';
 import CmpCitaMecanismos from './componentes/CmpCitaMecanismos.vue';
 import CmpAcuerdoReparatorio from './componentes/CmpAcuerdoReparatorio.vue';
-
 import CmpImputadacion from './componentes/CmpImputacion.vue';
+import CmpInvestigacionComplementaria from './componentes/CmpInvestigacionComplementaria.vue';
+import CmpProrrogaPlazoInvestigacionComplementaria from './componentes/CmpProrrogaPlazoInvestigacionComplementaria.vue';
+import CmpMedidaCautelar from './componentes/CmpMedidaCautelar.vue';
+import CmpAudienciaIntermedia from './componentes/CmpAudienciaIntermedia.vue';
+import CmpSuspencionCondicionalProceso from './componentes/CmpSuspencionCondicionalProceso.vue';
+import CmpProcedimientoAbreviado from './componentes/CmpProcedimientoAbreviado.vue';
+import CmpJuicio from './componentes/CmpJuicio.vue';
+import CmpTribunalEnjuiciamiento from './componentes/CmpTribunalEnjuiciamiento.vue';
+import CmpSentenciaJuicio from './componentes/CmpSentenciaJuicio.vue';
+import CmpConclusion from './componentes/CmpConclusion.vue';
+import CmpVisitaCarcelaria from './componentes/CmpVisitaCarcelaria.vue';
+import CmpImpugnacion from './componentes/CmpImpugnacion.vue';
+import CmpOrdenAprehension from './componentes/CmpOrdenAprehension.vue';
+import CmpExamenDetencion from './componentes/CmpExamenDetencion.vue';
+import CmpPpl from './componentes/CmpPpl.vue';
 
+import Tabs from "../Tabs.vue";
+import TabsSuperior from "../TabsSuperior.vue";
 
 export default {
     name: 'ExpedienteTabs',
+
     components: {
         entrevista,
         CmpImputados,
@@ -287,10 +299,77 @@ export default {
         CmpDefensorAudicencia,
         CmpCitaMecanismos,
         CmpAcuerdoReparatorio,
-        CmpImputadacion
+        CmpImputadacion,
+        CmpInvestigacionComplementaria,
+        CmpProrrogaPlazoInvestigacionComplementaria,
+        CmpMedidaCautelar,
+        CmpAudienciaIntermedia,
+        CmpSuspencionCondicionalProceso,
+        CmpProcedimientoAbreviado,
+        CmpJuicio,
+        CmpTribunalEnjuiciamiento,
+        CmpSentenciaJuicio,
+        CmpConclusion,
+        CmpVisitaCarcelaria,
+        CmpImpugnacion,
+        CmpOrdenAprehension,
+        CmpExamenDetencion,
+        CmpPpl,
+        Tabs,
+        TabsSuperior
     },
     data() {
         return {
+            componentesSuperior: [
+                { label: "Entrevista", name: "entrevista" },
+                { label: "Imputado", name: "imputado" },
+                { label: "Delito", name: "delito" },
+            ],
+            tabsGrupo1: [
+                { label: "Entrevista", name: "entrevista" },
+                { label: "Imputado", name: "imputado" },
+                { label: "Delito", name: "delito" },
+                { label: "Víctima", name: "victima" },
+                { label: "Flagrancia", name: "flagrancia" },
+                { label: "Determinación MP", name: "determinacion_mp" }
+            ],
+            tabsGrupo2: [
+                { label: "Orden Aprehensión", name: "orden_aprehension" },
+                { label: "Medidas de Protección", name: "medidas_proteccion" },
+                { label: "Acuerdo Sede Ministerial", name: "acuerdo_sede_ministerial" },
+                { label: "Carpeta Procesal", name: "carpeta_procesal" },
+                { label: "Audiencia Inicial", name: "audiencia_inicial" }
+            ],
+            tabsGrupo3: [
+                { label: "Cita Mecanismos", name: "cita_mecanismos" },
+                { label: "Acuerdo Reparatorio", name: "acuerdo_reparatorio" },
+                { label: "Imputación", name: "imputacion" },
+                { label: "Inv. Complementaria", name: "investigacion_complementaria" },
+                { label: "Plazo Inv. Compl.", name: "plazo_investigacion_complementaria" },
+                { label: "Medida Cautelar", name: "medida_cautelar" }
+            ],
+            tabsGrupo4: [
+                { label: "Audiencia Intermedia", name: "audiencia_intermedia" },
+                { label: "Suspensión Condicional Proceso", name: "suspension_condicional_proceso" },
+                { label: "Procedimiento Abreviado", name: "procedimiento_abreviado" },
+                { label: "Juicio", name: "juicio" },
+                { label: "Tribunal Enjuiciamiento", name: "tribunal_enjuiciamiento" },
+                { label: "Sentencia Juicio", name: "sentencia_juicio" }
+            ],
+            tabsGrupo5: [
+                { label: "Conclusión", name: "conclusion" },
+                { label: "Visita Carcelaria", name: "visita_carcelaria" },
+                { label: "Impugnación", name: "impugnacion" },
+                { label: "Examen Detención", name: "examen_detencion" },
+                { label: "PPL", name: "ppl" }
+            ],
+            tabList: [
+
+
+
+
+
+            ],
             activeTab: 1,
             expediente: {
                 foja: '',
@@ -299,40 +378,52 @@ export default {
             },
             imputados: [],
             victimas: [],
+            delitos: [],
+            loadingModal: null,
         };
     },
     watch: {
-        '$route' (to, from) {
+        '$route'(to, from) {
             this.menu = to.query.m;
         }
     },
     mounted() {
+        this.loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'), {
+            backdrop: 'static',
+            keyboard: false
+        });
+        this.loadingModal.show();
         this.obtenerExpediente();
     },
     methods: {
+        obtenerData() {
+            console.log("actualizado");
+        },
         scrollTabs(distance) {
             const container = this.$refs.tabsContainer;
             container.scrollBy({
-            left: distance,
-            behavior: 'smooth'
+                left: distance,
+                behavior: 'smooth'
             });
         },
-
         async obtenerExpediente() {
-            this.axios.get('/expediente/' + this.$route.params.id).then((response) => {
+            await this.axios.get('/expediente/' + this.$route.params.id).then((response) => {
                 this.expediente = response.data.expediente;
             });
-
             this.imputados = [];
-            await this.axios.get('/imputadosPorExpediente/'+ this.$route.params.id +'/' ).then((response) => {
+            await this.axios.get('/imputadosPorExpediente/' + this.$route.params.id + '/').then((response) => {
                 this.imputados = response.data;
             })
-
             this.victimas = [];
-            await this.axios.get('/victimasPorExpediente/'+ this.$route.params.id +'/' ).then((response) => {
+            await this.axios.get('/victimasPorExpediente/' + this.$route.params.id + '/').then((response) => {
                 this.victimas = response.data;
             })
-
+            this.delitos = [];
+            await this.axios.get('/delitosPorExpediente/' + this.$route.params.id + '/').then((response) => {
+                this.delitos = response.data;
+            })
+            await this.loadingModal.hide();
+            
         },
         changeOption(option) {
             this.activeTab = option;
@@ -345,29 +436,21 @@ export default {
 </script>
 
 <style scoped>
-.nav-item {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    background-color: #f8f9fa;
-    margin-right: 2px;
+.nav-tabs .nav-link {
+    border-radius: 0.5rem 0.5rem 0 0;
+    transition: background-color 0.3s ease;
 }
 
-.nav-link {
-    padding: 10px 15px;
-    color: #495057;
+.nav-tabs .nav-link.active {
+    background-color: #007bff;
+    color: white;
 }
+</style>
 
-.nav-link:hover {
-    background-color: #e9ecef;
-}
-
-.nav-link.active {
-    background-color: #e9ecef;
-    color: #495057;
-}
-
+<style scoped>
 .table-small {
-    font-size: 12px; /* Ajusta el tamaño según tus necesidades */
+    font-size: 12px;
+    /* Ajusta el tamaño según tus necesidades */
 }
 
 .scroll-btn {
@@ -377,19 +460,20 @@ export default {
     cursor: pointer;
     padding: 10px;
     position: absolute;
-    top: 0; /* Poner el botón en la parte superior */
+    top: 0;
+    /* Poner el botón en la parte superior */
     display: flex;
-    justify-content: center; /* Centrar horizontalmente el ícono */
-    align-items: flex-start; /* Alinear el ícono al inicio (arriba) */
-    height: 20%; /* Ocupar todo el alto del contenedor */
+    justify-content: center;
+    align-items: flex-start;
+    height: 20%;
     z-index: 1;
-  }
-  .scroll-left {
-    left: 0;
-  }
-  .scroll-right {
-    right: 0;
-  }
+}
 
-  
+.scroll-left {
+    left: 0;
+}
+
+.scroll-right {
+    right: 0;
+}
 </style>

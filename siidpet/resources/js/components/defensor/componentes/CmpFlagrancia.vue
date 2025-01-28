@@ -12,41 +12,55 @@
     </div>
     <!-- /.content-header -->
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
+        
+        
+        <div class="row">
+
+            <div class="col-6">
                 <div class="form-group">
-                    <div class="row">
-
-                        <div class="form-group">
-                            Fecha * 
-                            <input v-model="form.fecha" type="date" class="form-control"
-                                id="fecha" aria-describedby="fecha" placeholder="">
-                            <div style="color: red;" v-if="form.errors.has('fecha')"
-                                v-html="form.errors.get('fecha')" />
-                        </div>
-
-                        <div class="form-group">
-                            Hora *
-                            <input v-model="form.hora" type="time" class="form-control"
-                                id="hora" aria-describedby="hora" placeholder="">
-                            <div style="color: red;" v-if="form.errors.has('hora')"
-                                v-html="form.errors.get('hora')" />
-                        </div>                        
-
-                        <div v-if="loading" class="spinner-border" role="status">
-                            <span class="sr-only">Cargando...</span>
-                        </div>
-
-                        <button v-else-if="!loading && esNuevo" type="button" class="btn btn-success float-right mb-1"
-                            @click="guardarFlagrancia"> Guardar </button>
-                        <button v-else type="button" class="btn btn-warning float-right mb-1" @click="editarFlagrancia">
-                            Actualizar </button>
-
-
-                    </div>
+                    Fecha * 
+                    <input v-model="form.fecha" type="date" class="form-control"
+                        id="fecha" aria-describedby="fecha" placeholder="">
+                    <div style="color: red;" v-if="form.errors.has('fecha')"
+                        v-html="form.errors.get('fecha')" />
                 </div>
+
             </div>
+
+            <div class="col-6">
+                <div class="form-group">
+                    Hora *
+                    <input v-model="form.hora" type="time" class="form-control"
+                        id="hora" aria-describedby="hora" placeholder="">
+                    <div style="color: red;" v-if="form.errors.has('hora')"
+                        v-html="form.errors.get('hora')" />
+                </div>  
+
+            </div>
+
+
+            
+
+                                    
+
+            
+
+
         </div>
+        
+
+        <div style="text-align: right;">
+            <div v-if="loading" class="spinner-border" role="status">
+                <span class="sr-only">Cargando...</span>
+            </div>
+            <button v-else-if="!loading && esNuevo"  class="btn btn-primary float-right"
+                @click="guardarFlagrancia"> <i class="fa-solid fa-floppy-disk"></i> Guardar </button>
+            <button v-else class="btn btn-primary float-right" @click="editarFlagrancia">
+                <i class="fa-solid fa-pen-to-square"></i> Actualizar </button>
+        </div>
+
+
+            
     </div>
 </template>
 

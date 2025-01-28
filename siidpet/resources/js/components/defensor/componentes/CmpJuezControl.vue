@@ -23,12 +23,12 @@
                             
                             
                             <div class="form-group">
-                                <label for="audiencia_inicial"> Juez de control </label>
-                                <v-select v-model="this.form.id_juez_control" :reduce="(option) => option.id"
+                                <label for="juezcontrol"> Juez de control </label>
+                                <v-select v-model="this.formJuezControl.id_juez_control" :reduce="(option) => option.id"
                                     :options="juecesOpciones">
                                 </v-select>
-                                <div style="color: red;" v-if="form.errors.has('id_juez_control')"
-                                    v-html="form.errors.get('id_juez_control')" /> 
+                                <div style="color: red;" v-if="formJuezControl.errors.has('id_juez_control')"
+                                    v-html="formJuezControl.errors.get('id_juez_control')" /> 
                             </div>
 
                             
@@ -58,13 +58,14 @@ import Swal from 'sweetalert2'
 export default {
     data() {
         return {
-            form: new Form({
+            formJuezControl: new Form({
                 id: '',
                 id_juez_control: ''
             }),
+            juecesOpciones: ref([]),
             esNuevo: ref(false),
             loading: ref(true),
-            juecesOpciones: ref([]),
+            
         }
     },
     mounted() {
@@ -91,7 +92,7 @@ export default {
                 if ( response.data.expediente.id_juez_control  == null) {
                     this.esNuevo = true;
                 } else {
-                    this.form.fill({
+                    this.formJuezControl.fill({
                         id: response.data.expediente.id,
                         id_juez_control : response.data.expediente.id_juez_control
                     });
@@ -100,13 +101,13 @@ export default {
             })
         },
         editarJuez() {
-            this.form.errors.clear();
+            this.formJuezControl.errors.clear();
             let error = this.validarFomrulario();
             if(error){
                 return
             }
 
-            this.axios.put('/expediente/' + this.$route.params.id + '/', this.form).then((response) => {
+            this.axios.put('/expediente/' + this.$route.params.id + '/', this.formJuezControl).then((response) => {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
@@ -119,13 +120,13 @@ export default {
             })
         },
         guardarJuez() {
-            this.form.errors.clear();
+            this.formJuezControl.errors.clear();
             let error = this.validarFomrulario();
             if(error){
                 return
             }
 
-            this.axios.put('/expediente/' + this.$route.params.id +'/', this.form).then((response) => {
+            this.axios.put('/expediente/' + this.$route.params.id +'/', this.formJuezControl).then((response) => {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
@@ -141,9 +142,10 @@ export default {
         validarFomrulario(){
 
             let error = false;
+            
 
-            if( this.form.id_juez_control === null || this.form.id_juez_control === "" ){
-                this.form.errors.set('id_juez_control', 'Este campo es requerido');
+            if( this.formJuezControl.id_juez_control === null || this.formJuezControl.id_juez_control === "" ){
+                this.formJuezControl.errors.set('id_juez_control', 'Este campo es requerido');
                 error = true; 
             }
 

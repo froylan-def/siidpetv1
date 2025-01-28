@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h5 class="m-0"> Defensor en audiencia </h5>
+                    <h5 class="m-0"> Defensor que cubre audiencia </h5>
                 </div><!-- /.col -->
             </div><!-- /.row -->
             <small class="text-muted"> Porfavor llene los campos. Para ingresar una fecha da clic en el icono del calendario. </small>
@@ -19,19 +19,19 @@
                         <div class="form-group">
                             <div class="form-group">
                                 <label for="audiencia_inicial"> Defensor en audiencia </label>
-                                <v-select v-model="this.form.id_defensor_audiencia" :reduce="(option) => option.id"
+                                <v-select v-model="this.formDefensor.id_defensor_audiencia" :reduce="(option) => option.id"
                                     :options="defensoresOpciones">
                                 </v-select>
-                                <div style="color: red;" v-if="form.errors.has('id_defensor_audiencia')"
-                                    v-html="form.errors.get('id_defensor_audiencia')" /> 
+                                <div style="color: red;" v-if="formDefensor.errors.has('id_defensor_audiencia')"
+                                    v-html="formDefensor.errors.get('id_defensor_audiencia')" /> 
                             </div>
                         </div>                      
                         <div v-if="loading" class="spinner-border" role="status">
                             <span class="sr-only">Cargando...</span>
                         </div>
                         <button v-else-if="!loading && esNuevo" type="button" class="btn btn-success float-right mb-1"
-                            @click="guardarJuez"> Guardar </button>
-                        <button v-else type="button" class="btn btn-warning float-right mb-1" @click="editarJuez">
+                            @click="guardarDefensor"> Guardar </button>
+                        <button v-else type="button" class="btn btn-warning float-right mb-1" @click="editarDefensor">
                             Actualizar </button>
                     </div>
                 </div>
@@ -48,13 +48,14 @@ import Swal from 'sweetalert2'
 export default {
     data() {
         return {
-            form: new Form({
+            formDefensor: new Form({
                 id: '',
                 id_defensor_audiencia: ''
             }),
+            defensoresOpciones: ref([]),
             esNuevo: ref(false),
             loading: ref(true),
-            defensoresOpciones: ref([]),
+            
         }
     },
     mounted() {
@@ -80,7 +81,7 @@ export default {
                 if ( response.data.expediente.id_defensor_audiencia  == null || response.data.expediente.id_defensor_audiencia == "") {
                     this.esNuevo = true;
                 } else {
-                    this.form.fill({
+                    this.formDefensor.fill({
                         id: response.data.expediente.id,
                         id_defensor_audiencia : response.data.expediente.id_defensor_audiencia
                     });
@@ -88,14 +89,14 @@ export default {
                 this.loading = false;
             })
         },
-        editarJuez() {
-            this.form.errors.clear();
+        editarDefensor() {
+            this.formDefensor.errors.clear();
             let error = this.validarFomrulario();
             if(error){
                 return
             }
 
-            this.axios.put('/expediente/' + this.$route.params.id + '/', this.form).then((response) => {
+            this.axios.put('/expediente/' + this.$route.params.id + '/', this.formDefensor).then((response) => {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
@@ -107,14 +108,14 @@ export default {
                 this.obtenerDefensor();
             })
         },
-        guardarJuez() {
-            this.form.errors.clear();
+        guardarDefensor() {
+            this.formDefensor.errors.clear();
             let error = this.validarFomrulario();
             if(error){
                 return
             }
 
-            this.axios.put('/expediente/' + this.$route.params.id +'/', this.form).then((response) => {
+            this.axios.put('/expediente/' + this.$route.params.id +'/', this.formDefensor).then((response) => {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
@@ -133,8 +134,8 @@ export default {
 
             let error = false;
 
-            if( this.form.id_defensor_audiencia === null || this.form.id_defensor_audiencia === "" ){
-                this.form.errors.set('id_defensor_audiencia', 'Este campo es requerido');
+            if( this.formDefensor.id_defensor_audiencia === null || this.formDefensor.id_defensor_audiencia === "" ){
+                this.formDefensor.errors.set('id_defensor_audiencia', 'Este campo es requerido');
                 error = true; 
             }
 

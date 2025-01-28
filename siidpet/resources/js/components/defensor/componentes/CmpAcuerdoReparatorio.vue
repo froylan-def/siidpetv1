@@ -8,54 +8,58 @@
                 </div><!-- /.col -->
             </div><!-- /.row -->
 
-            <small class="text-muted"> Porfavor llene los campos. Para ingresar una fecha da clic en el icono del calendario. </small>
+            <small class="text-muted"> Porfavor llene los campos. Para ingresar una fecha da clic en el icono del
+                calendario. </small>
 
 
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <div class="row">               
-                        <div class="form-group col-md-6">
-                            <label for="Fecha inicio">Fecha inicio</label>
-                            <input v-model="this.form.fecha_inicio" type="date" class="form-control" id="fecha_inicio"
-                                aria-describedby="fecha_inicio">
-                            <div style="color: red;" v-if="this.form.errors.has('fecha_inicio')"
-                                v-html="this.form.errors.get('fecha_inicio')" />
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="Fecha fin">Fecha fin</label>
-                            <input v-model="this.form.fecha_fin" type="date" class="form-control" id="fecha_fin"
-                                aria-describedby="fecha_fin">
-                            <div style="color: red;" v-if="this.form.errors.has('fecha_fin')"
-                                v-html="this.form.errors.get('fecha_fin')" />
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label for="resultado">Resultado</label>
-                            <textarea v-model="this.form.resultado" class="form-control" rows="4" id="resultado" aria-describedby="resultado"></textarea>
-                            <div style="color: red;" v-if="this.form.errors.has('resultado')"
-                                v-html="this.form.errors.get('resultado')" />
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label for="observaciones">Observaciones</label>
-                            <textarea v-model="this.form.observaciones" class="form-control" rows="4" id="observaciones" aria-describedby="observaciones"></textarea>
-                            <div style="color: red;" v-if="this.form.errors.has('observaciones')"
-                                v-html="this.form.errors.get('observaciones')" />
-                        </div>
-                        <div v-if="loading" class="spinner-border" role="status">
-                            <span class="sr-only">Cargando...</span>
-                        </div>
-                        <button v-else-if="!loading && esNuevo" type="button" class="btn btn-success float-right mb-1"
-                            @click="guardarAcuerdoReparatorio"> Guardar </button>
-                        <button v-else type="button" class="btn btn-warning float-right mb-1" @click="editarAcuerdoReparatorio">
-                            Actualizar </button>
-                    </div>
-                </div>
+
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="Fecha inicio">Fecha inicio</label>
+                <input v-model="this.form.fecha_inicio" type="date" class="form-control" id="fecha_inicio"
+                    aria-describedby="fecha_inicio">
+                <div style="color: red;" v-if="this.form.errors.has('fecha_inicio')"
+                    v-html="this.form.errors.get('fecha_inicio')" />
             </div>
+            <div class="form-group col-md-6">
+                <label for="Fecha fin">Fecha fin</label>
+                <input v-model="this.form.fecha_fin" type="date" class="form-control" id="fecha_fin"
+                    aria-describedby="fecha_fin">
+                <div style="color: red;" v-if="this.form.errors.has('fecha_fin')"
+                    v-html="this.form.errors.get('fecha_fin')" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="resultado">Resultado</label>
+                <textarea v-model="this.form.resultado" class="form-control" rows="4" id="resultado"
+                    aria-describedby="resultado"></textarea>
+                <div style="color: red;" v-if="this.form.errors.has('resultado')"
+                    v-html="this.form.errors.get('resultado')" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="observaciones">Observaciones</label>
+                <textarea v-model="this.form.observaciones" class="form-control" rows="4" id="observaciones"
+                    aria-describedby="observaciones"></textarea>
+                <div style="color: red;" v-if="this.form.errors.has('observaciones')"
+                    v-html="this.form.errors.get('observaciones')" />
+            </div>
+
         </div>
+
+        <div style="text-align: right;">
+            <div v-if="loading" class="spinner-border" role="status">
+                <span class="sr-only">Cargando...</span>
+            </div>
+            <button v-else-if="!loading && esNuevo" type="button" class="btn btn-primary float-right mb-1"
+                @click="guardarAcuerdoReparatorio"> <i class="fa-solid fa-floppy-disk"></i> Guardar </button>
+            <button v-else type="button" class="btn btn-primary float-right mb-1" @click="editarAcuerdoReparatorio">
+                <i class="fa-solid fa-pen-to-square"></i> Actualizar </button>
+        </div>
+
     </div>
 </template>
 
@@ -99,7 +103,7 @@ export default {
         editarAcuerdoReparatorio() {
             this.form.errors.clear();
             let error = this.validarFomrulario();
-            if(error){
+            if (error) {
                 return
             }
             this.axios.put('/acuerdoreparatorio/' + this.form.id, this.form).then((response) => {
@@ -116,7 +120,7 @@ export default {
         guardarAcuerdoReparatorio() {
             this.form.errors.clear();
             let error = this.validarFomrulario();
-            if(error){
+            if (error) {
                 return
             }
 
@@ -138,31 +142,31 @@ export default {
             })
         },
 
-        validarFomrulario(){
+        validarFomrulario() {
 
             let error = false;
 
-            if( this.form.fecha_inicio === null || this.form.fecha_inicio === "" ){
+            if (this.form.fecha_inicio === null || this.form.fecha_inicio === "") {
                 this.form.errors.set('fecha_inicio', 'Este campo es requerido');
-                error = true; 
+                error = true;
             }
-            if( this.form.fecha_fin === null || this.form.fecha_fin === "" ){
+            if (this.form.fecha_fin === null || this.form.fecha_fin === "") {
                 this.form.errors.set('fecha_fin', 'Este campo es requerido');
-                error = true; 
+                error = true;
             }
-            if( this.form.resultado === null || this.form.resultado === "" ){
+            if (this.form.resultado === null || this.form.resultado === "") {
                 this.form.errors.set('resultado', 'Este campo es requerido');
-                error = true; 
+                error = true;
             }
-            if( this.form.observaciones === null || this.form.observaciones === "" ){
+            if (this.form.observaciones === null || this.form.observaciones === "") {
                 this.form.errors.set('observaciones', 'Este campo es requerido');
-                error = true; 
+                error = true;
             }
 
             let fechaInicio = new Date(this.form.fecha_inicio);
             let fechaFin = new Date(this.form.fecha_fin);
 
-            if( fechaInicio.getTime() > fechaFin.getTime() ){
+            if (fechaInicio.getTime() > fechaFin.getTime()) {
                 this.form.errors.set('fecha_inicio', 'La fecha de inicio es mayor que la fecha fin');
                 error = true;
             }

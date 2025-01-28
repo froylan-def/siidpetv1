@@ -32,7 +32,14 @@ class verificarAccesos
         if (Auth::check()) {
             $rol = Auth::user()->IDRol;
             $user = Auth::user();
+            $id_user = Auth::user()->id;
             
+            $defensor = DB::table('defensor')
+            ->select('id')
+            ->where('id_usuario', $id_user)
+            ->first()->id;
+
+
             /*
             $permisos = DB::table('rol_permiso')
             ->select('*')
@@ -43,6 +50,9 @@ class verificarAccesos
 
             Session::put('rol', json_encode($rol) );
             Session::put('user', json_encode($user) );
+            Session::put('id_user', json_encode($id_user) );
+            Session::put('defensor', json_encode($defensor));
+
         }else{
 
             if (!$request->is('login') ) {

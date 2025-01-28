@@ -38,6 +38,7 @@ class medidaCautelarController extends Controller
     {
         $request->validate([
             'nombre' => 'required',
+            'fecha' => 'required'
         ]);
 
         $medida_cautelar = MedidaCautelar::create( $request->all() );

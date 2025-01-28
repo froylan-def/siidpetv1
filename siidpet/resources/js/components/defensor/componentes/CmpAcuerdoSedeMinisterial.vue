@@ -12,58 +12,53 @@
     </div>
     <!-- /.content-header -->
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="form-group">
+        
+                
                     <div class="row">
 
-                        <div class="form-group">
-                            <label for="medidas_de_proteccion">Medidas de protección: </label>
-                            <textarea v-model="form.medidas_de_proteccion" class="form-control" 
-                            id="medidas_de_proteccion" name="medidas_de_proteccion" rows="3" aria-describedby="determinacion_mp" placeholder=""></textarea>
-
-                            <div style="color: red;" v-if="form.errors.has('medidas_de_proteccion')"
-                                v-html="form.errors.get('medidas_de_proteccion')" />
-                        </div>
                         
-                        <div class="form-group">
+                        
+                        <div class="form-group col-md-6">
                             <label for="fecha_inicio"> Fecha inicio: </label>
                             <input type="date" v-model="form.fecha_inicio" class="form-control" id="fecha_inicio" name="fecha_inicio">
                             <div style="color: red;" v-if="form.errors.has('fecha_inicio')" v-html="form.errors.get('fecha_inicio')" />
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group col-md-6">
                             <label for="fecha_fin"> Fecha fin: </label>
                             <input type="date" v-model="form.fecha_fin" class="form-control" id="fecha_fin" name="fecha_fin">
                             <div style="color: red;" v-if="form.errors.has('fecha_fin')" v-html="form.errors.get('fecha_fin')" />
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group col-md-6">
                             <label for="id_estatus_sede_ministerial"> Estatus sede ministerial: </label>
                             <v-select v-model="this.form.id_estatus_sede_ministerial" :reduce="(option) => option.id" :options="opcionesSedes">
                             </v-select>
                             <div style="color: red;" v-if="form.errors.has('id_estatus_sede_ministerial')" v-html="form.errors.get('id_estatus_sede_ministerial')" /> 
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group col-md-6">
                             <label for="fecha"> Fecha: </label>
                             <input type="date" v-model="form.fecha" class="form-control" id="fecha" name="fecha">
                             <div style="color: red;" v-if="form.errors.has('fecha')" v-html="form.errors.get('fecha')" />
                         </div>
                         
-                        <div v-if="loading" class="spinner-border" role="status">
-                            <span class="sr-only">Cargando...</span>
-                        </div>
-
-                        <button v-else-if="!loading && esNuevo" type="button" class="btn btn-success float-right mb-1"
-                            @click="guardarAcuerdoSedes"> Guardar </button>
-                        <button v-else type="button" class="btn btn-warning float-right mb-1" @click="editarAcuerdoSedes">
-                            Actualizar </button>
+                        
 
                     </div>
+                
+
+                <div style="text-align: right;">
+                    <div v-if="loading" class="spinner-border" role="status">
+                        <span class="sr-only">Cargando...</span>
+                    </div>
+
+                    <button v-else-if="!loading && esNuevo" type="button" class="btn btn-primary float-right mb-1"
+                        @click="guardarAcuerdoSedes"> <i class="fa-solid fa-floppy-disk"></i> Guardar </button>
+                    <button v-else type="button" class="btn btn-primary float-right mb-1" @click="editarAcuerdoSedes">
+                        <i class="fa-solid fa-pen-to-square"></i> Actualizar </button>
                 </div>
-            </div>
-        </div>
+            
     </div>
 </template>
 

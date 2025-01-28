@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Defensores</h1>
+                    <h1 class="m-0">Usuarios</h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -18,7 +18,7 @@
                         <div class="card-tools">
                             <button class="btn btn-success" data-toggle="modal" data-target="#modalAgregarDefensor"
                                 @click="abrirModalRegistro">
-                                <i class="fa-solid fa-circle-plus"></i> Nuevo
+                                <i class="fa-solid fa-circle-plus"></i> Registrar usuarios
                             </button>
                         </div>
                     </div>
@@ -59,9 +59,15 @@
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
 
-                                    <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1" @click="desactivarUsuario(item)">
-                                        <i class="fa-solid fa-trash"></i>
+                                    <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===1" @click="desactivarUsuario(item)">
+                                        <i class="fa-solid fa-power-off"></i>
                                     </button>
+
+                                    <button class="btn btn-success btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===0" @click="desactivarUsuario(item)">
+                                        <i class="fa-solid fa-power-off"></i>
+                                    </button>
+
+
                                 </div>
                             </template>
                         </EasyDataTable>
@@ -153,6 +159,28 @@
                                         v-html="defensor.errors.get('id_coordinacion')" />
                                 </div>
 
+                                
+
+                                <div class="form-group col-md-12">
+                                    <label for="Contraseña del usuario">Rol</label>
+                                    <select v-model="form.IDRol" id="rol" type="text" class="form-control " name="IDRol">
+                                        <option value=""> Seleccione una opcion </option>
+                                        <option value="1"> Administrador </option>
+                                        <option value="2"> Director General </option>
+                                        <option value="3"> Director Defensoria </option>
+                                        <option value="4"> Director Asesoria </option>
+                                        <option value="5"> Jefe de Asesorias </option>
+                                        <option value="6"> Defensor </option>
+                                        <option value="7"> Asesor </option>
+                                    </select>
+                                    <div style="color: red;" v-if="form.errors.has('IDRol')"
+                                        v-html="form.errors.get('IDRol')" />
+                                </div>
+    
+    
+                                
+
+
                                 <div class="form-group col-md-12">
                                     <label for="fathername">Contraseña</label>
 
@@ -197,6 +225,7 @@ import Swal from 'sweetalert2'
 export default {
     data() {
         return {
+            roles: ref(["Administrador", "Director General", "Director Defensoría", "Director Asesorias", "Jefe Asesorias", "Defensor", "Asesor"]),
             actualizarDefensorCheck: ref(false),
             searchField: ref("name"),
             searchValue: ref(""),
@@ -209,6 +238,7 @@ export default {
                 { text: "Sexo", value: "user.gender"},
                 { text: "Telefono", value: "user.phone"},
                 { text: "Correo", value: "user.email"},
+                { text: "Rol", value: "rol"},
                 { text: "Opciones", value: "operation" },
             ],
             items: [],
@@ -266,8 +296,16 @@ export default {
         },
 
         obtenerDefensores() {
+            this.items = [];
             this.axios.get('/defensor').then( (response) => {
-                this.items = response.data;
+                // this.items = response.data;
+                for (let i = 0; i < response.data.length; i++) {
+                    let element = response.data[i];
+                    element.rol = this.roles[ element.user.IDRol - 1 ];
+                    this.items.push( element );
+
+                    console.log(element);
+                }
             })
         },
 
@@ -284,8 +322,7 @@ export default {
             }
             
             await this.form.post('/users').then( async (response) =>  {
-                console.log("Resultado del guardado de users");
-                console.log(response);
+                
                 this.defensor.id_usuario = response.data.defensor;
                 try {
                     await this.defensor.post('/defensor').then((response) => {
@@ -360,7 +397,7 @@ export default {
                         Swal.fire({ 
                             position: 'top-end',
                             icon: 'success',
-                            title: 'Usuario eliminado con éxito',
+                            title: response.data.mensaje,
                             showConfirmButton: false,
                             timer: 1500
                         })
