@@ -25,7 +25,7 @@
                         <div class="card-tools">
                             <button class="btn btn-success" data-toggle="modal" data-target="#modalAgregar"
                                 @click="abrirModalRegistro">
-                                <i class="fa-solid fa-circle-plus"></i> Nuevo
+                                <i class="fa-solid fa-circle-plus"></i> Crear nueva coordinación
                             </button>
                         </div>
                     </div>

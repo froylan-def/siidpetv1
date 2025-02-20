@@ -51,8 +51,8 @@
                                 </div>
                             </div>
                         </div>
-                        <EasyDataTable buttons-pagination :headers="datos" :items="items" :theme-color="themeColor"
-                            :search-field="searchField" :search-value="searchValue">
+                        <EasyDataTable buttons-pagination :headers="datos" :items="items" 
+                            :search-field="searchField" :search-value="searchValue" rowsPerPageMessage="Filas por página:" emptyMessage="No hay datos disponibles" alternating table-class-name="customize-table" theme-color="var(--primary-color)">
                             <template #item-operation="item">
                                 <div class="operation-wrapper">
                                     <button class="btn btn-warning btn-sm mt-2 mb-2 mr-1" @click="actualizarDefensor(item)">

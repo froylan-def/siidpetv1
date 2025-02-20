@@ -27,7 +27,9 @@
                         </div>
                     </div>
                 </div>
-                <EasyDataTable :headers="datos" :items="items"  border-cell>
+                <EasyDataTable :headers="datos" :items="items" rowsPerPageMessage="Filas por página:" emptyMessage="No hay datos disponibles" alternating table-class-name="customize-table" theme-color="var(--primary-color)">
+
+                    
                     <template #item-operation="item">
                         <div class="operation-wrapper">
                             <button class="btn btn-warning btn-sm mr-1" @click="actualizarUsuario(item)">
@@ -359,8 +361,8 @@ export default {
             searchValue: ref(""),
             themeColor: "#AB0033",
             datos: [
-                { text: "Nombre", value: "nombres" },
-                { text: "Ap. Pat", value: "apellido_paterno" },
+                { text: "Nombre", value: "nombres"},
+                { text: "Ap. Pat", value: "apellido_paterno"},
                 { text: "Ap. Mat", value: "apellido_materno" },
                 { text: "Telefono", value: "telefono" },
                 { text: "Domicilio", value: "domicilio" },
@@ -686,6 +688,22 @@ export default {
         gap: 0.5rem;
     }
 
-    </style>
+
+.customize-table{
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+:root {
+    --easy-table-border: 2px solid #ddd;
+    --easy-table-row-border: 1px solid #ddd;
+    --easy-table-header-font-size: 15px;
+    --easy-table-header-item-padding: 10px 25px;
+    --easy-table-body-item-padding: 25px 20px;
+    --easy-table-header-background-color: var(--bs-secondary);
+    --easy-table-header-font-color: white;
+    --easy-table-body-row-font-size: 15px;
+}
+</style>
 
     

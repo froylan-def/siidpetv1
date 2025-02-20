@@ -7,7 +7,7 @@
 
     <base href="/">
 
-    <title> SIIDPET </title>
+    <title> Sistema Integral del Instituto de Defensoría Publica del Estado de Tamaulipas </title>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
     <!-- Favico -->
@@ -54,6 +54,251 @@
         rel="stylesheet">
 
     <style>
+        :root {
+            --primary-color: #AB0033;
+            /* Azul */
+            --secondary-color: #54565A;
+            /* Gris oscuro */
+            --success-color: #BC955C;
+            /* Verde */
+            --info-color: #DDC9A3;
+            /* Azul claro */
+            --warning-color: #8C6E46;
+            /* Amarillo */
+            --danger-color: #820027;
+            /* Rojo */
+            --light-color: #EAD7B6;
+            /* Gris claro */
+            --dark-color: #2F3133;
+            /* Gris más oscuro */
+            --table-header: #E5E7EB;
+
+            --text-color: #374151;
+        }
+
+        /* Estilos de fondo */
+        .bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+
+        .bg-secondary {
+            background-color: var(--secondary-color) !important;
+        }
+
+        .bg-success {
+            background-color: var(--success-color) !important;
+        }
+
+        .bg-info {
+            background-color: var(--info-color) !important;
+        }
+
+        .bg-warning {
+            background-color: var(--warning-color) !important;
+        }
+
+        .bg-danger {
+            background-color: var(--danger-color) !important;
+        }
+
+        .bg-light {
+            background-color: var(--light-color) !important;
+        }
+
+        .bg-dark {
+            background-color: var(--dark-color) !important;
+        }
+
+        /* Estilos de texto */
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+
+        .text-secondary {
+            color: var(--secondary-color) !important;
+        }
+
+        .text-success {
+            color: var(--success-color) !important;
+        }
+
+        .text-info {
+            color: var(--info-color) !important;
+        }
+
+        .text-warning {
+            color: var(--warning-color) !important;
+        }
+
+        .text-danger {
+            color: var(--danger-color) !important;
+        }
+
+        .text-light {
+            color: var(--light-color) !important;
+        }
+
+        .text-dark {
+            color: var(--dark-color) !important;
+        }
+
+        /* Estilos de boton */
+        .btn-primary {
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color) !important;
+            border-color: var(--secondary-color) !important;
+        }
+
+        .btn-success {
+            background-color: var(--success-color) !important;
+            border-color: var(--success-color) !important;
+        }
+
+        .btn-info {
+            background-color: var(--info-color) !important;
+            border-color: var(--info-color) !important;
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color) !important;
+            border-color: var(--warning-color) !important;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color) !important;
+            border-color: var(--danger-color) !important;
+        }
+
+        .btn-light {
+            background-color: var(--light-color) !important;
+            border-color: var(--light-color) !important;
+        }
+
+        .btn-dark {
+            background-color: var(--dark-color) !important;
+            border-color: var(--dark-color) !important;
+        }
+
+        .btn-link {
+            color: var(--primary-color) !important;
+        }
+
+        /* Badges personalizados */
+        .badge-primary {
+            background-color: #AB0033 !important;
+            /* Azul */
+            color: white !important;
+        }
+
+        .badge-secondary {
+            background-color: #F3F4F6 !important;
+            /* Gris oscuro */
+            color: white !important;
+        }
+
+        .badge-success {
+            background-color: #BC955C !important;
+            /* Verde */
+            color: white !important;
+        }
+
+        .badge-info {
+            background-color: #DDC9A3 !important;
+            /* Azul claro */
+            color: white !important;
+        }
+
+        .badge-warning {
+            background-color: #8C6E46 !important;
+            /* Amarillo */
+            color: white !important;
+        }
+
+        .badge-danger {
+            background-color: #820027 !important;
+            /* Rojo */
+            color: white !important;
+        }
+
+        .badge-light {
+            background-color: #EAD7B6 !important;
+            /* Gris claro */
+            color: #1F2937 !important;
+            /* Texto oscuro para contraste */
+        }
+
+        .badge-dark {
+            background-color: #2F3133 !important;
+            /* Gris oscuro */
+            color: white !important;
+        }
+
+
+
+        .nav-pills .nav-link.active,
+        .nav-tabs .nav-link.active {
+            background-color: var(--primary-color) !important;
+            /* Verde */
+            color: white !important;
+        }
+
+
+
+        /* Personalizar el fondo del modal */
+        .swal2-popup {
+            background-color: #f4f6f9 !important;
+            /* Gris claro de Bootstrap */
+            color: #333 !important;
+            /* Texto oscuro */
+            border-radius: 0.7rem !important;
+            /* Bordes redondeados */
+        }
+
+        /* Personalizar el color del título */
+        .swal2-title {
+            color: var(--text-color) !important;
+            font-size: 1.5rem;
+            /* Azul oscuro de Bootstrap */
+        }
+
+        /* Personalizar el color del texto */
+        .swal2-html-container {
+            color: var(--text-color) !important;
+        }
+
+        /* Personalizar el color del botón de confirmación */
+        .swal2-confirm {
+            background-color: var(--success-color) !important;
+            /* Azul Bootstrap */
+            border-color: var(--success-color) !important;
+            color: white !important;
+        }
+
+        /* Personalizar el color del botón de cancelar */
+        .swal2-cancel {
+            background-color: var(--secondary-color) !important;
+            /* Rojo Bootstrap */
+            border-color: var(--secondary-color) !important;
+            color: white !important;
+        }
+
+        .swal2-deny {
+            background-color: var(--secondary-color) !important;
+            /* Rojo Bootstrap */
+            border-color: var(--secondary-color) !important;
+            color: white !important;
+        }
+
+        /* Personalizar el botón de cerrar (X) */
+        .swal2-close {
+            color: #333 !important;
+        }
+
+
         body {
             font-family: 'Encode Sans', serif;
             /* font-family: 'Roboto', serif; */
@@ -65,6 +310,7 @@
         window.usuario = "{{ session::get('user') }}"
         window.id_usuario = "{{ session::get('id_user') }}"
         window.defensor = "{{ session::get('defensor') }}";
+        window.coordinacion = "{{ session::get('coordinacion') }}";
     </script>
 
 </head>
@@ -72,7 +318,7 @@
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper" id="app">
         <!-- Barra de Navegación -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <nav class="main-header navbar navbar-expand navbar-dark" style="background-color: var(--dark-color)">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -92,8 +338,8 @@
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <!-- <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #AB0033"> -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #54565a"> -->
+        <aside class="main-sidebar sidebar-dark-primary " style="background-color: var(--dark-color)">
             <!-- Brand Logo -->
             <a href="/" class="brand-link">
                 <img src="{{ asset('img/logos/logo_2.png') }}" alt="Logo TAM" class="brand-image ">
@@ -129,7 +375,7 @@
                             @break
 
                             @case(5)
-                                <a style="font-size: smaller;" class="d-block text-white"> Jefe de Asesorías </a>
+                                <a style="font-size: smaller;" class="d-block text-white"> Coordinador </a>
                             @break
 
                             @case(6)

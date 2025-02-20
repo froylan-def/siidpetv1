@@ -1,7 +1,7 @@
 <template>
     <div class="row">
-        <div class="content-header">
-            <div class="bg-primary text-white p-3 rounded d-flex justify-content-between align-items-center">
+        <div class="content-header " >
+            <div class="bg-primary text-white p-3 d-flex justify-content-between align-items-center Larger shadow " style="border-radius: 0.7rem">
                 <h1 class="h5">Expediente {{ expediente.nuc }} </h1>
                 <span>UGI: {{ expediente.id_ugi }} </span>
             </div>
@@ -33,13 +33,15 @@
                             Grupo 5 </a>
                     </li>
                 </ul>
+
+                
             </div>
             <div class="row">
                 <!-- Columna 3 -->
-                <div class="col-md-3 col-12 d-flex flex-column">
-                    <div class="card flex-fill mb-2">
-                        <div class="card-body">
-                            <h6 class="text-primary">Imputado</h6>
+                <div class="col-md-2 col-12 d-flex flex-column" >
+                    <div class="card flex-fill mb-3" style="border-radius: 0.5rem">
+                        <div class="card-body custom-padding">
+                            <h6 class="text-primary text-bold"> <i class="fa-regular fa-user"></i> Imputado</h6>
 
                             <ul v-if="this.imputados.length === 0" style="font-size: smaller; list-style: none;"
                                 class="pl-0">
@@ -57,9 +59,9 @@
                         </div>
                     </div>
 
-                    <div class="card flex-fill mb-2">
-                        <div class="card-body">
-                            <h6 class="text-primary ">Víctimas</h6>
+                    <div class="card flex-fill mb-3" style="border-radius: 0.5rem">
+                        <div class="card-body custom-padding">
+                            <h6 class="text-primary text-bold"> <i class="fa-regular fa-user"></i> Víctima</h6>
                             <ul v-if="this.victimas.length == 0" style="font-size: smaller; list-style: none;"
                                 class="pl-0">
                                 <li>No hay victimas registradas</li>
@@ -75,9 +77,9 @@
                         </div>
                     </div>
 
-                    <div class="card flex-fill mb-2">
-                        <div class="card-body">
-                            <h6 class="text-primary">Delito</h6>
+                    <div class="card flex-fill mb-3" style="border-radius: 0.5rem">
+                        <div class="card-body custom-padding">
+                            <h6 class="text-primary text-bold pb-2"> <i class="fa-solid fa-gavel"></i> Delito</h6>
                             <ul v-if="this.delitos.length === 0" style="font-size: smaller; list-style: none;"
                                 class="pl-0">
                                 <li>No hay delitos registrados</li>
@@ -85,15 +87,16 @@
                             <ul v-for="delito in this.delitos" :key="delitos.id"
                                 style="font-size: smaller; list-style: none;" class="pl-0">
                                 <li>
-                                    {{ delito.nombre }}
+                                    {{ delito.nombre }} 
+                                    
                                 </li>
                             </ul>
                         </div>
                     </div>
 
-                    <div class="card flex-fill mb-2">
-                        <div class="card-body">
-                            <h6 class="text-primary">Carpeta Procesal </h6>
+                    <div class="card flex-fill mb-2" style="border-radius: 0.5rem">
+                        <div class="card-body custom-padding">
+                            <h6 class="text-primary text-bold"> <i class="fa-regular fa-folder"></i> Carpeta Procesal </h6>
                             <ul v-if="this.expediente.carpeta_procesal === '' || this.expediente.carpeta_procesal === null"
                                 style="font-size: smaller; list-style: none;" class="pl-0">
                                 <li>No hay C.P. registrada</li>
@@ -109,8 +112,8 @@
                 </div>
 
                 <!-- Columna 9 -->
-                <div class="col-md-9 col-12 d-flex flex-column">
-                    <div class="card h-100 mb-2">
+                <div class="col-md-10 col-12 d-flex flex-column">
+                    <div class="card h-100 mb-2" style="border-radius: 0.5rem">
                         <div class="card-body ">
                             <div class="tab-content">
                                 <div class="tab-pane" :class="{ active: isActiveTab(1) }" id="tab_1">
@@ -364,11 +367,6 @@ export default {
                 { label: "PPL", name: "ppl" }
             ],
             tabList: [
-
-
-
-
-
             ],
             activeTab: 1,
             expediente: {
@@ -387,18 +385,33 @@ export default {
             this.menu = to.query.m;
         }
     },
-    mounted() {
-        this.loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'), {
-            backdrop: 'static',
-            keyboard: false
-        });
-        this.loadingModal.show();
-        this.obtenerExpediente();
+    created() {
+
+        this.axios.get('/expediente/' + this.$route.params.id).then((response) => {
+                if( response.data.mensaje != null || response.data.mensaje != undefined )
+                {
+                    if( response.data.mensaje == "Acceso no permitido" )
+                    {
+                        alert("Acceso denegado");
+                        this.$router.push('/expedientes');
+                    }
+
+                    if( response.data.mensaje == "Datos del expediente no encontrados" ){
+                        alert("Este expediente no sirve");
+                        this.$router.push('/expedientes');
+                    }
+                }else{
+                    this.loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'), {
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+                        this.loadingModal.show();
+                        this.obtenerExpediente();
+                }
+                this.expediente = response.data.expediente;
+            });
     },
     methods: {
-        obtenerData() {
-            console.log("actualizado");
-        },
         scrollTabs(distance) {
             const container = this.$refs.tabsContainer;
             container.scrollBy({
@@ -407,9 +420,11 @@ export default {
             });
         },
         async obtenerExpediente() {
+
             await this.axios.get('/expediente/' + this.$route.params.id).then((response) => {
                 this.expediente = response.data.expediente;
             });
+
             this.imputados = [];
             await this.axios.get('/imputadosPorExpediente/' + this.$route.params.id + '/').then((response) => {
                 this.imputados = response.data;
@@ -422,8 +437,10 @@ export default {
             await this.axios.get('/delitosPorExpediente/' + this.$route.params.id + '/').then((response) => {
                 this.delitos = response.data;
             })
+            
             await this.loadingModal.hide();
             
+
         },
         changeOption(option) {
             this.activeTab = option;
@@ -442,7 +459,7 @@ export default {
 }
 
 .nav-tabs .nav-link.active {
-    background-color: #007bff;
+    background-color: var(--secondary);
     color: white;
 }
 </style>
@@ -450,7 +467,6 @@ export default {
 <style scoped>
 .table-small {
     font-size: 12px;
-    /* Ajusta el tamaño según tus necesidades */
 }
 
 .scroll-btn {
@@ -461,7 +477,6 @@ export default {
     padding: 10px;
     position: absolute;
     top: 0;
-    /* Poner el botón en la parte superior */
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -476,4 +491,20 @@ export default {
 .scroll-right {
     right: 0;
 }
+
+.custom-padding {
+    padding: 0.8em 1.25em !important;
+  }
+
+  .badge {
+    display: inline-block; /* Asegura que respete el ancho */
+    max-width: 80%; /* Para que no se salga del contenedor padre */
+    word-wrap: break-word; /* Rompe las palabras si son muy largas */
+    white-space: normal; /* Permite saltos de línea */
+    text-align: left; /* Centra el texto dentro del badge */
+    padding: 4px 6px; /* Ajusta el relleno para hacerlo más compacto */
+    line-height: 1.2; /* Reduce la altura de la línea */
+    margin: -10px 0px; /* Reduce el margen superior e inferior */
+  }
+
 </style>

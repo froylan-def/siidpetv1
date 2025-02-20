@@ -74,6 +74,8 @@ class Expediente extends Model
         "ppl",
         "id_examen_detencion",
         'activo',
+        'status',
+        'fecha',
         // ... otras propiedades ...
     ];
     

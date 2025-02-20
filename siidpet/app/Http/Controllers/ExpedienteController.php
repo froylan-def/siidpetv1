@@ -18,17 +18,25 @@ class expedienteController extends Controller
         // Obtén el usuario loggeado
         $user = Auth::user();
         $id_defensor = \Session::get('defensor');
+        $id_coordinacion = \Session::get('coordinacion');
 
-        if( $user->IDRol === 1 ){
+        if( $user->IDRol === 1 || $user->IDRol === 2 || $user->IDRol === 3 ){
             // Consulta si es administrador
             $expediente = Expediente::with('ugi', 'defensor.user', 'defensor.municipio', 'defensor.coordinacion' ,'entrevista', 'imputado', 'delito', 'victima', 'flagrancia', 'asignacionmedidas', 'acuerdosedeministerial', 'juez', 'defensoraudiencia', 'acuerdoreparatorio', 'delitoproceso', 'investigacioncomplementaria', 'prorrogaplazoinvestigacioncomplementaria', 'medidacautelar', 'suspencioncondicionalproceso', 'procedimientoabreviado', 'tribunalenjuiciamiento', 'conclusion', 'impugnacion', 'ordenaprencion', 'imputados')->get();
 
-        }else {
-            // Consulta si es otro rol que no sea administrador
+        }else if( $user->IDRol === 5 ){
+
+            // Consulta si es coordinador
+            $expediente = Expediente::with('ugi', 'defensor' ,'defensor.user', 'defensor.municipio', 'defensor.coordinacion', 'entrevista', 'imputado', 'delito', 'victima', 'flagrancia', 'asignacionmedidas', 'acuerdosedeministerial', 'juez', 'defensoraudiencia', 'acuerdoreparatorio', 'delitoproceso', 'investigacioncomplementaria', 'prorrogaplazoinvestigacioncomplementaria', 'medidacautelar', 'suspencioncondicionalproceso', 'procedimientoabreviado', 'tribunalenjuiciamiento', 'conclusion', 'impugnacion', 'ordenaprencion', 'imputados')->whereHas('defensor', function ($query) use ($id_coordinacion) {
+                $query->where('id_coordinacion', $id_coordinacion);
+            })->get();
+
+        }else{
+            // Consulta si es otro rol que no sea administrador o coordinador
             $expediente = Expediente::with('ugi', 'defensor.user', 'defensor.municipio', 'defensor.coordinacion', 'entrevista', 'imputado', 'delito', 'victima', 'flagrancia', 'asignacionmedidas', 'acuerdosedeministerial', 'juez', 'defensoraudiencia', 'acuerdoreparatorio', 'delitoproceso', 'investigacioncomplementaria', 'prorrogaplazoinvestigacioncomplementaria', 'medidacautelar', 'suspencioncondicionalproceso', 'procedimientoabreviado', 'tribunalenjuiciamiento', 'conclusion', 'impugnacion', 'ordenaprencion', 'imputados')->select('*') 
             ->where('id_defensor', $id_defensor )
+            ->where('activo', 1 )
             ->get();
-
         }
 
         return response( $expediente );
@@ -83,16 +91,46 @@ class expedienteController extends Controller
      */
     public function show($id)
     {
+        $user = Auth::user();
+        $id_defensor_sesion = \Session::get('defensor');
+        $id_coordinacion_sesion = \Session::get('coordinacion');
+
         //Se obtiene el registro de la base de datos
         $expediente = Expediente::with('ugi', 'defensor.user', 'defensor.municipio', 'defensor.coordinacion' ,'entrevista', 'imputado', 'delito', 'victima', 'flagrancia', 'asignacionmedidas', 'acuerdosedeministerial', 'juez', 'defensoraudiencia', 'acuerdoreparatorio', 'delitoproceso', 'investigacioncomplementaria', 'prorrogaplazoinvestigacioncomplementaria', 'medidacautelar', 'suspencioncondicionalproceso', 'procedimientoabreviado', 'tribunalenjuiciamiento', 'conclusion', 'impugnacion', 'ordenaprencion', 'imputados')->find($id);
 
-        //Compara si la consulta encontró datos
-        if (! $expediente ) {
-            return response()->json(['mensaje' => 'Datos del expediente no encontrados'], 404);
+        if (! $expediente) {
+            return response()->json(['mensaje' => 'Datos del expediente no encontrados'], 201);
         }
 
-        //Lo retorna con un código 201
-        return response()->json(['expediente' => $expediente], 201);
+        $id_coordinacion = $expediente->defensor->id_coordinacion ?? null;
+        $id_defensor = $expediente->id_defensor;
+        $denegado = false;
+
+        if( $user->IDRol === 1 || $user->IDRol === 2 || $user->IDRol === 3 ){
+            // Consulta si es admin o director
+            $denegado = false;
+        } else if( $user->IDRol === 5 ){
+            // Consulta si es coordinador
+            if($id_coordinacion == $id_coordinacion_sesion){
+                $denegado = false;
+            }else{
+                $denegado = true;
+            }
+        }else{
+            // Consulta si es otro rol que no sea administrador o coordinador
+            if( $id_defensor == $id_defensor_sesion ){
+                $denegado = false;
+            }else{
+                $denegado = true;
+            }
+        }
+
+        if($denegado){
+            return response()->json(['mensaje' => 'Acceso no permitido'], 201);
+        }else{
+            return response()->json(['expediente' => $expediente], 201);
+        }
+        
     }
 
     /**

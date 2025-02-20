@@ -67,26 +67,8 @@ class UserController extends Controller
         ]);
 
 
-        $id = DB::table('defensor')->insertGetId([
-
-            'id_usuario' => $request->input('email'),
-            'id_municipio' => $request->input('email'),
-            'id_coordinacion' => $request->input('email'),
-            'activo' => 1,
-
-            'gender' => $request->input('gender'),
-            'activo' => $request->input('activo'),
-            'phone' => $request->input('phone'),
-            'name' => $request->input('name'),
-            'fathername' => $request->input('fathername'),
-            'mothername' => $request->input('mothername'),
-            'password' => Hash::make($request->input('password')),
-            'created_at' => date('Y-m-d'),
-            'IDRol' => $request->input('IDRol')
-        ]);
-
         // return response("Usuario guardado con éxito", 200);
-        return response()->json(['mensaje' => 'Datos guardados con éxito', 'defensor' => $id ], 201);
+        return response()->json(['mensaje' => 'Datos guardados con éxito', 'defensor' => $id_usuario ], 201);
     }
 
     /**

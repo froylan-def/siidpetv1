@@ -54,7 +54,7 @@
 
                             
                            
-                                <EasyDataTable :headers="datos" :items="items" border-cell>
+                                <EasyDataTable :headers="datos" :items="items" rowsPerPageMessage="Filas por página:" emptyMessage="No hay datos disponibles" alternating table-class-name="customize-table" theme-color="var(--primary-color)">
                                     <template #item-operation="item">
                                         <div class="operation-wrapper">
                                             

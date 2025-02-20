@@ -1,108 +1,87 @@
 <template>
-  <div id="app" class="container mt-5">
-    <div class="nav-tabs-wrapper">
-      <!-- Botón para desplazar a la izquierda -->
-      <button class="scroll-btn scroll-left" @click="scrollTabs(-100)">
-        &#10094;
-      </button>
-  
-      <!-- Pestañas con scroll -->
-      <div class="nav-tabs-container" ref="tabsContainer">
-        <ul class="nav nav-tabs" role="tablist">
-          <li v-for="(tab, index) in tabs" :key="index" class="nav-item">
-            <a :class="['nav-link', { active: activeTab === index }]" @click="setActiveTab(index)">
-              {{ tab }}
-            </a>
-          </li>
-        </ul>
+  <q-page class="q-pa-md bg-grey-2">
+    <!-- Header -->
+    <q-banner class="bg-primary text-white q-pa-md flex justify-between">
+      <div class="text-h6">Expediente 001 / 2025</div>
+      <div class="text-subtitle2">UGI: 4</div>
+    </q-banner>
+
+    <!-- Contenido Principal -->
+    <div class="row q-mt-md">
+      <!-- Lado izquierdo - Información General -->
+      <div class="col-md-3 col-xs-12">
+        <q-card class="q-mb-md">
+          <q-card-section>
+            <div class="text-subtitle1"><q-icon name="person" /> Imputado</div>
+            <p>Jose Alejandro Segura Hernandez</p>
+          </q-card-section>
+        </q-card>
+        <q-card class="q-mb-md">
+          <q-card-section>
+            <div class="text-subtitle1"><q-icon name="person" /> Víctima</div>
+            <p>Javier Hernandez Balcazar</p>
+          </q-card-section>
+        </q-card>
+        <q-card>
+          <q-card-section>
+            <div class="text-subtitle1"><q-icon name="gavel" /> Delitos</div>
+            <q-chip>Armas prohibidas</q-chip>
+            <q-chip>Oposición a obra pública</q-chip>
+            <q-chip>Incesto</q-chip>
+            <q-chip>Violaciones a leyes sobre inhumaciones</q-chip>
+          </q-card-section>
+        </q-card>
       </div>
-  
-      <!-- Botón para desplazar a la derecha -->
-      <button class="scroll-btn scroll-right" @click="scrollTabs(100)">
-        &#10095;
-      </button>
-    </div>
-  
-    <!-- Contenido de las pestañas -->
-    <div class="tab-content mt-3">
-      <div v-for="(content, index) in tabContents" :key="index" v-show="activeTab === index">
-        {{ content }}
+
+      <!-- Contenido Derecho - Formulario -->
+      <div class="col-md-9 col-xs-12">
+        <q-card>
+          <q-tabs v-model="tab" class="text-primary">
+            <q-tab name="entrevista" label="Entrevista" />
+            <q-tab name="imputado" label="Imputado" />
+            <q-tab name="delito" label="Delito" />
+            <q-tab name="victima" label="Víctima" />
+            <q-tab name="flagrancia" label="Flagrancia" />
+          </q-tabs>
+
+          <q-tab-panels v-model="tab" animated>
+            <q-tab-panel name="entrevista">
+              <div class="text-h6">Entrevista</div>
+              <q-input v-model="defensor" label="Defensor" class="q-mt-md" />
+              <q-input v-model="fecha" label="Fecha" mask="date" class="q-mt-md">
+                <template v-slot:append>
+                  <q-icon name="event" class="cursor-pointer">
+                    <q-popup-proxy>
+                      <q-date v-model="fecha" />
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+              <q-input v-model="observaciones" label="Observaciones" type="textarea" class="q-mt-md" />
+              <q-btn label="Actualizar" color="primary" class="q-mt-md" icon="save" />
+            </q-tab-panel>
+          </q-tab-panels>
+        </q-card>
       </div>
     </div>
-  </div>
-  </template>
-  
-  <script>
-  import VueApexCharts from 'vue3-apexcharts';
-  
-  export default {
-    components: {
-      apexchart: VueApexCharts
-    },
-    data() {
-      return {
-        activeTab: 0, // índice de la pestaña activa
-        tabs: ['Entrevista', 'Imputado', 'Delito', 'Víctima', 'Flagrancia', 'Determinación MP','OPC1','OPC2','OPC3','OPC4','OPC5','OPC6','OPC7','OPC8','OPC9'], // nombres de las pestañas
-        tabContents: [
-          'Contenido de la Entrevista',
-          'Contenido del Imputado',
-          'Contenido del Delito',
-          'Contenido de la Víctima',
-          'Contenido de la Flagrancia',
-          'Contenido de la Determinación MP',
-          'OPC1',
-          'OPC2',
-          'OPC3',
-          'OPC4',
-          'OPC5',
-        ] // contenido de cada pestaña
-      };
-    },
-    methods: {
-      setActiveTab(index) {
-        this.activeTab = index;
-      },
-      scrollTabs(distance) {
-        const container = this.$refs.tabsContainer;
-        container.scrollBy({
-          left: distance,
-          behavior: 'smooth'
-        });
-      }
-    }
-  };
-  </script>
-  
-  <style scoped>
-  .nav-tabs-wrapper {
-    display: flex;
-    align-items: center;
-    position: relative;
-  }
-  .nav-tabs-container {
-    overflow-x: auto;
-    white-space: nowrap;
-    flex-grow: 1;
-  }
-  .nav-tabs-container::-webkit-scrollbar {
-    display: none;
-  }
-  .scroll-btn {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    padding: 10px;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    z-index: 1;
-  }
-  .scroll-left {
-    left: 0;
-  }
-  .scroll-right {
-    right: 0;
-  }
-  </style>
-  
+  </q-page>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      tab: "entrevista",
+      defensor: "Fernando Lopez Fajardo",
+      fecha: new Date().toISOString().slice(0, 10),
+      observaciones: "TEST",
+    };
+  },
+};
+</script>
+
+<style scoped>
+.bg-grey-2 {
+  background-color: #f5f5f5;
+}
+</style>

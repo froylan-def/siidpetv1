@@ -40,6 +40,12 @@ class verificarAccesos
             ->first()->id;
 
 
+            $coordinacion = DB::table('defensor')
+            ->select('id_coordinacion')
+            ->where('id_usuario', $id_user)
+            ->first()->id_coordinacion;
+
+
             /*
             $permisos = DB::table('rol_permiso')
             ->select('*')
@@ -52,6 +58,7 @@ class verificarAccesos
             Session::put('user', json_encode($user) );
             Session::put('id_user', json_encode($id_user) );
             Session::put('defensor', json_encode($defensor));
+            Session::put('coordinacion', json_encode($coordinacion));
 
         }else{
 

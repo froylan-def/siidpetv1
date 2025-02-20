@@ -1,7 +1,7 @@
 <template>
   <div>
     <apexchart 
-      type="line" 
+      type="bar" 
       height="400" 
       :options="chartOptions" 
       :series="series"
@@ -20,7 +20,6 @@ export default {
   },
   data() {
     return {
-      // Opciones del gráfico
       chartOptions: {
         chart: {
           id: "ventas-chart",
@@ -33,7 +32,6 @@ export default {
           align: "center",
         },
       },
-      // Datos para el gráfico
       series: [
         {
           name: "Ventas",
@@ -41,6 +39,19 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    obtenerExpedientes() {
+      this.axios.get("/expediente").then((response) => {
+        this.items = response.data;
+        console.log("Expedientes obtenidos:", this.items);
+      }).catch(error => {
+        console.error("Error al obtener expedientes:", error);
+      });
+    },
+  },
+  mounted() {
+    this.obtenerExpedientes();
   },
 };
 </script>

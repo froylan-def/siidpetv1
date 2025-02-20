@@ -226,7 +226,7 @@ export default {
         desactivar($usuario) {
        
             Swal.fire({
-                title: '¿Está seguro de desactivar este Registro??',
+                title: '¿Está seguro de desactivar este registro?',
                 showDenyButton: true,
                 confirmButtonText: 'Aceptar',
                 denyButtonText: `Cancelar`,

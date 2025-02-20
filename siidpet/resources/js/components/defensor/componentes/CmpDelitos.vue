@@ -33,7 +33,7 @@
                 </div>
             </div>
         </div>
-        <EasyDataTable border-cell  :headers="datos" :items="items" >
+        <EasyDataTable :headers="datos" :items="items" rowsPerPageMessage="Filas por página:" emptyMessage="No hay datos disponibles" alternating table-class-name="customize-table" theme-color="var(--primary-color)">
             <template #item-operation="item">
                 <div class="operation-wrapper">
                     <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1" @click="eliminarDelito(item)">

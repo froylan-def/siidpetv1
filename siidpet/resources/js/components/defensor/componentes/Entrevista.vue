@@ -43,12 +43,12 @@
                                     v-html="this.form.errors.get('observaciones')" /> 
                 </div>
             </div>
-            <div class="pr-4" style="text-align: right;">
+            <div class="pr-4" style="text-align: right; ">
                 <div v-if="loading" class="spinner-border" role="status">
                     <span class="sr-only">Cargando...</span>
                 </div>
-                <button v-else-if="!loading && esNuevo" type="button" class="btn btn-primary" @click="guardarEntrevista" > <i class="fa-solid fa-floppy-disk"></i> Guardar </button>
-                <button v-else type="button" class="btn btn-primary" @click="editarEntrevista" > <i class="fa-solid fa-pen-to-square"></i> Actualizar </button>
+                <button v-else-if="!loading && esNuevo" type="button" class="btn btn-primary" @click="guardarEntrevista" > <i class="fa-regular fa-floppy-disk pr-2 "></i> Guardar </button>
+                <button v-else type="button" class="btn btn-primary pr-2 ma-xl" @click="editarEntrevista" > <i class="fa-regular fa-floppy-disk"></i> Actualizar </button>
             </div>
         </div>
     </div>

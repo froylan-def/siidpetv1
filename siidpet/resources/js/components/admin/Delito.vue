@@ -57,7 +57,7 @@
                                 </div>
                             </div>
                         </div>
-                        <EasyDataTable buttons-pagination :headers="datos" :items="items" :theme-color="themeColor"
+                        <EasyDataTable buttons-pagination :headers="datos" :items="items" rowsPerPageMessage="Filas por página:" emptyMessage="No hay datos disponibles" alternating table-class-name="customize-table" theme-color="var(--primary-color)"
                             :search-field="searchField" :search-value="searchValue">
                             <template #item-operation="item">
                                 <div class="operation-wrapper">

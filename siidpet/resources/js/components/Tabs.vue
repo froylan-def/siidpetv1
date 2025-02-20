@@ -84,12 +84,12 @@ export default {
 }
 
 .tab:hover {
-  color: #007bff;
+  color: var(--primary-color);
 }
 
 .tab.active {
-  color: #007bff;
-  border-bottom: 3px solid #007bff;
+  color: var(--primary-color);
+  border-bottom: 3px solid var(--primary-color);
 }
 
 .tab-content {

@@ -30,7 +30,7 @@
                         </div>
                     </div>
                 </div>
-                <EasyDataTable :headers="datos" :items="items" border-cell>
+                <EasyDataTable :headers="datos" :items="items" rowsPerPageMessage="Filas por página:" emptyMessage="No hay datos disponibles" alternating table-class-name="customize-table" theme-color="var(--primary-color)">
                     <template #item-operation="item">
                         <div class="operation-wrapper">
                             <button class="btn btn-warning btn-sm mt-2 mb-2 mr-1" @click="actualizarUsuario(item)">
