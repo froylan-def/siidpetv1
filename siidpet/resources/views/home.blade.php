@@ -298,6 +298,9 @@
             color: #333 !important;
         }
 
+        .redondo {
+            border-radius: 0.7rem;
+        }
 
         body {
             font-family: 'Encode Sans', serif;
@@ -399,7 +402,7 @@
                             <router-link to="/" class="nav-link" active-class="active">
                                 <i class="nav-icon fas fa-solid fa-chart-line"></i>
                                 <p>
-                                    Resumen
+                                    Estadisticas
                                 </p>
                             </router-link>
                         </li>
@@ -415,7 +418,7 @@
                             <router-link to="/calendario" class="nav-link" active-class="active">
                                 <i class="nav-icon fas fa-calendar-days"></i>
                                 <p>
-                                    Audiencias
+                                    Calendario
                                 </p>
                             </router-link>
                         </li>
