@@ -126,6 +126,12 @@
                                             <label for="municipio" class="form-label"> Valor </label>
                                             <input class="form-control  border-width-2 " v-model="searchValue"
                                                 placeholder="Escriba lo que quiera buscar" type="search" />
+
+                                            
+                                            <v-select :value="searchValue" :reduce="(option) => option.id"  @input="setSelectedInput" :options="this.ugis"
+                                                    placeholder="Seleccione una opcion">
+                                            </v-select>
+
                                         </div>
                                     </div>
                                 </div>
@@ -516,6 +522,9 @@ export default {
 
     },
     methods: {
+        setSelectedInput(value){
+            console.log("Ugi seleccionado");
+        },
         async obtenerInformacionDefensor() {
             try {
                 const response = await this.axios.get('/obtenerdefensorporidusuario/' + this.idUsario);
