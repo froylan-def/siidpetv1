@@ -1,34 +1,35 @@
 <template>
-    
     <div class="content-header mt-3">
         <div class="d-flex justify-content-between align-items-center ">
             <h1 class="h4">Inicio</h1>
         </div>
     </div>
-
-    
     <div class="container mt-2">
-
-        <div class="row" v-if="this.rolUsuario === 1">
-            <div class="col-lg-4 col-6">
-                <!-- small box -->
-                <div class="small-box bg-info">
+        <div class="row" v-if="this.rolUsuario == 1">
+            <div class="col-lg-4 col-4">
+                <div class="small-box bg-danger redondo">
+                    <div class="inner">
+                        <h1> {{ this.totalDefensores }} </h1>
+                        <p>Defensores</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion-android-people"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-4">
+                <div class="small-box bg-info redondo">
                     <div class="inner">
                         <h1> {{ this.totalExpediente }} </h1>
-
                         <p> Expedientes </p>
                     </div>
                     <div class="icon">
                         <i class="ion-ios-book"></i>
                     </div>
-
                 </div>
             </div>
-            <!-- ./col -->
-            <!-- ./col -->
-            <div class="col-lg-4 col-6">
-                <!-- small box -->
-                <div class="small-box bg-warning">
+            <div class="col-lg-4 col-4">
+                <div class="small-box bg-warning redondo">
                     <div class="inner">
                         <h1> {{ this.totalImputados }} </h1>
 
@@ -37,31 +38,12 @@
                     <div class="icon">
                         <i class="ion-ios-person"></i>
                     </div>
-
                 </div>
             </div>
-            <!-- ./col -->
-            <div class="col-lg-4 col-6">
-                <!-- small box -->
-                <div class="small-box bg-danger">
-                    <div class="inner">
-                        <h1> {{ this.totalDefensores }} </h1>
-
-                        <p>Defensores</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion-android-people"></i>
-                    </div>
-
-                </div>
-            </div>
-            <!-- ./col -->
+            
         </div>
-
-
         <div v-else class="row">
             <div class="col-lg-6 col-6" >
-                <!-- small box -->
                 <div class="small-box bg-info redondo" >
                     <div class="inner">
                         <h1> {{ this.totalExpediente }} </h1>
@@ -74,45 +56,32 @@
 
                 </div>
             </div>
-            <!-- ./col -->
-            <!-- ./col -->
             <div class="col-lg-6 col-6">
-                <!-- small box -->
                 <div class="small-box bg-warning redondo">
                     <div class="inner">
                         <h1> {{ this.totalImputados }} </h1>
-
                         <p>Imputados</p>
                     </div>
                     <div class="icon">
                         <i class="ion-ios-person"></i>
                     </div>
-
                 </div>
             </div>
-            
         </div>
-
         <div class="row">
             <div class="card redondo">
                 <div class="card-body">
                     <div class="tab-content p-0">
-
                         <ChartComponent></ChartComponent>
-
                     </div>
-                </div><!-- /.card-body -->
-
+                </div>
             </div>
         </div>
-
-
     </div>
 </template>
 
 <script>
 import ChartComponent from './CmpTestChart.vue';
-
 export default {
     components: {
         ChartComponent
@@ -162,7 +131,6 @@ export default {
     }
 };
 </script>
-
 <style>
 .sample {
     display: flex;

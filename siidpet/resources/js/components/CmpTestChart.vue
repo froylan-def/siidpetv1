@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import ApexCharts from "apexcharts";
 import VueApexCharts from "vue3-apexcharts";
 
 export default {
@@ -25,7 +24,7 @@ export default {
           id: "ventas-chart",
         },
         xaxis: {
-          categories: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"],
+          categories: [],
         },
         title: {
           text: "Expedientes por mes",
@@ -34,17 +33,45 @@ export default {
       },
       series: [
         {
-          name: "Ventas",
-          data: [10, 41, 35, 51, 49, 62, 69],
+          name: "Expedientes",
+          data: [],
         },
       ],
+      expedientesPorMes: null,
     };
   },
   methods: {
+    conteoPorMes(){
+      const conteoPorMes = this.items.reduce((acc, item) => {
+        const mes = item.fecha.substring(0, 7); // Extrae "YYYY-MM"
+        acc[mes] = (acc[mes] || 0) + 1; // Suma al contador
+        return acc;
+      }, {});
+
+      const resultadoOrdenado = Object.entries(conteoPorMes)
+      .map(([mes, cantidad]) => ({ mes, cantidad }))
+      .sort((a, b) => b.mes.localeCompare(a.mes)); // Ordena de mayor a menor
+
+      this.expedientesPorMes = resultadoOrdenado;
+      console.log("Conteo");
+      console.log( this.expedientesPorMes );
+      
+      const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+      this.expedientesPorMes.forEach((mes, index) => {
+        const soloMes = mes.mes.split("-")[1];
+        const soloAnio = mes.mes.split("-")[0];
+        const leyenda = `${meses[soloMes-1]} ${soloAnio}`;
+        this.series[0].data.push(mes.cantidad);
+        this.chartOptions.xaxis.categories.push(leyenda);
+      });
+      
+
+
+    },
     obtenerExpedientes() {
       this.axios.get("/expediente").then((response) => {
         this.items = response.data;
-        console.log("Expedientes obtenidos:", this.items);
+        this.conteoPorMes();
       }).catch(error => {
         console.error("Error al obtener expedientes:", error);
       });
