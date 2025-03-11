@@ -72,7 +72,7 @@ class DefensorController extends Controller
     {
 
         //Se obtiene el registro de la base de datos
-        $defensor = Defensor::find($id);
+        $defensor = Defensor::with('municipio', 'user', 'coordinacion')->find($id);
 
         //Compara si la consulta encontró datos
         if (! $defensor ) {

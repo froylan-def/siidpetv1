@@ -5,11 +5,9 @@
             <h1 class="h4">Expedientes</h1>
         </div>
     </div>
-
     <div class="container mt-2">
         <div class="row">
             <div class="col-md-12">
-
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="">
                         <a v-if="this.rolUsuario == 1 || this.rolUsuario == 5" class="btn btn-primary"
@@ -28,18 +26,13 @@
                         <i class="fa-solid fa-plus"></i> Crear nuevo expediente
                     </button>
                 </div>
-
-
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-md-12">
-
                             <div class="collapse" id="collapseExample2">
                                 <div class="card card-body shadow" style="border-radius: 0.7rem">
                                     <h5> Filtrado expedientes </h5>
-
                                     <div class="row" v-if="this.rolUsuario == 5">
-
                                         <div class="col-xl-4 col-sm-12">
                                             <div class="form-group ">
                                                 <label for="Apellido Paterno">Municipio</label>
@@ -64,7 +57,6 @@
                                             </button>
                                         </div>
                                     </div>
-
                                     <div class="row" v-else>
                                         <div class="col-xl-3 col-sm-12">
                                             <label for="Nombre del usuario">Coordinación</label>
@@ -97,16 +89,11 @@
                                             </button>
                                         </div>
                                     </div>
-
-
-
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
-
                 <div class="container ">
                     <div class="row justify-content-center">
                         <div class="col-md-12">
@@ -116,22 +103,32 @@
                                     <div class="row mb-3">
                                         <div class="col-6 ">
                                             <label for="municipio" class="form-label">Buscar</label>
-                                            <select class="custom-select " v-model="searchField">
-                                                <option selected disabled>Seleccione una opcion</option>
+                                            <select class="custom-select " v-model="searchField"
+                                                @change="cambiarSeleccionEnBusqueda">
+                                                <option value="-1" selected disabled>Seleccione una opcion</option>
                                                 <option value="ugi.nombre">Ugi</option>
                                                 <option value="nuc">Carpeta de Inv.</option>
                                             </select>
                                         </div>
                                         <div class="col-6">
                                             <label for="municipio" class="form-label"> Valor </label>
+
                                             <input class="form-control  border-width-2 " v-model="searchValue"
-                                                placeholder="Escriba lo que quiera buscar" type="search" />
+                                                placeholder="Escriba lo que quiera buscar" type="search"
+                                                v-if="searchField == 'nuc'" />
 
-                                            
-                                            <v-select :value="searchValue" :reduce="(option) => option.id"  @input="setSelectedInput" :options="this.ugis"
-                                                    placeholder="Seleccione una opcion">
+
+                                            <v-select v-else v-model="this.searchValue"
+                                                @update:modelValue="setSelectedInput" :options="this.ugis"
+                                                placeholder="Seleccione una opcion">
                                             </v-select>
-
+                                        </div>
+                                    </div>
+                                    <div class="row text-right">
+                                        <div class="col-12">
+                                            <a @click="limpiarCamposBusqueda" class="btn btn-link">
+                                                <i class="fa-solid fa-magnifying-glass"></i> Limpiar busqueda
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -139,8 +136,7 @@
                         </div>
                     </div>
                 </div>
-
-                <EasyDataTable  buttons-pagination :headers="filteredHeaders" :items="items" :search-field="searchField"
+                <EasyDataTable buttons-pagination :headers="filteredHeaders" :items="items" :search-field="searchField"
                     :search-value="searchValue" :rows-per-page="10" rowsPerPageMessage="Filas por página:"
                     emptyMessage="No hay datos disponibles" alternating table-class-name="customize-table"
                     theme-color="var(--primary-color)">
@@ -196,10 +192,6 @@
                         <span v-if="item.activo === 0"> <span class="badge badge-danger">Desactivado</span> </span>
                     </template>
                 </EasyDataTable>
-
-
-
-
             </div>
         </div>
     </div>
@@ -208,27 +200,17 @@
         aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered " role="document">
             <div class="modal-content">
-
                 <div class="modal-header">
                     <h5 class="modal-title">Expediente {{ this.expediente.nuc }} </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-
                 <div class="modal-body">
-
-                    <!-- Columna 3 -->
-
-
-
-
                     <h6 class="text-primary">Imputado</h6>
-
                     <ul v-if="this.imputados.length === 0" style="font-size: smaller; list-style: none;" class="pl-0">
                         <li>No hay procesados registrados</li>
                     </ul>
-
                     <ul v-else style="font-size: smaller; list-style: none;" v-for="imputado in this.imputados"
                         :key="imputado.nombres" class="pl-0">
                         <li>
@@ -237,11 +219,6 @@
                             {{ imputado.apellido_materno }}
                         </li>
                     </ul>
-
-
-
-
-
                     <h6 class="text-primary ">Víctimas</h6>
                     <ul v-if="this.victimas.length == 0" style="font-size: smaller; list-style: none;" class="pl-0">
                         <li>No hay victimas registradas</li>
@@ -254,11 +231,6 @@
                             {{ victima.apellido_materno }}
                         </li>
                     </ul>
-
-
-
-
-
                     <h6 class="text-primary">Delito</h6>
                     <ul v-if="this.delitos.length === 0" style="font-size: smaller; list-style: none;" class="pl-0">
                         <li>No hay delitos registrados</li>
@@ -269,34 +241,20 @@
                             {{ delito.nombre }}
                         </li>
                     </ul>
-
-
-
-
                     <h6 class="text-primary">Carpeta Procesal </h6>
                     <ul v-if="this.expediente.carpeta_procesal === '' || this.expediente.carpeta_procesal === null"
                         style="font-size: smaller; list-style: none;" class="pl-0">
                         <li>No hay C.P. registrada</li>
                     </ul>
-
                     <ul style="font-size: smaller; list-style: none;" class="pl-0">
                         <li>
                             {{ this.expediente.carpeta_procesal }}
                         </li>
                     </ul>
-
-
-
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-
                 </div>
-
-
-
-
             </div>
         </div>
     </div>
@@ -331,52 +289,37 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">
                             <i class="fas fa-times"></i> Cancelar
                         </button>
-
                         <button v-if="actualizarExpedienteCheck" :disabled="form.busy" class="btn btn-warning"
                             @click="editarExpediente">
                             <i class="fas fa-save"></i> Actualizar
                         </button>
-
                         <button v-else :disabled="form.busy" class="btn btn-success" @click="registrarExpediente">
                             <i class="fas fa-save"></i> Guardar
                         </button>
-
-
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
-
     <div class="modal fade" id="modalCambiarDefensor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-
                 <div class="modal-header">
                     <h5 class="modal-title"> Cambiar defensor </h5>
-
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-
                     <div class="form-group">
                         <label for="nuc"> Defensor </label>
-
                         <v-select v-model="this.form.id_defensor" :reduce="(option) => option.id"
                             :options="defensoresOpciones">
                         </v-select>
-
-
-
-
                         <div style="color: red;" v-if="form.errors.has('id_defensor')"
                             v-html="form.errors.get('id_defensor')" />
                     </div>
@@ -386,7 +329,6 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                         <i class="fas fa-times"></i> Cancelar
                     </button>
-
                     <button class="btn btn-success" @click="cambiarDefensorExpediente">
                         <i class="fas fa-save"></i> Guardar
                     </button>
@@ -414,9 +356,8 @@ export default {
                 { text: "Imputado", value: "imputado" },
                 { text: "Coordinación", value: "defensor.coordinacion.nombre" },
                 { text: "Municipio", value: "defensor.municipio.nombre" },
-                { text: "Defensor", value: "defensor"},
+                { text: "Defensor", value: "defensor" },
                 { text: "Activo", value: "activo" },
-                // { text: "Estatus", value: "status" },
                 { text: "Acciones", value: "operation" },
             ],
             items: [],
@@ -464,6 +405,8 @@ export default {
                 updated_at: null,
                 victima: null,
                 visita_carcelaria: null,
+                status: "",
+                fecha: "",
                 activo: 1,
             }),
             ugiOptions: [],
@@ -496,14 +439,14 @@ export default {
             },
             defensoresOpciones: ref([]),
             coordinacion: ref(window.coordinacion),
-            rolUsuario: window.rol,
-            idUsario: window.id_usuario,
+            rolUsuario: ref(window.rol),
+            idUsario: ref(window.id_usuario),
         }
     },
     computed: {
         filteredHeaders() {
             return this.datos.filter(header =>
-                this.rolUsuario != "6" || (header.value !== 'defensor' && header.value !== 'activo' && header.value !== 'defensor.coordinacion.nombre' && header.value !== "defensor.municipio.nombre" )
+                this.rolUsuario != "6" || (header.value !== 'defensor' && header.value !== 'activo' && header.value !== 'defensor.coordinacion.nombre' && header.value !== "defensor.municipio.nombre")
             );
         }
     },
@@ -511,19 +454,29 @@ export default {
         if (this.rolUsuario == "5") {
             this.busqueda.coordinacion = this.coordinacion;
         }
-
         await this.obtenerInformacionDefensor();
         this.obtenerExpedientes();
         this.obtenerUgis();
         this.obtenerDefensores();
-
         this.obtenerDatosDeBusqueda();
         this.seleccionarCoordinacion();
-
     },
     methods: {
-        setSelectedInput(value){
-            console.log("Ugi seleccionado");
+        obtenerFecha() {
+            const hoy = new Date();
+            const dia = String(hoy.getDate()).padStart(2, "0");
+            const mes = String(hoy.getMonth() + 1).padStart(2, "0");
+            const anio = hoy.getFullYear();
+            return `${anio}-${mes}-${dia}`;
+        },
+        limpiarCamposBusqueda() {
+            this.searchValue = "";
+        },
+        cambiarSeleccionEnBusqueda(event) {
+            this.searchValue = "";
+        },
+        setSelectedInput(value) {
+            this.searchValue = value.label;
         },
         async obtenerInformacionDefensor() {
             try {
@@ -533,7 +486,6 @@ export default {
             } catch (error) {
                 console.error('Error fetching ocupaciones:', error);
             }
-
         },
         async cambiarDefensorExpediente() {
             await this.form.put('/expediente/' + this.form.id, this.form).then(() => {
@@ -578,7 +530,6 @@ export default {
                 this.delitos = response.data;
             })
         },
-
         seleccionarDefensor() {
             if (this.busqueda.defensor === null) {
                 this.busqueda.defensor = -1;
@@ -645,21 +596,15 @@ export default {
                 console.error('Error fetching ocupaciones:', error);
             }
         },
-
         async obtenerDatosDeBusqueda() {
             try {
                 if (this.rolUsuario == '5') {
-
                     const response = await this.axios.get('/coordinacion/' + this.coordinacion);
-
                     this.coordinaciones = await [{
                         id: response.data.coordinacion.id,
                         label: response.data.coordinacion.nombre
                     }];
-
                     this.busqueda.coordinacion = this.coordinacion;
-
-
                 } else {
                     const response = await this.axios.get('/coordinacion');
                     const informacionAdicional = response.data.map(coordinacion => ({
@@ -706,12 +651,9 @@ export default {
             this.form.fill(expediente);
             this.actualizarExpedienteCheck = true;
         },
-
         cambiarDefensor(expediente) {
             this.form.fill(expediente);
         },
-
-
         async obtenerUgis() {
             try {
                 const response = await this.axios.get('/ugi');
@@ -729,8 +671,7 @@ export default {
             this.form.clear();
         },
         async registrarExpediente() {
-
-
+            this.form.fecha = this.obtenerFecha();
             this.form.id_defensor = await this.id_defensor;
             await this.form.post('/expediente').then((response) => {
                 Swal.fire({
@@ -745,8 +686,6 @@ export default {
                 console.log(error);
             });
             $('#modalAgregarExpediente').modal('hide');
-
-
         },
         obtenerExpedientes() {
             this.axios.get('/expediente').then((response) => {
@@ -765,8 +704,6 @@ export default {
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.axios.delete('/expediente/' + id).then((response) => {
-
-
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
@@ -774,7 +711,6 @@ export default {
                             showConfirmButton: false,
                             timer: 1500
                         })
-
                         this.obtenerExpedientes();
                     }).catch(error => {
                         Swal.fire({
@@ -790,7 +726,6 @@ export default {
                 }
             })
         },
-
         desactivar(item) {
             this.form.fill(item);
             if (this.form.activo == 1) {
@@ -821,10 +756,7 @@ export default {
                     Swal.fire('No se guardaron los cambios', '', 'info')
                 }
             })
-
         },
-
-
     }
 }
 </script>
@@ -833,7 +765,6 @@ export default {
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
-
 :root {
     --easy-table-border: 2px solid #ddd;
     --easy-table-row-border: 1px solid #ddd;

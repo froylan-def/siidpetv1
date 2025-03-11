@@ -41,6 +41,8 @@ use App\Http\Controllers\CoordinacionController;
 use App\Http\Controllers\DelitoProcesoController;
 use App\Http\Controllers\DelitoController;
 
+use App\Http\Controllers\CalendarioController;
+
 use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\ImputadosExpedienteController;
@@ -99,6 +101,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('cuentadiaria', CuentaDiariaController::class);
     Route::resource('peticionario', PeticionarioController::class);
     Route::resource('users', UserController::class);
+
+    Route::resource('calendarioapi', CalendarioController::class);
 
     Route::get('/municipios/{id}', [MunicipioController::class, 'show']);
     Route::resource('municipios', MunicipioController::class);
