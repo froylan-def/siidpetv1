@@ -227,19 +227,14 @@ export default {
             }
         },
         async obtenerNombreDefensor(){
-
             let defensor = "";
             try {
                 const response = await this.axios.get('/defensor/'+this.form.id_defensor);
                 defensor = response.data.defensor.user.name +" "+ response.data.defensor.user.fathername +" "+response.data.defensor.user.mothername;
-                
                 this.form.nombre_defensor = defensor;
-
             } catch (error) {
                 console.error('Error fetching ocupaciones:', error);
-            }
-
-            
+            }            
         },
         async obtenerDefensores() {
             try {
@@ -254,43 +249,11 @@ export default {
         },
         cambiarModoEdicion() {
             this.visualizarExpedienteCheck = false;
-
             let fechaAdecuada = new Date( this.form.fecha_fin );
             fechaAdecuada.setDate(fechaAdecuada.getDate() - 1);
             this.form.fecha_fin = fechaAdecuada.toISOString().split("T")[0];
-
         },
-        async editarEvento() {
-
-            if(!this.agregarFechaFin){
-                this.form.fecha_fin = "";
-            }else{
-                if( this.form.fecha_fin != "" ){
-                    let fechaAdecuada = new Date( this.form.fecha_fin );
-                    fechaAdecuada.setDate(fechaAdecuada.getDate() + 1);
-                    this.form.fecha_fin = fechaAdecuada.toISOString().split("T")[0];
-                }
-                
-            }
-            
-            
-            
-             
-            await this.form.put('/calendarioapi/' + this.form.id, this.form).then(() => {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Evento actualizado con éxito',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                $('#modalAgregarEvento').modal('hide');
-                this.obtenerEventos();
-            }).catch(error => {
-                console.log(error);
-            });
-
-        },
+        
         async registrarEvento() {
             await this.form.post('/calendarioapi').then((response) => {
                 Swal.fire({
@@ -307,14 +270,12 @@ export default {
             });
         },
         formatearFecha(fechaStr, esInicio) {
-
             let resultado = fechaStr;
             if(esInicio){
                 let fechaAdecuada = new Date(fechaStr);
                 fechaAdecuada.setDate(fechaAdecuada.getDate() + 1);
                 resultado = fechaAdecuada.toISOString().split("T")[0];
             }
-
             const meses = [
                 "enero", "febrero", "marzo", "abril", "mayo", "junio",
                 "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
@@ -338,43 +299,76 @@ export default {
             $('#modalAgregarEvento').modal('show');
             this.form.reset();
             this.form.clear();
-            this.form.fecha_inicio = arg.dateStr;
-            
+            this.form.fecha_inicio = arg.dateStr;  
         },
         actualizarExpediente(evento) {
             this.visualizarExpedienteCheck = true;
             $('#modalAgregarEvento').modal('show');
             this.actualizarExpedienteCheck = true;
             this.form.id = evento.event.id;
-
             this.form.fecha_inicio = evento.event.startStr;
             this.form.fecha_fin = evento.event.endStr;
-
-            
-            
-
-
-
             this.form.evento = evento.event.title;
             this.form.descripcion = evento.event.extendedProps.description;
             this.form.id_defensor = evento.event.extendedProps.id_defensor;
-            
             if( evento.event.endStr == false || evento.event.endStr == "" || evento.event.endStr == undefined || evento.endStr == " "){
                 this.agregarFechaFin = false;
             }else{
                 this.agregarFechaFin = true;
             }
-
             this.obtenerNombreDefensor();
         },
-       
+        async editarEvento() {
+            if(!this.agregarFechaFin){
+                this.form.fecha_fin = "";
+            }else{
+                if( this.form.fecha_fin != "" ){
+                    let fechaAdecuada = new Date( this.form.fecha_fin );
+                    fechaAdecuada.setDate(fechaAdecuada.getDate() + 1);
+                    this.form.fecha_fin = fechaAdecuada.toISOString().split("T")[0];
+                }
+            }
+            await this.form.put('/calendarioapi/' + this.form.id, this.form).then(() => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Evento actualizado con éxito',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                $('#modalAgregarEvento').modal('hide');
+                this.obtenerEventos();
+            }).catch(error => {
+                console.log(error);
+            });
+        },
         async handleEventChange(arg) {
+
+            console.log("Argumentos del evento");
+            console.log(arg);
+            
             this.form.id = arg.event.id;
             this.form.fecha_inicio = arg.event.startStr;
             this.form.fecha_fin = arg.event.endStr;
             this.form.evento = arg.event.title;
             this.form.descripcion = arg.event.extendedProps.description;
-            this.editarEvento();
+            this.form.id_defensor = arg.event.extendedProps.id_defensor;
+            
+            
+            await this.form.put('/calendarioapi/' + this.form.id, this.form).then(() => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Evento actualizado con éxito',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                $('#modalAgregarEvento').modal('hide');
+                this.obtenerEventos();
+            }).catch(error => {
+                console.log(error);
+            });
+            
         },
     }
 }
