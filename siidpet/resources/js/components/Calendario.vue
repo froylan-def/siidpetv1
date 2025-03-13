@@ -374,7 +374,21 @@ export default {
             this.form.fecha_fin = arg.event.endStr;
             this.form.evento = arg.event.title;
             this.form.descripcion = arg.event.extendedProps.description;
-            this.editarEvento();
+            this.form.id_defensor = arg.event.extendedProps.id_defensor;
+            // this.editarEvento();
+            await this.form.put('/calendarioapi/' + this.form.id, this.form).then(() => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Evento actualizado con éxito',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                $('#modalAgregarEvento').modal('hide');
+                this.obtenerEventos();
+            }).catch(error => {
+                console.log(error);
+            });
         },
     }
 }
