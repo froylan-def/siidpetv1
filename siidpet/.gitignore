@@ -1,3 +1,16 @@
 /node_modules
 /vendor
 .env
+
+# Composer & NPM
+composer.lock
+npm-debug.log
+yarn-error.log
+pnpm-lock.yaml
+
+# Other
+/public/hot
+/public/mix-manifest.json
+/public/vendor
+/node_modules/
+/build
