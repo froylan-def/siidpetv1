@@ -4,27 +4,113 @@
             <h1 class="h4">Calendario</h1>
         </div>
     </div>
+
+
     <div class="container mt-2">
         <div class="row">
             <div class="col-md-12">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="">
-                        <a @click="this.$router.push('/expedientes')" class="btn btn-secondary ml-1"
-                            data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
-                            aria-controls="collapseExample">
-                            <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                        <a v-if="this.rolUsuario == 1 || this.rolUsuario == 5" class="btn btn-primary"
+                            data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false"
+                            aria-controls="collapseExample2">
+                            <i class="fa-solid fa-filter"></i> Busqueda
                         </a>
                     </div>
+
+
                     <button class="btn btn-success" data-toggle="modal" data-target="#modalAgregarEvento"
                         @click="abrirModalRegistro">
                         <i class="fa-solid fa-plus"></i> Crear nuevo evento
                     </button>
+
+
                 </div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <div class="collapse" id="collapseExample2">
+                                <div class="card card-body shadow" style="border-radius: 0.7rem">
+                                    <h5> Filtrado expedientes </h5>
+                                    <div class="row" v-if="this.rolUsuario == 5">
+                                        <div class="col-xl-4 col-sm-12">
+                                            <div class="form-group ">
+                                                <label for="Apellido Paterno">Municipio</label>
+                                                <v-select v-model="this.busqueda.municipio"
+                                                    :reduce="(option) => option.id" :options="municipios"
+                                                    @update:model-value="seleccionarMunicipio()">
+                                                </v-select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-sm-12">
+                                            <div class="form-group ">
+                                                <label for="Apellido Materno">Defensor</label>
+                                                <v-select v-model="this.busqueda.defensor"
+                                                    :reduce="(option) => option.id" :options="defensores"
+                                                    @update:model-value="seleccionarDefensor()">
+                                                </v-select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-sm-12 mt-1">
+                                            <button class="btn btn-primary w-100 mt-4" @click="obtenerEventos()">
+                                                <i class="fa-solid fa-search"></i> Buscar
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row" v-else>
+                                        <div class="col-xl-3 col-sm-12">
+                                            <label for="Nombre del usuario">Coordinación</label>
+                                            <v-select v-model="this.busqueda.coordinacion"
+                                                :reduce="(option) => option.id" :options="coordinaciones"
+                                                @update:model-value="seleccionarCoordinacion()">
+                                            </v-select>
+                                        </div>
+                                        <div class="col-xl-3 col-sm-12">
+                                            <div class="form-group ">
+                                                <label for="Apellido Paterno">Municipio</label>
+                                                <v-select v-model="this.busqueda.municipio"
+                                                    :reduce="(option) => option.id" :options="municipios"
+                                                    @update:model-value="seleccionarMunicipio()">
+                                                </v-select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-sm-12">
+                                            <div class="form-group ">
+                                                <label for="Apellido Materno">Defensor</label>
+                                                <v-select v-model="this.busqueda.defensor"
+                                                    :reduce="(option) => option.id" :options="defensores"
+                                                    @update:model-value="seleccionarDefensor()">
+                                                </v-select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-sm-12 mt-1">
+                                            <button class="btn btn-primary w-100 mt-4" @click="obtenerEventos()">
+                                                <i class="fa-solid fa-search"></i> Buscar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container mt-2">
+        <div class="row">
+            <div class="col-md-12">
                 <div class="card" style="border-radius: 0.7rem">
                     <div class="card-body p-0">
                         <FullCalendar :options="calendarOptions">
                             <template v-slot:eventContent='arg'>
-                                <b>{{ arg.event.title }} </b>
+                                <p class="my-0 ml-1"> <b> {{ arg.event.title }} </b> </p>
+                                <span class="badge badge-pill badge-light my-1 ml-1">{{ arg.event.extendedProps.defensor
+                                    }} </span>
                             </template>
                         </FullCalendar>
                     </div>
@@ -55,12 +141,12 @@
                             this.formatearFecha(this.form.fecha_inicio, true)
                             }} </p>
                         <p>
-                            <strong><i class="fas fa-user"></i> Defensor:</strong> 
+                            <strong><i class="fas fa-user"></i> Defensor:</strong>
                             {{ this.form.nombre_defensor }}
                         </p>
                     </div>
                     <div class="modal-footer">
-                        
+
 
                         <button class="btn btn-primary" @click="cambiarModoEdicion">
                             <i class="fas fa-save"></i> Editar
@@ -69,8 +155,7 @@
                     </div>
                 </div>
                 <div class="modal-content" v-else>
-                    <form
-                        @submit.prevent="actualizarExpedienteCheck === false ? registrarEvento : editarEvento">
+                    <form @submit.prevent="actualizarExpedienteCheck === false ? registrarEvento : editarEvento">
                         <div class="modal-header">
                             <h5 v-if="actualizarExpedienteCheck" class="modal-title" id="modalAgregarEvento"> Actualizar
                                 evento
@@ -85,13 +170,25 @@
                                 <label>Titulo</label>
                                 <input v-model="form.evento" type="text" class="form-control" id="titulo"
                                     aria-describedby="emailHelp" placeholder="Titulo del evento">
+                                <span class="alinear-derecha" style="font-size: 10px">
+                                    {{ 255 - this.form.evento.length }} Restante
+                                </span>
                                 <div style="color: red;" v-if="form.errors.has('evento')"
                                     v-html="form.errors.get('evento')" />
                             </div>
                             <div class="form-group">
                                 <label>Descripción</label>
-                                <input v-model="form.descripcion" type="text" class="form-control" id="titulo"
-                                    aria-describedby="emailHelp" placeholder="Descripcion del evento">
+
+
+                                <textarea rows="4" v-model="form.descripcion" type="text" class="form-control"
+                                    id="titulo" aria-describedby="emailHelp" placeholder="Descripcion del evento">
+
+                        </textarea>
+                                <span class="alinear-derecha" style="font-size: 10px">
+                                    {{ 255 - this.form.descripcion.length }} Restante
+                                </span>
+
+
                                 <div style="color: red;" v-if="form.errors.has('descripcion')"
                                     v-html="form.errors.get('descripcion')" />
                             </div>
@@ -102,14 +199,14 @@
                                 <div style="color: red;" v-if="form.errors.has('fecha_inicio')"
                                     v-html="form.errors.get('fecha_inicio')" />
                             </div>
-                        
-                            <div class="form-group" >
-                                <input type="checkbox" v-model="agregarFechaFin" >
+
+                            <div class="form-group">
+                                <input type="checkbox" v-model="agregarFechaFin">
                                 Agregar fecha de finalización
                                 </input>
-                                
+
                             </div>
-                            
+
 
                             <div class="form-group" v-if="agregarFechaFin">
                                 <label>Fecha fin</label>
@@ -134,7 +231,7 @@
                             </button>
 
 
-                            
+
                             <button v-if="actualizarExpedienteCheck" :disabled="form.busy" class="btn btn-primary"
                                 @click="editarEvento">
                                 <i class="fas fa-save"></i> Actualizar
@@ -160,7 +257,7 @@ import Swal from 'sweetalert2'
 import esLocale from '@fullcalendar/core/locales/es';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import FullCalendar from '@fullcalendar/vue3'
+import FullCalendar from '@fullcalendar/vue3';
 
 export default {
     components: {
@@ -199,47 +296,190 @@ export default {
                 eventChange: this.handleEventChange
             },
             defensoresOpciones: ref([]),
-            agregarFechaFin: false
+            agregarFechaFin: false,
+            coordinacion: ref(window.coordinacion),
+            rolUsuario: ref(window.rol),
+            idUsario: ref(window.id_usuario),
+            busqueda: {
+                coordinacion: ref(-1),
+                defensor: ref(-1),
+                municipio: ref(-1),
+            },
+            coordinaciones: ref([{
+                id: -1,
+                label: "Todos"
+            }]),
+            municipios: ref([{
+                id: -1,
+                label: "Todos"
+            }]),
+            defensores: ref([{
+                id: -1,
+                label: "Todos"
+            }]),
+
         }
     },
     mounted() {
+        if (this.rolUsuario == "5") {
+            this.busqueda.coordinacion = this.coordinacion;
+        }
         this.calendarOptions.events = this.events;
         this.obtenerEventos();
         this.obtenerDefensores();
+
+        this.obtenerDatosDeBusqueda();
+        this.seleccionarCoordinacion();
     },
     methods: {
+
         async obtenerEventos() {
-            try {
-                const response = await this.axios.get('/calendarioapi');
-                const _this = this;
-                response.data.forEach(function (element) {
-                    _this.events.push({
-                        id: element.id,
-                        title: element.evento,
-                        description: element.descripcion,
-                        start: element.fecha_inicio,
-                        end: element.fecha_fin,
-                        id_defensor: element.id_defensor
+
+
+            if (this.busqueda.coordinacion !=  null) {
+                const coordinacion = this.busqueda.coordinacion === -1 ? null : [this.busqueda.coordinacion];
+                const municipio = this.busqueda.municipio === -1 ? null : [this.busqueda.municipio];
+                const defensor = this.busqueda.defensor === -1 ? null : [this.busqueda.defensor];
+                try {
+                    const filtros = {
+                        id_coordinacion: coordinacion,
+                        id_municipio: municipio,
+                        id_defensor: defensor,
+                    }
+                    const response = await this.axios.post('/busquedaeventosconfiltros', filtros);
+                    const _this = this;
+                    _this.events = [];
+                    this.calendarOptions.events = [];
+                    response.data.forEach(function (element) {
+                        _this.events.push({
+                            id: element.id,
+                            title: element.evento,
+                            description: element.descripcion,
+                            start: element.fecha_inicio,
+                            end: element.fecha_fin,
+                            id_defensor: element.id_defensor,
+                            defensor: element.defensor.user.name + " " + element.defensor.user.fathername + " " + element.defensor.user.mothername,
+                            backgroundColor: "#" + element.defensor.coordinacion.color,
+                            borderColor: "#" + element.defensor.coordinacion.color,
+                        });
                     });
-                });
+
+                    this.calendarOptions.events = _this.events;
+
+                } catch (error) {
+                    console.error('Error fetching eventos:', error);
+                }
+
+            } else {
+                try {
+                    let response = "";
+                    response = await this.axios.get('/calendarioapi');
+                    const _this = this;
+                    response.data.forEach(function (element) {
+                        _this.events.push({
+                            id: element.id,
+                            title: element.evento,
+                            description: element.descripcion,
+                            start: element.fecha_inicio,
+                            end: element.fecha_fin,
+                            id_defensor: element.id_defensor,
+                            defensor: element.defensor.user.name + " " + element.defensor.user.fathername + " " + element.defensor.user.mothername,
+                            backgroundColor: "#" + element.defensor.coordinacion.color,
+                            borderColor: "#" + element.defensor.coordinacion.color,
+                        });
+                    });
+                } catch (error) {
+                    console.error('Error fetching eventos:', error);
+                }
+
+            }
+
+
+        },
+
+
+
+        async obtenerDatosDeBusqueda() {
+            try {
+                if (this.rolUsuario == '5') {
+                    const response = await this.axios.get('/coordinacion/' + this.coordinacion);
+                    this.coordinaciones = await [{
+                        id: response.data.coordinacion.id,
+                        label: response.data.coordinacion.nombre
+                    }];
+                    this.busqueda.coordinacion = this.coordinacion;
+                } else {
+                    const response = await this.axios.get('/coordinacion');
+                    const informacionAdicional = response.data.map(coordinacion => ({
+                        id: coordinacion.id,
+                        label: coordinacion.nombre
+                    }));
+                    await this.coordinaciones.splice(2, 0, ...informacionAdicional);
+                }
             } catch (error) {
                 console.error('Error fetching ocupaciones:', error);
             }
         },
-        async obtenerNombreDefensor(){
 
-            let defensor = "";
+        async seleccionarCoordinacion() {
+            if (this.busqueda.coordinacion === null && this.rolUsuario != "5") {
+                this.busqueda.coordinacion = -1;
+            }
+            if (this.busqueda.coordinacion === null && this.rolUsuario == "5") {
+                this.busqueda.coordinacion = this.coordinacion;
+            }
+            this.busqueda.municipio = -1;
+            this.busqueda.defensor = -1;
+            this.municipios = [{
+                id: -1,
+                label: "Todos"
+            }];
             try {
-                const response = await this.axios.get('/defensor/'+this.form.id_defensor);
-                defensor = response.data.defensor.user.name +" "+ response.data.defensor.user.fathername +" "+response.data.defensor.user.mothername;
-                
-                this.form.nombre_defensor = defensor;
-
+                const response = await this.axios.get('/coordinacionMunicipio/' + this.busqueda.coordinacion);
+                const informacionAdicional = response.data.map(municipio => ({
+                    id: municipio.municipio.id,
+                    label: municipio.municipio.nombre
+                }));
+                this.municipios.splice(2, 0, ...informacionAdicional);
             } catch (error) {
                 console.error('Error fetching ocupaciones:', error);
             }
+        },
+        async seleccionarMunicipio() {
+            if (this.busqueda.municipio === null) {
+                this.busqueda.municipio = -1;
+            }
+            this.busqueda.defensor = -1;
+            this.defensores = [{
+                id: -1,
+                label: "Todos"
+            }];
+            try {
+                const response = await this.axios.get('/obtenerDefensoresMunicipio/' + this.busqueda.municipio);
+                const informacionAdicional = response.data.map(defensor => ({
+                    id: defensor.id,
+                    label: defensor.user.name + " " + defensor.user.fathername + "  " + defensor.user.mothername
+                }));
+                this.defensores.splice(2, 0, ...informacionAdicional);
+            } catch (error) {
+                console.error('Error fetching ocupaciones:', error);
+            }
+        },
+        seleccionarDefensor() {
+            if (this.busqueda.defensor === null) {
+                this.busqueda.defensor = -1;
+            }
+        },
 
-            
+        async obtenerNombreDefensor() {
+            let defensor = "";
+            try {
+                const response = await this.axios.get('/defensor/' + this.form.id_defensor);
+                defensor = response.data.defensor.user.name + " " + response.data.defensor.user.fathername + " " + response.data.defensor.user.mothername;
+                this.form.nombre_defensor = defensor;
+            } catch (error) {
+                console.error('Error fetching ocupaciones:', error);
+            }
         },
         async obtenerDefensores() {
             try {
@@ -254,28 +494,20 @@ export default {
         },
         cambiarModoEdicion() {
             this.visualizarExpedienteCheck = false;
-
-            let fechaAdecuada = new Date( this.form.fecha_fin );
+            let fechaAdecuada = new Date(this.form.fecha_fin);
             fechaAdecuada.setDate(fechaAdecuada.getDate() - 1);
             this.form.fecha_fin = fechaAdecuada.toISOString().split("T")[0];
-
         },
         async editarEvento() {
-
-            if(!this.agregarFechaFin){
+            if (!this.agregarFechaFin) {
                 this.form.fecha_fin = "";
-            }else{
-                if( this.form.fecha_fin != "" ){
-                    let fechaAdecuada = new Date( this.form.fecha_fin );
+            } else {
+                if (this.form.fecha_fin != "") {
+                    let fechaAdecuada = new Date(this.form.fecha_fin);
                     fechaAdecuada.setDate(fechaAdecuada.getDate() + 1);
                     this.form.fecha_fin = fechaAdecuada.toISOString().split("T")[0];
                 }
-                
             }
-            
-            
-            
-             
             await this.form.put('/calendarioapi/' + this.form.id, this.form).then(() => {
                 Swal.fire({
                     position: 'top-end',
@@ -289,7 +521,6 @@ export default {
             }).catch(error => {
                 console.log(error);
             });
-
         },
         async registrarEvento() {
             await this.form.post('/calendarioapi').then((response) => {
@@ -307,14 +538,12 @@ export default {
             });
         },
         formatearFecha(fechaStr, esInicio) {
-
             let resultado = fechaStr;
-            if(esInicio){
+            if (esInicio) {
                 let fechaAdecuada = new Date(fechaStr);
                 fechaAdecuada.setDate(fechaAdecuada.getDate() + 1);
                 resultado = fechaAdecuada.toISOString().split("T")[0];
             }
-
             const meses = [
                 "enero", "febrero", "marzo", "abril", "mayo", "junio",
                 "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
@@ -329,7 +558,7 @@ export default {
             const año = fecha.getFullYear();
             return `${diaSemana} ${dia} de ${mes} de ${año}`;
         },
-        regresarNavegacion(){
+        regresarNavegacion() {
             this.visualizarExpedienteCheck = true;
         },
         abrirModalRegistro(arg) {
@@ -339,35 +568,25 @@ export default {
             this.form.reset();
             this.form.clear();
             this.form.fecha_inicio = arg.dateStr;
-            
+
         },
         actualizarExpediente(evento) {
             this.visualizarExpedienteCheck = true;
             $('#modalAgregarEvento').modal('show');
             this.actualizarExpedienteCheck = true;
             this.form.id = evento.event.id;
-
             this.form.fecha_inicio = evento.event.startStr;
             this.form.fecha_fin = evento.event.endStr;
-
-            
-            
-
-
-
             this.form.evento = evento.event.title;
             this.form.descripcion = evento.event.extendedProps.description;
             this.form.id_defensor = evento.event.extendedProps.id_defensor;
-            
-            if( evento.event.endStr == false || evento.event.endStr == "" || evento.event.endStr == undefined || evento.endStr == " "){
+            if (evento.event.endStr == false || evento.event.endStr == "" || evento.event.endStr == undefined || evento.endStr == " ") {
                 this.agregarFechaFin = false;
-            }else{
+            } else {
                 this.agregarFechaFin = true;
             }
-
             this.obtenerNombreDefensor();
         },
-       
         async handleEventChange(arg) {
             this.form.id = arg.event.id;
             this.form.fecha_inicio = arg.event.startStr;
@@ -375,7 +594,6 @@ export default {
             this.form.evento = arg.event.title;
             this.form.descripcion = arg.event.extendedProps.description;
             this.form.id_defensor = arg.event.extendedProps.id_defensor;
-            // this.editarEvento();
             await this.form.put('/calendarioapi/' + this.form.id, this.form).then(() => {
                 Swal.fire({
                     position: 'top-end',
@@ -398,5 +616,16 @@ export default {
     background-color: var(--danger-color) !important;
     color: white !important;
     border: none !important;
+}
+
+.contenedor {
+    width: 200px;
+    height: 50px;
+    overflow: hidden;
+}
+
+.alinear-derecha {
+    display: block;
+    text-align: right;
 }
 </style>

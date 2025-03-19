@@ -457,6 +457,7 @@ export default {
         await this.obtenerInformacionDefensor();
         this.obtenerExpedientes();
         this.obtenerUgis();
+        
         this.obtenerDefensores();
         this.obtenerDatosDeBusqueda();
         this.seleccionarCoordinacion();

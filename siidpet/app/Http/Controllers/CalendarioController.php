@@ -157,10 +157,19 @@ class CalendarioController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $request->validate([
+            'id_defensor' => 'required',
+            'evento' => 'required',
+            'descripcion' => 'required',
+            'fecha_inicio' => 'required',
+        ]);
+
+
         // Encontramos el dato con el id
         $calendario = Calendario::find($id);
 
-        // Verifica si el usuario existe
+        // Verifica si el evento existe
         if (! $calendario ) {
             return response()->json(['mensaje' => 'Datos del calendario no encontrados'], 404);
         }
@@ -171,6 +180,50 @@ class CalendarioController extends Controller
         // Puedes devolver una respuesta JSON, un mensaje de éxito, etc.
         return response()->json(['mensaje' => 'Datos actualizados con éxito']);
     }
+
+
+
+
+
+    public function busquedaConFiltros(Request $request)
+    {
+        // Obtén los parámetros desde la solicitud
+        $id_coordinacion = $request->input('id_coordinacion'); // Ejemplo: [1,2,3,4,5]
+        $id_municipio = $request->input('id_municipio'); // Ejemplo: 1 (puedes pasarlo como null para incluir todos)
+        $id_defensor = $request->input('id_defensor'); // Ejemplo: [1,3,5,7]
+
+
+        
+        // Construir la consulta
+        $query = Calendario::with([
+            'defensor','defensor.user', 'defensor.municipio', 'defensor.coordinacion'
+        ]);
+
+        // Aplicar los filtros dinámicos
+        // Aplicar filtros en la relación defensor
+        if ($id_defensor || $id_coordinacion || $id_municipio) {
+            $query->whereHas('defensor', function ($query) use ($id_defensor, $id_coordinacion, $id_municipio) {
+                if ($id_defensor) {
+                    $query->whereIn('id', $id_defensor); // Filtro dinámico para defensor.id
+                }
+
+                if ($id_coordinacion) {
+                    $query->whereIn('id_coordinacion', $id_coordinacion); // Filtro dinámico para defensor.id_coordinacion
+                }
+
+                if ($id_municipio) {
+                    $query->where('id_municipio', $id_municipio); // Filtro específico para defensor.id_municipio
+                }
+            });
+        }
+
+        // Obtener los resultados
+        $expedientes = $query->get();
+
+        return response()->json($expedientes);
+        
+    }
+
 
     /**
      * Remove the specified resource from storage.

@@ -133,13 +133,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('tribunalenjuiciamiento', tribunalEnjuiciamientoController::class);
     Route::resource('conclusion', ConclusionController::class);
     Route::resource('impugnacion', ImpugnacionController::class);
-
-
-
     Route::get('/estado/{id}', [estadoController::class, 'show']);
-
-    // obtenerTribunalPorExpediente 
-
     Route::delete('/eliminartribunalenjuiciamiento/{id}', [tribunalEnjuiciamientoController::class, 'eliminar']);
 
     Route::get('/obtenertribunalporexpediente/{id}', [tribunalEnjuiciamientoController::class, 'obtenerTribunalPorExpediente']);
@@ -174,6 +168,9 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     Route::post('/busquedaconfiltros', [ExpedienteController::class, 'busquedaConFiltros']);
+
+    Route::post('/busquedaeventosconfiltros', [CalendarioController::class, 'busquedaConFiltros']);
+
 
 
 
