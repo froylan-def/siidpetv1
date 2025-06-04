@@ -15,8 +15,8 @@ class AsignacionMedidas extends Model
         'fecha_inicio',
         'fecha_vencimiento',
         'id_medida_proteccion',
+        'observaciones',
         'activo',
-
         // ... otras propiedades ...
     ];
 

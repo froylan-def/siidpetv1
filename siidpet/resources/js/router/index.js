@@ -26,6 +26,8 @@ import Coordinaciones from '../components/admin/Coordinaciones.vue';
 import TribunalEnjuiciamiento from '../components/admin/TribunalEnjuiciamiento.vue';
 
 import Test from '../components/defensor/componentes/CmpTestChart.vue';
+import Actividad from '../components/Actividad.vue';
+
 const routes = [
     {
         path: '/',
@@ -178,6 +180,15 @@ const routes = [
         component: Test,
         meta: { requiresAuth: true, requiresAdmin: true }
     },
+
+    {
+        path: "/actividad",
+        name: "actividad",
+        component: Actividad,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+
+
 
     {
         path: "/:catchAll(.*)",

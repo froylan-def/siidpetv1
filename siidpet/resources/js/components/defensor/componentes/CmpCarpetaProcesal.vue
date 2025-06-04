@@ -49,6 +49,7 @@
 import { ref } from "vue";
 import Form from 'vform'
 import Swal from 'sweetalert2'
+import { registrarLog, obtenerCambios } from '../../../../utils/helpers';
 
 export default {
     data() {
@@ -59,6 +60,7 @@ export default {
             }),
             esNuevo: ref(false),
             loading: ref(true),
+            originalData: ref({}),
         }
     },
     mounted() {
@@ -72,14 +74,17 @@ export default {
 
 
         obtenerCarpetaProcesal() {
-            this.axios.get('/expediente/' + this.$route.params.id).then((response) => {
+            this.axios.get('/expediente/' + this.$route.params.id).then( async (response) => {
                 if (response.data.expediente.carpeta_procesal == null) {
                     this.esNuevo = true;
                 } else {
-                    this.form.fill({
+                    await this.form.fill({
                         id: response.data.expediente.id,
                         carpeta_procesal: response.data.expediente.carpeta_procesal
                     });
+
+                    this.originalData = JSON.parse(JSON.stringify( this.form.data() ));
+
                 }
                 this.loading = false;
                 
@@ -103,6 +108,7 @@ export default {
                 this.loading = true;
                 this.obtenerCarpetaProcesal();
                 this.actualizarInformacion();
+                this.guardarLog(2);
             })
         },
 
@@ -123,6 +129,7 @@ export default {
                 this.loading = true;
                 this.obtenerCarpetaProcesal();
                 this.actualizarInformacion();
+                this.guardarLog(1);
             })
         },
 
@@ -133,7 +140,30 @@ export default {
                 error = true;
             }
             return error;
+        },
+
+        async guardarLog(tipo) {
+
+            let mensaje = "";
+            if (tipo == 1) {
+                mensaje = "Se agregaron datos de la carpeta procesal"
+            } else {
+                mensaje = "Se editaron datos de la carpeta procesal"
+            }
+
+            let cambiado = await obtenerCambios(this.originalData, this.form.data());
+
+            const data = {
+                id_defensor: window.defensor,
+                accion: mensaje,
+                descripcion: JSON.stringify(cambiado),
+                id_registro: this.$route.params.id,
+                tipo_registro: 3
+            };
+            registrarLog(data);
+
         }
+
 
 
 

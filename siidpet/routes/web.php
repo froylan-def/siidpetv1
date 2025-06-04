@@ -58,6 +58,8 @@ use App\Http\Controllers\ExamenDetencionController;
 
 use App\Http\Controllers\coordinacionMunicipioController;
 
+use App\Http\Controllers\LogsController;
+
 
 
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
@@ -160,6 +162,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('medidasprotecciones', medidasProteccionController::class);
 
     Route::resource('coordinacionMunicipio', coordinacionMunicipioController::class);
+
+
+
+    Route::resource('logs', LogsController::class);
     
     // obtenerDefensorPorIdUsuario
 

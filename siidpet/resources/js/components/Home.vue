@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-4">
+            <div class="col-lg-4 col-4 ">
                 <div class="small-box bg-warning redondo">
                     <div class="inner">
                         <h1> {{ this.totalImputados }} </h1>
@@ -82,11 +82,12 @@
 
 <script>
 import ChartComponent from './CmpTestChart.vue';
+
 export default {
     components: {
         ChartComponent
     },
-    name: 'HelloWorld',
+    name: 'Home',
     data() {
         return {
             yourName: '',
@@ -111,8 +112,14 @@ export default {
         modalClosed() {
             this.visible = false;
         },
+        displayMensaje(){
+            this.mensaje("Froylan");
+        }
     },
     async created() {
+        
+
+
         const user = window.usuario;
         const textoDecodificado = this.decodeHTML(user);
         this.nombres = JSON.parse(textoDecodificado).name;

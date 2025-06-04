@@ -67,6 +67,7 @@
 import { ref } from "vue";
 import Form from 'vform'
 import Swal from 'sweetalert2'
+import { registrarLog, obtenerCambios } from '../../../../utils/helpers';
 
 export default {
     data() {
@@ -80,6 +81,7 @@ export default {
             }),
             esNuevo: ref(false),
             loading: ref(true),
+            originalData: ref({}),
         }
     },
     mounted() {
@@ -87,14 +89,16 @@ export default {
     },
     methods: {
         obtenerIdAcuerdoReparatorio() {
-            this.axios.get('/expediente/' + this.$route.params.id).then((response) => {
+            this.axios.get('/expediente/' + this.$route.params.id).then( async (response) => {
                 if (response.data.expediente.id_acuerdo_reparatorio == null) {
                     this.esNuevo = true;
                 } else {
                     this.axios.get('/acuerdoreparatorio/' + response.data.expediente.id_acuerdo_reparatorio)
-                        .then((response) => {
-                            this.form.fill(response.data.acuerdoreparatorio
+                        .then(async (response) => {
+                            await this.form.fill(response.data.acuerdoreparatorio
                             );
+
+                            this.originalData = JSON.parse(JSON.stringify( this.form.data() ));
                         })
                 }
                 this.loading = false;
@@ -115,6 +119,7 @@ export default {
                     timer: 1500
                 })
                 this.obtenerIdAcuerdoReparatorio();
+                this.guardarLog(2);
             })
         },
         guardarAcuerdoReparatorio() {
@@ -138,6 +143,7 @@ export default {
                     })
                     this.obtenerIdAcuerdoReparatorio();
                     this.esNuevo = false;
+                    this.guardarLog(1);
                 })
             })
         },
@@ -171,7 +177,33 @@ export default {
                 error = true;
             }
             return error;
+        },
+
+
+
+        async guardarLog(tipo) {
+
+            let mensaje = "";
+            if (tipo == 1) {
+                mensaje = "Se agregaron datos del acuerdo reparatorio"
+            } else {
+                mensaje = "Se editaron datos del acuerdo reparatorio"
+            }
+
+            let cambiado = await obtenerCambios(this.originalData, this.form.data());
+
+            const data = {
+                id_defensor: window.defensor,
+                accion: mensaje,
+                descripcion: JSON.stringify(cambiado),
+                id_registro: this.$route.params.id,
+                tipo_registro: 3
+            };
+            registrarLog(data);
+
         }
+
+
 
 
     }

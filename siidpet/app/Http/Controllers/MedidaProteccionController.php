@@ -61,13 +61,13 @@ class MedidaProteccionController extends Controller
     public function show($id)
     {
         //
-        $MedidaProteccion = MedidaProteccion::where('id', $id)->where('activo', 1);
+        $MedidaProteccion = MedidaProteccion::where('id', $id)->where('activo', 1)->first();
 
         if (!$MedidaProteccion) {
             return response()->json(['mensaje' => 'Ugi no encontrado'], 404);
         }
 
-        return response()->json(['ugi' => $MedidaProteccion], 201);
+        return response()->json(['medida' => $MedidaProteccion], 201);
     }
 
     /**

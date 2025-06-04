@@ -43,6 +43,7 @@ class AsignacionMedidasController extends Controller
             'fecha_inicio' => 'required',
             'fecha_vencimiento' => 'required',
             'id_medida_proteccion' => 'required',
+            'observaciones' => 'required',
         ]);
 
         //Se usa la función create() con el request que guarda el objeto

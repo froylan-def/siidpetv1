@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Entrevista;
+use App\Models\Logs;
+
 use Illuminate\Http\Request;
 
-class entrevistaController extends Controller
+class LogsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +15,8 @@ class entrevistaController extends Controller
      */
     public function index()
     {
-        //
-        $entrevista = Entrevista::all();
-        return response( $entrevista );
+        $defensores = Logs::with('defensor', 'defensor.user')->get();
+        return response($defensores);
     }
 
     /**
@@ -37,18 +37,18 @@ class entrevistaController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        //Se validan los datos a traves de laravel
-        $request->validate([
+
+        $this->validate($request, [
             'id_defensor' => 'required',
-            'fecha'  => 'required', 
+            'accion' => 'required',
+            'descripcion' => 'required',
         ]);
 
-        //Se usa la función create() con el request que guarda el objeto
-        $entrevista = Entrevista::create( $request->all() );
+        $log = Logs::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Datos guardados con éxito', 'entrevista' => $entrevista ], 201);
+        return response()->json(['mensaje' => 'Datos guardados con éxito', 'log' => $log ], 201);
+
     }
 
     /**
@@ -59,18 +59,36 @@ class entrevistaController extends Controller
      */
     public function show($id)
     {
-        //
+
         //Se obtiene el registro de la base de datos
-        $entrevista = Entrevista::find($id);
+        $log = Logs::with('defensor',)->find($id);
 
         //Compara si la consulta encontró datos
-        if (! $entrevista ) {
-            return response()->json(['mensaje' => 'Datos de la entrevista no encontrados'], 404);
+        if (! $log ) {
+            return response()->json(['mensaje' => 'Datos del log no encontrado'], 404);
         }
 
         //Lo retorna con un código 201
-        return response()->json(['entrevista' => $entrevista ], 201);
+        return response()->json(['log' => $log], 201);
     }
+
+
+    public function obtenerDefensorPorIdUsuario($id)
+    {
+        //Se obtiene el registro de la base de datos
+        $logs = Logs::with('defensor')
+        ->where('id_defensor', $id)
+        ->get();
+
+        //Compara si la consulta encontró datos
+        if (! $logs ) {
+            return response()->json(['mensaje' => 'Datos de los logs no encontrado'], 404);
+        }
+
+        //Lo retorna con un código 201
+        return response()->json(['logs' => $logs], 201);
+    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -92,24 +110,21 @@ class entrevistaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'id_defensor' => 'required',
-            'fecha'  => 'required',
-        ]);
-        
         // Encontramos el dato con el id
-        $entrevista = Entrevista::find($id);
+        $log = Log::find($id);
 
         // Verifica si el usuario existe
-        if (! $entrevista ) {
-            return response()->json(['mensaje' => 'Datos de la entrevista no encontrados'], 404);
+        if (! $log ) {
+            return response()->json(['mensaje' => 'Datos del log no encontrados'], 404);
         }
 
+
+
         // Actualiza los datos con los nuevos datos proporcionados
-        $entrevista->update($request->all());
+        $log->update($request->all());
 
         // Puedes devolver una respuesta JSON, un mensaje de éxito, etc.
-        return response()->json(['mensaje' => 'Datos actualizados con éxito', 'entrevista' => $request->all()]);
+        return response()->json(['mensaje' => 'Datos actualizados con éxito']);
     }
 
     /**
@@ -120,16 +135,19 @@ class entrevistaController extends Controller
      */
     public function destroy($id)
     {
-        // Buscar el usuario por su ID
-        $entrevista = Entrevista::find($id);
+        // Encontramos el dato con el id
+        $log = Log::find($id);
 
         // Verificar si el usuario existe
-        if ( $entrevista ) {
+        if ($log) {
             // Eliminar el usuario
-            $entrevista->delete();
-            return response()->json(['mensaje' => 'Datos de la entrevista eliminados correctamente'], 201);
+            $log->delete();
+            $log->save();
+            return response()->json(['mensaje' => 'Registo eliminado correctamente'], 201);
         } else {
-            return response()->json(['mensaje' => 'No se ha encontrado el dato'], 201);
+            return response()->json(['mensaje' => 'No se ha encontrado el registro correspondiente'], 201);
         }
+
+
     }
 }

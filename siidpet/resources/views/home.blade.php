@@ -422,6 +422,17 @@
                                 </p>
                             </router-link>
                         </li>
+
+                        <li class="nav-item">
+                            <router-link to="/actividad" class="nav-link" active-class="active">
+                                <i class="nav-icon fas fa-list-check"></i>
+                                <p>
+                                    Actividad
+                                </p>
+                            </router-link>
+                        </li>
+
+
                         <!-- Catalogo -->
                         @if (session('rol') === '1' || session('rol') === 'administrador')
                             <li class="nav-item ">

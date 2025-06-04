@@ -16,20 +16,21 @@
             <div class="col-md-12">
                 <div class="btn-group d-flex mb-3">
                     <button class="btn btn-success flex-grow-1" data-toggle="modal" data-target="#modalAgregarImputado"
-                    @click="abrirModalRegistro"> <i class="fa-solid fa-floppy-disk"> </i> Registrar Nuevo</button>
-                    <button class="btn btn-primary flex-grow-1" data-toggle="modal" data-target="#modalSeleccionarImputado"
-                    @click="obtenerImputadosModal"> <i class="fa-regular fa-square-check"></i> Agregar existente</button>
+                        @click="abrirModalRegistro"> <i class="fa-solid fa-floppy-disk"> </i> Registrar Nuevo</button>
+                    <button class="btn btn-primary flex-grow-1" data-toggle="modal"
+                        data-target="#modalSeleccionarImputado" @click="obtenerImputadosModal"> <i
+                            class="fa-regular fa-square-check"></i> Agregar existente</button>
                 </div>
-                
+
                 <div class="row">
                     <div class="collapse" id="collapseExample">
                         <div class="card card-body">
                         </div>
                     </div>
                 </div>
-                <EasyDataTable :headers="datos" :items="items" rowsPerPageMessage="Filas por página:" emptyMessage="No hay datos disponibles" alternating table-class-name="customize-table" theme-color="var(--primary-color)">
-
-                    
+                <EasyDataTable :headers="datos" :items="items" rowsPerPageMessage="Filas por página:"
+                    emptyMessage="No hay datos disponibles" alternating table-class-name="customize-table"
+                    theme-color="var(--primary-color)">
                     <template #item-operation="item">
                         <div class="operation-wrapper">
                             <button class="btn btn-warning btn-sm mr-1" @click="actualizarUsuario(item)">
@@ -54,7 +55,7 @@
                                 imputado
                             </h5>
                             <h5 v-else class="modal-title" id="modalAgregarImputado"> Actualizar imputado </h5>
-                            <br/>
+                            <br />
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -84,7 +85,7 @@
                                         v-html="form.errors.get('apellido_materno')" />
                                 </div>
                             </div>
-                            
+
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="sexo">Sexo *</label>
@@ -93,16 +94,19 @@
                                         <option value="masculino">Masculino</option>
                                         <option value="femenino">Femenino</option>
                                     </select>
-                                    <div style="color: red;" v-if="form.errors.has('sexo')" v-html="form.errors.get('sexo')"></div>
+                                    <div style="color: red;" v-if="form.errors.has('sexo')"
+                                        v-html="form.errors.get('sexo')">
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label for="Telefono">Teléfono *</label>
 
-                                    <MaskInput class="form-control" v-model="this.form.telefono" mask="(###) ###-##-##" placeholder="(###) ###-##-##" />
+                                    <MaskInput class="form-control" v-model="this.form.telefono" mask="(###) ###-##-##"
+                                        placeholder="(###) ###-##-##" />
 
 
-                                    
+
                                     <div style="color: red;" v-if="form.errors.has('telefono')"
                                         v-html="form.errors.get('telefono')" />
                                 </div>
@@ -110,53 +114,53 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="Telefono">Domicilio *</label>
-                                    <input v-model="form.domicilio" type="text" maxlength="255" class="form-control" id="domicilio"
-                                        aria-describedby="domicilio" placeholder="">
+                                    <input v-model="form.domicilio" type="text" maxlength="255" class="form-control"
+                                        id="domicilio" aria-describedby="domicilio" placeholder="">
 
-                                    <span class="alinear-derecha" style="font-size: 10px"> 
+                                    <span class="alinear-derecha" style="font-size: 10px">
                                         {{ 255 - this.form.domicilio.length }} Restante
                                     </span>
-                                    
+
 
                                     <div style="color: red;" v-if="form.errors.has('domicilio')"
                                         v-html="form.errors.get('domicilio')" />
                                 </div>
-    
+
                                 <div class="form-group col-md-6">
                                     <label for="estado_civil">Estado Civil *</label>
-                                    <select v-model="form.estado_civil" class="form-control" id="estado_civil" aria-describedby="estado_civil">
+                                    <select v-model="form.estado_civil" class="form-control" id="estado_civil"
+                                        aria-describedby="estado_civil">
                                         <option value="" disabled>Seleccione una opción</option>
                                         <option value="soltero/a">Soltero/a</option>
                                         <option value="casado/a">Casado/a</option>
                                         <option value="divorciado/a">Divorciado/a</option>
-                                        <option value="separado/a en proceso judicial">Separado/a en proceso judicial</option>
+                                        <option value="separado/a en proceso judicial">Separado/a en proceso judicial
+                                        </option>
                                         <option value="viudo/a">Viudo/a</option>
                                         <option value="concubinato">Concubinato</option>
                                     </select>
-                                    <div style="color: red;" v-if="form.errors.has('estado_civil')" v-html="form.errors.get('estado_civil')"></div>
+                                    <div style="color: red;" v-if="form.errors.has('estado_civil')"
+                                        v-html="form.errors.get('estado_civil')"></div>
                                 </div>
-                            
+
                             </div>
-                            
+
 
                             <div class="form-row">
 
                                 <div class="form-group col-md-4">
                                     <label for="Pais">Pais *</label>
                                     <v-select v-model="form.id_pais" :reduce="(option) => option.id"
-                                        :options="paisesOpciones" 
-                                        @update:model-value="seleccionarEstado(form.id_pais)"
-                                        >
+                                        :options="paisesOpciones" @update:model-value="seleccionarEstado(form.id_pais)">
                                     </v-select>
                                     <div style="color: red;" v-if="form.errors.has('id_pais')"
                                         v-html="form.errors.get('id_pais')" />
                                 </div>
-    
+
                                 <div class="form-group col-md-4">
                                     <label for="Estado">Estado *</label>
                                     <v-select v-model="form.id_estado" :reduce="(option) => option.id"
                                         :options="estadosOpciones"
-                                        
                                         @update:model-value="seleccionarMunicipio(form.id_estado)">
                                     </v-select>
                                     <div style="color: red;" v-if="form.errors.has('id_estado')"
@@ -166,8 +170,7 @@
                                 <div class="form-group col-md-4">
                                     <label for="Municipio">Municipio *</label>
                                     <v-select v-model="this.form.id_municipio" :reduce="(option) => option.id"
-                                        :options="municipiosOpciones"
-                                        >
+                                        :options="municipiosOpciones">
                                     </v-select>
                                     <div style="color: red;" v-if="form.errors.has('id_municipio')"
                                         v-html="form.errors.get('id_municipio')" />
@@ -176,7 +179,7 @@
                             </div>
 
 
-                            
+
                             <div class="form-row">
 
                                 <div class="form-group  col-md-4">
@@ -186,19 +189,19 @@
                                     <div style="color: red;" v-if="form.errors.has('fecha_de_nacimiento')"
                                         v-html="form.errors.get('fecha_de_nacimiento')" />
                                 </div>
-    
+
                                 <div class="form-group  col-md-4">
                                     <label for="Escolaridad">Escolaridad *</label>
                                     <v-select v-model="this.form.id_escolaridad" :reduce="(option) => option.id"
                                         :options="escolaridadOpciones">
                                     </v-select>
-    
+
                                     <div style="color: red;" v-if="form.errors.has('id_escolaridad')"
                                         v-html="form.errors.get('id_escolaridad')" />
                                 </div>
                                 <div class="form-group  col-md-4">
                                     <label for="ocupacion">Ocupación *</label>
-    
+
                                     <v-select v-model="this.form.id_ocupacion" :reduce="(option) => option.id"
                                         :options="ocupacionesOpciones">
                                     </v-select>
@@ -234,17 +237,17 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
 
-                    
 
-                    <form @submit.prevent="actualizarUsuarioCheck === false ? registrarImputado : actualizarUsuario" 
+
+                    <form @submit.prevent="actualizarUsuarioCheck === false ? registrarImputado : actualizarUsuario"
                         @keydown="form.onKeydown($event)">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalSeleccionarImputado"> 
+                            <h5 class="modal-title" id="modalSeleccionarImputado">
                                 Seleccionar imputado
                             </h5>
 
-                            
-                           
+
+
 
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -252,19 +255,16 @@
                         </div>
                         <small class="text-muted ml-3"> Busca al imputado por nombre </small>
                         <div class="modal-body">
-                            
+
                             <div class="form-row">
                                 <div class="form-group col-md-12 ">
                                     <label for="Nombre del usuario">Nombre(s): </label>
-                                    
+
 
                                     <v-select v-model="imputadoSeleccionadoEnModal" :reduce="(option) => option.id"
-                                        :options="imputadosOpciones" 
-                                        @update:model-value="seleccionarImputado()"
-                                        
-                                        >
+                                        :options="imputadosOpciones" @update:model-value="seleccionarImputado()">
                                     </v-select>
-                                    
+
                                     <table class="table table-bordered mt-2">
                                         <thead class="table-primary">
                                             <tr>
@@ -272,7 +272,7 @@
                                                 <th>Valor</th>
                                             </tr>
                                         </thead>
-                                        <tbody v-if="this.datosImputadoSeleccionado !== null ">
+                                        <tbody v-if="this.datosImputadoSeleccionado !== null">
                                             <tr>
                                                 <td>
                                                     NOMBRE
@@ -302,7 +302,9 @@
                                                     MUNICIPIO
                                                 </td>
                                                 <td>
-                                                    {{ this.datosImputadoSeleccionado.municipio.nombre }} , {{ this.datosImputadoSeleccionado.estado.nombre }} , {{ this.datosImputadoSeleccionado.pais.nombre }}
+                                                    {{ this.datosImputadoSeleccionado.municipio.nombre }} , {{
+                                                    this.datosImputadoSeleccionado.estado.nombre }} , {{
+                                                    this.datosImputadoSeleccionado.pais.nombre }}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -313,12 +315,12 @@
                                                     {{ this.datosImputadoSeleccionado.fecha_de_nacimiento }}
                                                 </td>
                                             </tr>
-                                            
+
                                         </tbody>
                                     </table>
 
                                 </div>
-                                
+
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -326,11 +328,11 @@
                                 <i class="fas fa-times"></i> Cancelar
                             </button>
 
-                            <button type="submit" :disabled="form.busy"
-                                class="btn btn-primary" @click="agregarImputadoAExpediente">
+                            <button type="submit" :disabled="form.busy" class="btn btn-primary"
+                                @click="agregarImputadoAExpediente">
                                 <i class="fas fa-save"></i> Agregar
                             </button>
-                            
+
                         </div>
                     </form>
                 </div>
@@ -347,6 +349,7 @@ import type { Header, Item } from "vue3-easy-data-table";
 import Form from 'vform'
 import Swal from 'sweetalert2'
 import vSelect from 'vue-select';
+import { registrarLog, obtenerCambios } from '../../../../utils/helpers';
 
 export default {
     components: {
@@ -361,8 +364,8 @@ export default {
             searchValue: ref(""),
             themeColor: "#AB0033",
             datos: [
-                { text: "Nombre", value: "nombres"},
-                { text: "Ap. Pat", value: "apellido_paterno"},
+                { text: "Nombre", value: "nombres" },
+                { text: "Ap. Pat", value: "apellido_paterno" },
                 { text: "Ap. Mat", value: "apellido_materno" },
                 { text: "Telefono", value: "telefono" },
                 { text: "Domicilio", value: "domicilio" },
@@ -413,23 +416,23 @@ export default {
     },
     methods: {
 
-        actualizarInformacion(){
+        actualizarInformacion() {
             this.$emit('llamar-funcion');
         },
 
-        limpiarSelectImputado(){
+        limpiarSelectImputado() {
             this.datosImputadoSeleccionado = null;
         },
-        agregarImputadoAExpediente(){
+        agregarImputadoAExpediente() {
 
-            if( this.datosImputadoSeleccionado == null ){
+            if (this.datosImputadoSeleccionado == null) {
                 Swal.fire('Debe seleccionar un imputado', '', 'info')
-            }else{
+            } else {
                 try {
                     const response = this.axios.post('/imputadosExpediente', {
                         id_expediente: this.$route.params.id,
                         id_imputado: this.imputadoSeleccionadoEnModal
-                    });   
+                    });
                 } catch (error) {
                     console.error('Error al enviar los datos:', error);
                 }
@@ -444,25 +447,39 @@ export default {
                 this.obtenerImputados();
                 this.actualizarInformacion();
 
+                // INICIO Registro del log
+                const editado = {
+                    'id_imputado': this.imputadoSeleccionadoEnModal
+                }
+                const objetoAlmacenado = JSON.stringify(editado);
+                const data = {
+                    id_defensor: window.defensor,
+                    accion: "Se ha agregado un imputado al expediente",
+                    descripcion: objetoAlmacenado,
+                    id_registro: this.$route.params.id,
+                    tipo_registro: 3
+                };
+                registrarLog(data);
+                // FIN Registro del log
             }
         },
 
-        async seleccionarMunicipio(value){
+        async seleccionarMunicipio(value) {
             try {
-                const response = await this.axios.get('/municipios/'+value);                
+                const response = await this.axios.get('/municipios/' + value);
                 this.municipiosOpciones = response.data.municipio.map(municipio => ({
                     id: municipio.id,
                     label: municipio.nombre
                 }));
-                
+
             } catch (error) {
                 console.error('Error fetching countries:', error);
             }
         },
 
-        async seleccionarEstado(value){            
+        async seleccionarEstado(value) {
             try {
-                const response = await this.axios.get('/estado/'+value);
+                const response = await this.axios.get('/estado/' + value);
                 this.estadosOpciones = response.data.estado.map(estado => ({
                     id: estado.id,
                     label: estado.nombre
@@ -474,19 +491,19 @@ export default {
             this.form.id_municipio = null;
         },
 
-        async seleccionarImputado(){
-            if( this.imputadoSeleccionadoEnModal != null ){
+        async seleccionarImputado() {
+            if (this.imputadoSeleccionadoEnModal != null) {
                 try {
-                    const response = await this.axios.get('/imputado/'+ this.imputadoSeleccionadoEnModal);
+                    const response = await this.axios.get('/imputado/' + this.imputadoSeleccionadoEnModal);
                     this.datosImputadoSeleccionado = response.data.imputado;
                 } catch (error) {
                     console.error('Error fetching countries:', error);
                 }
 
-            }else{
+            } else {
                 this.datosImputadoSeleccionado = null;
             }
-            
+
         },
 
 
@@ -555,10 +572,10 @@ export default {
 
         async obtenerImputados() {
             try {
-                this.axios.get('/imputadosPorExpediente/'+ this.$route.params.id +'/' ).then((response) => {
-                this.items = response.data;
-                
-            })
+                this.axios.get('/imputadosPorExpediente/' + this.$route.params.id + '/').then((response) => {
+                    this.items = response.data;
+
+                })
             } catch (error) {
                 console.error('Error obteniendo los imputadors:', error);
             }
@@ -576,7 +593,7 @@ export default {
             this.axios.get('/imputado').then((response) => {
                 this.imputadosOpciones = response.data.map(imputado => ({
                     id: imputado.id,
-                    label: imputado.nombres + ' ' + imputado.apellido_paterno + ' ' + imputado.apellido_materno ,
+                    label: imputado.nombres + ' ' + imputado.apellido_paterno + ' ' + imputado.apellido_materno,
                 }));
             })
         },
@@ -588,7 +605,7 @@ export default {
                     const response = await this.axios.post('/imputadosExpediente', {
                         id_expediente: this.$route.params.id,
                         id_imputado: respuesta.data.imputado.id + ""
-                    });   
+                    });
                 } catch (error) {
                     console.error('Error al enviar los datos:', error);
                 }
@@ -602,9 +619,28 @@ export default {
                         popup: 'custom-swal-success',
                     }
                 });
+
+
+                // INICIO Registro del log
+                const editado = {
+                    'id_imputado': respuesta.data.imputado.id
+                }
+                const objetoAlmacenado = JSON.stringify(editado);
+                const data = {
+                    id_defensor: window.defensor,
+                    accion: "Se ha registrado un imputado y se agregó al expediente",
+                    descripcion: objetoAlmacenado,
+                    id_registro: this.$route.params.id,
+                    tipo_registro: 13
+                };
+                registrarLog(data);
+                // FIN Registro del log
+
+
                 $('#modalAgregarImputado').modal('hide');
                 this.obtenerImputados();
                 this.actualizarInformacion();
+
             } catch (error) {
                 console.error('Error al guardar el imputado:', error);
             }
@@ -632,7 +668,7 @@ export default {
 
         async actualizarUsuario(usuario) {
             await this.seleccionarEstado(usuario.id_pais);
-            await this.seleccionarMunicipio( usuario.id_estado);
+            await this.seleccionarMunicipio(usuario.id_estado);
             this.form.reset();
             this.form.clear();
             this.form.fill(usuario);
@@ -643,7 +679,7 @@ export default {
         eliminarUsuario($imputado) {
 
 
-            const id_expediente =  this.$route.params.id ;
+            const id_expediente = this.$route.params.id;
             const id_imputado = $imputado.id;
 
             Swal.fire({
@@ -657,9 +693,9 @@ export default {
             }).then((result) => {
                 if (result.isConfirmed) {
 
-                    const route = '/imputadosPorExpediente/eliminar/'+ id_expediente + '/' + id_imputado + '/';
+                    const route = '/imputadosPorExpediente/eliminar/' + id_expediente + '/' + id_imputado + '/';
                     this.axios.get(route).then((response) => {
-                       
+
                         Swal.fire({
                             position: 'top-end',
                             icon: 'success',
@@ -670,6 +706,24 @@ export default {
                         $('#modalAgregarPeticionario').modal('hide');
                         this.obtenerImputados();
                         this.actualizarInformacion();
+
+
+                        // INICIO Registro del log
+                        const editado = {
+                            'id_imputado': id_imputado,
+                        }
+                        const objetoAlmacenado = JSON.stringify(editado);
+                        const data = {
+                            id_defensor: window.defensor,
+                            accion: "Se quitó un imputado del expediente",
+                            descripcion: objetoAlmacenado,
+                            id_registro: id_expediente,
+                            tipo_registro: 13
+                        };
+                        registrarLog(data);
+                        // FIN Registro del log
+
+
                     }).catch(error => {
                         console.log(error);
                     });
@@ -677,19 +731,18 @@ export default {
                     Swal.fire('Cambios no realizados', '', 'info')
                 }
             })
-        }
+        },
+
     }
 }
 </script>
 <style>
-    
-    
-      .btn-group {
-        gap: 0.5rem;
-    }
+.btn-group {
+    gap: 0.5rem;
+}
 
 
-.customize-table{
+.customize-table {
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -705,5 +758,3 @@ export default {
     --easy-table-body-row-font-size: 15px;
 }
 </style>
-
-    

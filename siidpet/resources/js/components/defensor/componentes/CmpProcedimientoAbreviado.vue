@@ -57,6 +57,7 @@
 import { ref } from "vue";
 import Form from 'vform'
 import Swal from 'sweetalert2'
+import { registrarLog, obtenerCambios } from '../../../../utils/helpers';
 
 export default {
     data() {
@@ -69,6 +70,7 @@ export default {
             }),
             esNuevo: ref(false),
             loading: ref(true),
+            originalData: ref({}),
         }
     },
     mounted() {
@@ -81,9 +83,11 @@ export default {
                     this.esNuevo = true;
                 } else {
                     this.axios.get('/procedimientoabreviado/' + response.data.expediente.id_procedimiento_abreviado)
-                        .then((response) => {
-                            this.form.fill(response.data.procedimiento_abreviado
+                        .then(async (response) => {
+                            await this.form.fill(response.data.procedimiento_abreviado
                             );
+
+                            this.originalData = JSON.parse(JSON.stringify( this.form.data() ));
                         })
                 }
                 this.loading = false;
@@ -104,6 +108,7 @@ export default {
                     timer: 1500
                 })
                 this.obtenerProcedimientoAbreviado();
+                this.guardarLog(2);
             })
         },
         guardarProcedimientoAbreviado() {
@@ -128,6 +133,7 @@ export default {
                     })
                     this.obtenerProcedimientoAbreviado();
                     this.esNuevo = false;
+                    this.guardarLog(1);
                 })
 
             })
@@ -145,7 +151,31 @@ export default {
                 error = true;
             }
             return error;
+        },
+
+        async guardarLog(tipo) {
+
+            let mensaje = "";
+            if (tipo == 1) {
+                mensaje = "Se agregaron datos al procedimiento abreviado"
+            } else {
+                mensaje = "Se editaron datos al procedimiento abreviado"
+            }
+
+            let cambiado = await obtenerCambios(this.originalData, this.form.data());
+
+            const data = {
+                id_defensor: window.defensor,
+                accion: mensaje,
+                descripcion: JSON.stringify(cambiado),
+                id_registro: this.$route.params.id,
+                tipo_registro: 3
+            };
+            registrarLog(data);
+
         }
+
+
     }
 }
 </script>

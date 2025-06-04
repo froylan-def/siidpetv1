@@ -343,6 +343,8 @@ import { ref } from "vue";
 import Form from 'vform'
 import Swal from 'sweetalert2'
 import 'vue3-easy-data-table/dist/style.css';
+import { registrarLog, getIpAddress } from '../../../utils/helpers';
+
 export default {
     data() {
         return {
@@ -674,6 +676,17 @@ export default {
         async registrarExpediente() {
             this.form.fecha = this.obtenerFecha();
             this.form.id_defensor = await this.id_defensor;
+
+            let datos_del_form = await this.form.data();
+
+            const datosUgi = await this.axios.get('/ugi/'+datos_del_form.id_ugi);
+
+            let datosAGuardar = [
+                {ugi: datosUgi.data.ugi.nombre},
+                {fecha: datos_del_form.fecha},
+                {nuc: datos_del_form.nuc},d
+            ]
+
             await this.form.post('/expediente').then((response) => {
                 Swal.fire({
                     position: 'top-end',
@@ -683,6 +696,19 @@ export default {
                     timer: 1500
                 })
                 this.obtenerExpedientes();
+
+                // INICIO Registro del log
+                const data = {
+                    id_defensor: window.defensor,
+                    accion: "Se creó un nuevo expediente",
+                    descripcion:  JSON.stringify(datosAGuardar),
+                    id_registro: response.data.expediente.id,
+                    tipo_registro: 3
+                };
+                registrarLog(data);
+                // FIN Registro del log
+
+
             }).catch(error => {
                 console.log(error);
             });

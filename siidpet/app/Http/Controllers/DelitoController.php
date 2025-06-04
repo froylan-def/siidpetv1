@@ -45,10 +45,11 @@ class DelitoController extends Controller
     public function show($id)
     {
         //Se obtiene el registro de la base de datos
-        $delito = Delito::find($id);
+        // $delito = Delito::find($id);
+        $delito = Delito::where('id', $id)->where('activo', 1)->first();
 
         //Compara si la consulta encontró datos
-        if ($delito) {
+        if (!$delito) {
             return response()->json(['mensaje' => 'Delito no encontrado'], 404);
         }
 

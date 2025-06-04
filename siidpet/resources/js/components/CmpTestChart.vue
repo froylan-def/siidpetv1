@@ -53,8 +53,6 @@ export default {
       .sort((a, b) => b.mes.localeCompare(a.mes)); // Ordena de mayor a menor
 
       this.expedientesPorMes = resultadoOrdenado;
-      console.log("Conteo");
-      console.log( this.expedientesPorMes );
       
       const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
       this.expedientesPorMes.forEach((mes, index) => {

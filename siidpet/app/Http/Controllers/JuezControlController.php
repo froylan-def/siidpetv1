@@ -67,13 +67,13 @@ class JuezControlController extends Controller
     public function show($id)
     {
         //
-        $Juez = Juez::where('id', $id)->where('activo', 1);
+        $Juez = Juez::where('id', $id)->where('activo', 1)->first();
 
         if (!$Juez) {
             return response()->json(['mensaje' => 'Ugi no encontrado'], 404);
         }
 
-        return response()->json(['ugi' => $Juez], 201);
+        return response()->json(['juez' => $Juez], 201);
     }
 
     /**

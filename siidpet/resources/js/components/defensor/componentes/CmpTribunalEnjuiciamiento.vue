@@ -79,6 +79,7 @@
 import { ref } from "vue";
 import Form from 'vform'
 import Swal from 'sweetalert2'
+import { registrarLog, obtenerCambios } from '../../../../utils/helpers';
 
 export default {
     data() {
@@ -99,6 +100,7 @@ export default {
 
             items: ref([]),
             juecesOpciones: ref([]),
+            originalData: ref({}),
         }
     },
     mounted() {
@@ -125,7 +127,7 @@ export default {
         },
 
         eliminarTribunalEnjuiciamiento(item) {
-            const tribunalEnjuiciamiento =  item;            
+            const tribunalEnjuiciamiento =  item;         
             Swal.fire({
                 title: '¿Está seguro de eliminar este juez del expediente?',
                 showDenyButton: true,
@@ -147,6 +149,7 @@ export default {
                             timer: 1500
                         });
                         this.obtenerTribunalEnjuiciamiento();
+                        this.guardarLog(2, tribunalEnjuiciamiento.id_juez);
                     }).catch(error => {
                         console.log(error);
                     });
@@ -178,6 +181,7 @@ export default {
                     })
 
                     this.obtenerTribunalEnjuiciamiento();
+                    this.guardarLog(1, 0);
             })
 
         },
@@ -189,7 +193,44 @@ export default {
                 error = true; 
             }
             return error;
+        },
+
+
+        async guardarLog(tipo, idJuez) {
+
+            let mensaje = "";
+            let nombreJuez = "";
+            if (tipo == 1) {
+                mensaje = "Se agregaro tribunal enjuiciamiento"
+
+                await this.axios.get('/juezcontrol/'+this.form.id_juez).then((response) => {
+                    nombreJuez = response.data.juez.nombre;
+                })
+                
+            } else {
+                mensaje = "Se quito tribunal enjuiciamiento"
+                await this.axios.get('/juezcontrol/'+idJuez).then((response) => {
+                    nombreJuez = response.data.juez.nombre;
+                })
+            }
+
+
+            
+            
+            
+
+            const data = {
+                id_defensor: window.defensor,
+                accion: mensaje,
+                descripcion: JSON.stringify({juez_control: nombreJuez}),
+                id_registro: this.$route.params.id,
+                tipo_registro: 3
+            };
+            registrarLog(data);
+
         }
+
+        
     }
 }
 </script>

@@ -59,6 +59,8 @@ import { ref } from "vue";
 import "vue-select/dist/vue-select.css";
 import Form from 'vform'
 import Swal from 'sweetalert2'
+import { registrarLog, obtenerCambios } from '../../../../utils/helpers';
+
 export default {
     data() {
         return {
@@ -72,9 +74,11 @@ export default {
             defensores: ref([]),
             esNuevo: ref(true),
             loading: ref(true),
+            originalData: ref({}),
         }
     },
     mounted() {
+
         this.obtenerDefensores();
         this.obtenerEntrevista();
     },
@@ -85,12 +89,19 @@ export default {
                     this.esNuevo = true;
                 }else{
                     this.esNuevo = false;
+
                     this.axios.get('/entrevista/'+ response.data.expediente.id_entrevista)
-                    .then((response) => {
-                        this.form.fill(
+                    .then( async (response) => {
+
+                        await this.form.fill(
                             response.data.entrevista
                         );
+
+                        this.originalData = JSON.parse(JSON.stringify( this.form.data() ));
+
                     })
+
+                    
                 }
                 this.loading = false;
             })
@@ -120,14 +131,17 @@ export default {
                     })
                     this.obtenerEntrevista();
                     this.form.errors.clear();
+                    this.guardarLog(2);
                 })
             }
         },
         guardarEntrevista(){
             this.form.post('/entrevista').then((response) => {
+
+                const objetoAlmacenado = JSON.stringify(response.data.entrevista);
                 this.axios.put('/expediente/'+this.$route.params.id, {
                     "id_entrevista": response.data.entrevista.id
-                } ).then((response) => {
+                } ).then(  (response) => {
                     Swal.fire({
                         position: 'top-end',
                         icon: 'success',
@@ -136,6 +150,8 @@ export default {
                         timer: 1500
                     })
                     this.obtenerEntrevista();
+
+                    this.guardarLog(1);
                 })
             })
         },
@@ -147,6 +163,46 @@ export default {
                 }
             })
         },
+
+        
+
+        async guardarLog(tipo){
+
+            let mensaje = "";
+            if( tipo == 1){
+                mensaje = "Se agregaron datos de entrevista"
+            }else{
+                mensaje = "Se editaron datos de entrevista"
+            }
+
+            let cambiado = await obtenerCambios(this.originalData, this.form.data());
+
+            const tieneIdDefensor = cambiado.some(obj => obj.hasOwnProperty('id_defensor'));
+
+            if(tieneIdDefensor){
+
+                let nombreDef = "";
+                await this.axios.get('/defensor/'+this.form.id_defensor).then((response) => {
+                    nombreDef = response.data.defensor.user.name + " " + response.data.defensor.user.fathername + " " + response.data.defensor.user.mothername
+                })
+                const index = cambiado.findIndex(obj => obj.hasOwnProperty('id_defensor'));
+                if (index !== -1) {
+                    cambiado[index].id_defensor = nombreDef;
+                }
+            }
+
+            const data = {
+                id_defensor: window.defensor,
+                accion: mensaje,
+                descripcion: JSON.stringify(cambiado),
+                id_registro: this.$route.params.id,
+                tipo_registro: 3
+            };
+            registrarLog(data);
+
+        }
+
+        
     }
 }
 </script>

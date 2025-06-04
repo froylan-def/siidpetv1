@@ -8,12 +8,11 @@
     <!-- /.content-header -->
     <div class="container mt-2">
         <div class="row ">
-
             <div class="col-md-12">
 
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="">
-                        
+
 
                         <a class="btn btn-secondary ml-1" data-toggle="collapse" href="#collapseExample" role="button"
                             aria-expanded="false" aria-controls="collapseExample">
@@ -29,29 +28,23 @@
                     </button>
                 </div>
 
-                
-
-                
-
-
                 <div class="row">
-                    
+
                     <div class="collapse" id="collapseExample">
                         <div class="card card-body">
                             <h5> Busqueda de usuarios </h5>
                             <div class="row">
                                 <div class="col-6 ">
-                                    <label  class="form-label">Buscar</label>
+                                    <label class="form-label">Buscar</label>
                                     <select class="custom-select " v-model="searchField">
-                                        <option value="nombres">Nombres</option>
-                                        <option value="apellido_paterno">Apellido Paterno</option>
-                                        <option value="apellido_materno">Apellido Materno</option>
+                                        <option value="user.name">Nombres</option>
+                                        <option value="user.fathername">Apellido Paterno</option>
+                                        <option value="user.mothername">Apellido Materno</option>
                                     </select>
                                 </div>
                                 <div class="col-6">
-                                    <label  class="form-label"> Valor </label>
-                                    <input class="form-control  border-width-2 mr-2" v-model="searchValue"
-                                        :placeholder=searchField type="search" />
+                                    <label class="form-label"> Valor </label>
+                                    <input class="form-control  border-width-2 mr-2" v-model="searchValue" type="search" />
                                 </div>
                             </div>
                         </div>
@@ -63,18 +56,18 @@
                     theme-color="var(--primary-color)">
                     <template #item-operation="item">
                         <div class="operation-wrapper">
-                            <button class="btn btn-warning btn-sm mt-2 mb-2 mr-1" @click="actualizarDefensor(item)">
-                                <i class="fa-solid fa-pen-to-square"></i>
+                            <button class="btn btn-warning btn-sm mt-2 mb-2 mr-1" @click="actualizarDefensor(item)" v-if="item.activo === 1">
+                                <i class="fa-solid fa-pen-to-square"></i> 
                             </button>
 
                             <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1 " v-if="item.activo === 1"
                                 @click="desactivarUsuario(item)">
-                                <i class="fa-solid fa-power-off"></i>
+                                <i class="fa-solid fa-power-off"></i> 
                             </button>
 
                             <button class="btn btn-success btn-sm mt-2 mb-2 mr-1 " v-if="item.activo === 0"
                                 @click="desactivarUsuario(item)">
-                                <i class="fa-solid fa-power-off"></i>
+                                <i class="fa-solid fa-power-off"></i> 
                             </button>
 
 
@@ -125,7 +118,7 @@
                                     <div style="color: red;" v-if="defensor.errors.has('id_municipio')"
                                         v-html="defensor.errors.get('id_municipio')" />
                                 </div>
-                                
+
                                 <div class="hr"></div>
 
                                 <div class="form-group col-md-4">
@@ -178,7 +171,7 @@
                                     <div style="color: red;" v-if="form.errors.has('gender')"
                                         v-html="form.errors.get('gender')" />
                                 </div>
-                                
+
 
 
 

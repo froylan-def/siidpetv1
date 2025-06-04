@@ -49,6 +49,7 @@
 import { ref } from "vue";
 import Form from 'vform'
 import Swal from 'sweetalert2'
+import { registrarLog, obtenerCambios } from '../../../../utils/helpers';
 
 export default {
     data() {
@@ -61,6 +62,7 @@ export default {
             }),
             esNuevo: ref(false),
             loading: ref(true),
+            originalData: ref({}),
         }
     },
     mounted() {
@@ -73,9 +75,11 @@ export default {
                     this.esNuevo = true;
                 } else {
                     this.axios.get('/conclusion/' + response.data.expediente.id_conclusion)
-                        .then((response) => {
-                            this.form.fill(response.data.conclusion
+                        .then(async (response) => {
+                            await this.form.fill(response.data.conclusion
                             );
+
+                            this.originalData = JSON.parse(JSON.stringify( this.form.data() ));
                         })
                 }
                 this.loading = false;
@@ -96,6 +100,7 @@ export default {
                     timer: 1500
                 })
                 this.obtenerConclusion();
+                this.guardarLog(2);
             })
         },
         guardarConclusion() {
@@ -120,6 +125,7 @@ export default {
                     })
                     this.obtenerConclusion();
                     this.esNuevo = false;
+                    this.guardarLog(1);
                 })
 
             })
@@ -137,6 +143,29 @@ export default {
                 error = true;
             }
             return error;
+        },
+
+
+        async guardarLog(tipo) {
+
+            let mensaje = "";
+            if (tipo == 1) {
+                mensaje = "Se agregaron datos de conclusion"
+            } else {
+                mensaje = "Se editaron datos de conclusion"
+            }
+
+            let cambiado = await obtenerCambios(this.originalData, this.form.data());
+
+            const data = {
+                id_defensor: window.defensor,
+                accion: mensaje,
+                descripcion: JSON.stringify(cambiado),
+                id_registro: this.$route.params.id,
+                tipo_registro: 3
+            };
+            registrarLog(data);
+
         }
     }
 }

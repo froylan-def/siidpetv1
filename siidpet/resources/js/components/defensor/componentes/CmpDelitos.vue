@@ -12,11 +12,9 @@
     </div>
     <!-- /.content-header -->
     <div class="container">
-        
         <div class="form-group">
             <div class="row">
                 <div class="col-6">
-                    
                     <v-select v-model="form.id_delito" :reduce="(option) => option.id"
                         :options="delitosOpciones"
                             @update:model-value="seleccionarDelito()"
@@ -50,6 +48,7 @@
 import { ref } from "vue";
 import Form from 'vform'
 import Swal from 'sweetalert2'
+import { registrarLog } from '../../../../utils/helpers';
 
 export default {
     data() {
@@ -112,6 +111,22 @@ export default {
                             popup: 'custom-swal-success',
                         }
                     });
+
+                    // INICIO Registro del log
+                    const editado = {
+                        'id_delito': this.form.id_delito
+                    }
+                    const objetoAlmacenado = JSON.stringify(editado);
+                    const data = {
+                        id_defensor: window.defensor,
+                        accion: "Se ha agregado un delito al expediente",
+                        descripcion: objetoAlmacenado,
+                        id_registro: this.$route.params.id,
+                        tipo_registro: 3
+                    };
+                    registrarLog(data);
+                    // FIN Registro del log
+
                     this.obtenerDelitosExpediente();
                     this.actualizarInformacion();
                 } catch (error) {
@@ -149,6 +164,7 @@ export default {
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.axios.delete('/eliminarDelito/' + delito.id_expediente + '/' + delito.id_delito).then((response) => {
+
                         this.obtenerDelitosExpediente();
                         Swal.fire({
                             position: 'top-end',
@@ -160,6 +176,23 @@ export default {
                                 popup: 'custom-swal-success',
                             }
                         })
+
+                        // INICIO Registro del log
+                        const editado = {
+                            'id_delito': delito.id_delito
+                        }
+                        const objetoAlmacenado = JSON.stringify(editado);
+                        const data = {
+                            id_defensor: window.defensor,
+                            accion: "Se ha quitado un delito al expediente",
+                            descripcion: objetoAlmacenado,
+                            id_registro: this.$route.params.id,
+                            tipo_registro: 13
+                        };
+                        registrarLog(data);
+                        // FIN Registro del log
+
+
                     }).catch(error => {
                         console.log(error);
                     });

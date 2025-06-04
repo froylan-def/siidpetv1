@@ -8,6 +8,10 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\Logs;
+use App\Models\Defensor;
+
+
 class LoginController extends Controller
 {
     use AuthenticatesUsers;
@@ -49,6 +53,15 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
+        $defensor = Defensor::where('id_usuario', $user->id)->first();
+        $data = [
+            'id_defensor'   => $defensor->id,
+            'accion'        => "Inició sesión",
+            'descripcion'   => '{ "mensaje": "Ha iniciado sesión en el sistema" }',
+            'tipo_registro' => 0,
+            'id_registro'   => 1,
+        ];
+        Logs::create($data);
         return redirect()->intended('/');
     }
 

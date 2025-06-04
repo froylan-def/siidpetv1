@@ -348,6 +348,8 @@ import type { Header, Item } from "vue3-easy-data-table";
 import Form from 'vform'
 import Swal from 'sweetalert2'
 import vSelect from 'vue-select';
+import { registrarLog, obtenerCambios } from '../../../../utils/helpers';
+
 
 export default {
     components: {
@@ -442,6 +444,21 @@ export default {
                 $('#modalSeleccionarVictima').modal('hide');
                 this.obtenerVictimas();
                 this.actualizarInformacion();
+
+                // INICIO Registro del log
+                const editado = {
+                    'id_victima': this.victimaSeleccionadoEnModal
+                }
+                const objetoAlmacenado = JSON.stringify(editado);
+                const data = {
+                    id_defensor: window.defensor,
+                    accion: "Se ha agregado una victima al expediente",
+                    descripcion: objetoAlmacenado,
+                    id_registro: this.$route.params.id,
+                    tipo_registro: 3
+                };
+                registrarLog(data);
+                // FIN Registro del log
 
             }
         },
@@ -607,6 +624,24 @@ export default {
                 });
                 $('#modalAgregarVictima').modal('hide');
                 this.obtenerVictimas();
+
+
+                // INICIO Registro del log
+                const editado = {
+                    'id_victima': respuesta.data.victima.id
+                }
+                const objetoAlmacenado = JSON.stringify(editado);
+                const data = {
+                    id_defensor: window.defensor,
+                    accion: "Se ha registrado una victima y se agregó al expediente",
+                    descripcion: objetoAlmacenado,
+                    id_registro: this.$route.params.id,
+                    tipo_registro: 14
+                };
+                registrarLog(data);
+                // FIN Registro del log
+
+
             } catch (error) {
                 console.error('Error al guardar el imputado:', error);
             }
@@ -671,6 +706,22 @@ export default {
                         });
                         $('#modalAgregarPeticionario').modal('hide');
                         this.obtenerVictimas();
+
+                        // INICIO Registro del log
+                        const editado = {
+                            'id_victima': id_victima,
+                        }
+                        const objetoAlmacenado = JSON.stringify(editado);
+                        const data = {
+                            id_defensor: window.defensor,
+                            accion: "Se quitó una victima del expediente",
+                            descripcion: objetoAlmacenado,
+                            id_registro: id_expediente,
+                            tipo_registro: 14
+                        };
+                        registrarLog(data);
+                        // FIN Registro del log
+
                     }).catch(error => {
                         console.log(error);
                     });

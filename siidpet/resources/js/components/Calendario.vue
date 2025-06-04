@@ -18,7 +18,6 @@
                         </a>
                     </div>
 
-
                     <button class="btn btn-success" data-toggle="modal" data-target="#modalAgregarEvento"
                         @click="abrirModalRegistro">
                         <i class="fa-solid fa-plus"></i> Crear nuevo evento
@@ -94,12 +93,9 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-
-
 
     <div class="container mt-2">
         <div class="row">
@@ -147,8 +143,12 @@
                     </div>
                     <div class="modal-footer">
 
+                        <button v-if="this.rolUsuario == 1 || this.rolUsuario == 5" class="btn btn-danger" @click="eliminarEvento">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
 
-                        <button class="btn btn-primary" @click="cambiarModoEdicion">
+
+                        <button class="btn btn-info" @click="cambiarModoEdicion">
                             <i class="fas fa-save"></i> Editar
                         </button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -177,13 +177,13 @@
                                     v-html="form.errors.get('evento')" />
                             </div>
                             <div class="form-group">
-                                <label>Descripción</label>
 
+                                <label>Descripción</label>
 
                                 <textarea rows="4" v-model="form.descripcion" type="text" class="form-control"
                                     id="titulo" aria-describedby="emailHelp" placeholder="Descripcion del evento">
+                                </textarea>
 
-                        </textarea>
                                 <span class="alinear-derecha" style="font-size: 10px">
                                     {{ 255 - this.form.descripcion.length }} Restante
                                 </span>
@@ -191,6 +191,7 @@
 
                                 <div style="color: red;" v-if="form.errors.has('descripcion')"
                                     v-html="form.errors.get('descripcion')" />
+                            
                             </div>
                             <div class="form-group">
                                 <label>Fecha inicio</label>
@@ -204,9 +205,7 @@
                                 <input type="checkbox" v-model="agregarFechaFin">
                                 Agregar fecha de finalización
                                 </input>
-
                             </div>
-
 
                             <div class="form-group" v-if="agregarFechaFin">
                                 <label>Fecha fin</label>
@@ -215,7 +214,8 @@
                                 <div style="color: red;" v-if="form.errors.has('fecha_fin')"
                                     v-html="form.errors.get('fecha_fin')" />
                             </div>
-                            <div class="form-group">
+                            
+                            <div class="form-group" v-if="this.rolUsuario == 1 || this.rolUsuario == 5">
                                 <label for="nuc"> Defensor </label>
                                 <v-select v-model="this.form.id_defensor" :reduce="(option) => option.id"
                                     :options="defensoresOpciones">
@@ -230,18 +230,19 @@
                                 <i class="fas fa-arrow-left"></i> Regresar
                             </button>
 
-
-
                             <button v-if="actualizarExpedienteCheck" :disabled="form.busy" class="btn btn-primary"
                                 @click="editarEvento">
                                 <i class="fas fa-save"></i> Actualizar
                             </button>
+
                             <button v-else :disabled="form.busy" class="btn btn-success" @click="registrarEvento">
                                 <i class="fas fa-save"></i> Guardar
                             </button>
+                            
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                 <i class="fas fa-times"></i> Cancelar
                             </button>
+                        
                         </div>
                     </form>
                 </div>
@@ -323,6 +324,8 @@ export default {
     mounted() {
         if (this.rolUsuario == "5") {
             this.busqueda.coordinacion = this.coordinacion;
+        }else{
+            this.busqueda.coordinacion = null;
         }
         this.calendarOptions.events = this.events;
         this.obtenerEventos();
@@ -333,10 +336,44 @@ export default {
     },
     methods: {
 
+        eliminarEvento(){
+            console.log("Se ha borrado documento");
+            console.log("Id del evento " + this.form.id);
+            
+            Swal.fire({
+                title: '¿Está seguro de eliminar permanentemente este evento?',
+                showDenyButton: true,
+                confirmButtonText: 'Aceptar',
+                denyButtonText: `Cancelar`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.axios.delete('/calendarioapi/' + this.form.id).then((response) => {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Evento eliminado con éxito',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        $('#modalAgregarEvento').modal('hide');
+                        this.obtenerEventos();
+                    }).catch(error => {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Error al eliminar',
+                            text: "No se ha podido eliminar el evento",
+                            showConfirmButton: true,
+                        })
+                    });
+                } else if (result.isDenied) {
+                    Swal.fire('No se guardaron los cambios', '', 'info')
+                }
+            })
+                
+        },
         async obtenerEventos() {
-
-
-            if (this.busqueda.coordinacion !=  null) {
+            if (this.busqueda.coordinacion !=  null ) {
                 const coordinacion = this.busqueda.coordinacion === -1 ? null : [this.busqueda.coordinacion];
                 const municipio = this.busqueda.municipio === -1 ? null : [this.busqueda.municipio];
                 const defensor = this.busqueda.defensor === -1 ? null : [this.busqueda.defensor];

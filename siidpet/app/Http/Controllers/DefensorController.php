@@ -45,9 +45,6 @@ class DefensorController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        //Se validan los datos a traves de laravel
-
         $this->validate($request, [
             'id_usuario' => 'required',
             'id_municipio' => 'required',

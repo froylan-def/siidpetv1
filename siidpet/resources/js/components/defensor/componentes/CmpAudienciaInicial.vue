@@ -86,6 +86,7 @@
 import { ref } from "vue";
 import Form from 'vform'
 import Swal from 'sweetalert2'
+import { registrarLog, obtenerCambios } from '../../../../utils/helpers';
 
 export default {
     data() {
@@ -106,6 +107,9 @@ export default {
                 id_defensor_audiencia: ''
             }),
             defensoresOpciones: ref([]),
+            originalData: ref({}),
+            originalDataDefensor: ref({}),
+            originalDataJuez: ref({}),
         }
     },
     mounted() {
@@ -118,14 +122,16 @@ export default {
     methods: {
 
         obtenerAudienciaInicial() {
-            this.axios.get('/expediente/' + this.$route.params.id).then((response) => {
+            this.axios.get('/expediente/' + this.$route.params.id).then(async (response) => {
                 if (response.data.expediente.audiencia_inicial == null) {
                     this.esNuevo = true;
                 } else {
-                    this.form.fill({
+                    await this.form.fill({
                         id: response.data.expediente.id,
                         audiencia_inicial: response.data.expediente.audiencia_inicial
                     });
+
+                    this.originalData = JSON.parse(JSON.stringify( this.form.data() ));
                 }
                 this.loading = false;
             })
@@ -153,6 +159,7 @@ export default {
 
             this.editarJuez();
             this.editarDefensor();
+            this.guardarLogAudiencia(2);
         },
 
         guardarAudienciaInicial() {
@@ -173,6 +180,7 @@ export default {
                 })
                 this.loading = true;
                 this.obtenerAudienciaInicial();
+                this.guardarLogAudiencia(1);
             })
 
             this.guardarDefensor();
@@ -193,14 +201,16 @@ export default {
 
 
         obtenerJuez() {
-            this.axios.get('/expediente/' + this.$route.params.id).then((response) => {
+            this.axios.get('/expediente/' + this.$route.params.id).then( async (response) => {
                 if (response.data.expediente.id_juez_control == null) {
                     this.esNuevo = true;
                 } else {
-                    this.formJuezControl.fill({
+                    await this.formJuezControl.fill({
                         id: response.data.expediente.id,
                         id_juez_control: response.data.expediente.id_juez_control
                     });
+
+                    this.originalDataJuez = JSON.parse(JSON.stringify( this.form.data() ));
                 }
                 this.loading = false;
             })
@@ -216,6 +226,7 @@ export default {
                 
                 this.loading = true;
                 this.obtenerJuez();
+                this.guardarLogJuez(2);
             })
         },
         guardarJuez() {
@@ -229,6 +240,7 @@ export default {
                 
                 this.loading = true;
                 this.obtenerJuez();
+                this.guardarLogJuez(1);
             })
         },
 
@@ -253,6 +265,10 @@ export default {
                         id: response.data.expediente.id,
                         id_defensor_audiencia: response.data.expediente.id_defensor_audiencia
                     });
+
+                    // originalDataDefensor
+                    this.originalDataDefensor = JSON.parse(JSON.stringify( this.formDefensor.data() ));
+
                 }
                 this.loading = false;
             })
@@ -268,6 +284,7 @@ export default {
                 
                 this.loading = true;
                 this.obtenerDefensor();
+                this.guardarLogDefensor(2);
             })
         },
         guardarDefensor() {
@@ -282,6 +299,7 @@ export default {
                 this.loading = true;
                 this.esNuevo = false;
                 this.obtenerDefensor();
+                this.guardarLogDefensor(1);
             })
         },
 
@@ -305,7 +323,110 @@ export default {
                 error = true;
             }
             return error;
-        }
+        },
+
+        async guardarLogAudiencia(tipo) {
+
+            let mensaje = "";
+            if (tipo == 1) {
+                mensaje = "Se agregaron datos de Fecha de audiencia inicial"
+            } else {
+                mensaje = "Se editaron datos de Fecha de audiencia inicial"
+            }
+
+            let cambiado = await obtenerCambios(this.originalData, this.form.data());
+
+
+            const data = {
+                id_defensor: window.defensor,
+                accion: mensaje,
+                descripcion: JSON.stringify(cambiado),
+                id_registro: this.$route.params.id,
+                tipo_registro: 3
+            };
+            registrarLog(data);
+
+        },
+
+
+        async guardarLogDefensor(tipo) {
+
+            let mensaje = "";
+            if (tipo == 1) {
+                mensaje = "Se agregaron datos de Defensor en audiencia inicial"
+            } else {
+                mensaje = "Se editaron datos de Defensor en audiencia inicial"
+            }
+
+            let cambiado = await obtenerCambios(this.originalDataDefensor, this.formDefensor.data());
+
+            const tieneDefensor = cambiado.some(obj => obj.hasOwnProperty('id_defensor_audiencia'));
+
+            if(tieneDefensor){
+
+                let nombreDefensor = "";
+                await this.axios.get('/defensor/'+this.formDefensor.id_defensor_audiencia).then((response) => {
+                    nombreDefensor = response.data.defensor.user.name + " " +  response.data.defensor.user.fathername + " " +  response.data.defensor.user.mothername;
+                })
+
+                const index = cambiado.findIndex(obj => obj.hasOwnProperty('id_defensor_audiencia'));
+                if (index !== -1) {
+                    cambiado[index].id_defensor_audiencia = nombreDefensor;
+                }
+            }
+
+            const data = {
+                id_defensor: window.defensor,
+                accion: mensaje,
+                descripcion: JSON.stringify(cambiado),
+                id_registro: this.$route.params.id,
+                tipo_registro: 3
+            };
+            registrarLog(data);
+
+        },
+
+
+
+
+        async guardarLogJuez(tipo) {
+
+            let mensaje = "";
+            if (tipo == 1) {
+                mensaje = "Se agregaron datos de Juez de control en audiencia inicial"
+            } else {
+                mensaje = "Se editaron datos de Juez de control en audicencia inicial"
+            }
+
+            let cambiado = await obtenerCambios(this.originalDataJuez, this.formJuezControl.data());
+
+            const tieneJuez = cambiado.some(obj => obj.hasOwnProperty('id_juez_control'));
+
+            if(tieneJuez){
+
+                let nombreJuez = "";
+                await this.axios.get('/juezcontrol/'+this.formJuezControl.id_juez_control).then((response) => {
+                    nombreJuez = response.data.juez.nombre;
+                })
+
+                const index = cambiado.findIndex(obj => obj.hasOwnProperty('id_juez_control'));
+                if (index !== -1) {
+                    cambiado[index].id_juez_control = nombreJuez;
+                }
+            }
+
+            const data = {
+                id_defensor: window.defensor,
+                accion: mensaje,
+                descripcion: JSON.stringify(cambiado),
+                id_registro: this.$route.params.id,
+                tipo_registro: 3
+            };
+            registrarLog(data);
+
+        },
+
+        
 
 
 

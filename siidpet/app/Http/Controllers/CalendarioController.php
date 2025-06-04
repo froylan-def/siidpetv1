@@ -69,15 +69,18 @@ class CalendarioController extends Controller
     
         //Se validan los datos a traves de laravel
         $request->validate([
-            'id_defensor' => 'required',
             'evento' => 'required',
             'descripcion' => 'required',
             'fecha_inicio' => 'required',
         ]);
-        
-        // Crea una copia de los datos del request y agrega el campo adicional
+
+        $id_defensor = $request->input('id_defensor');
         $data = $request->all();
-        $data['id_defensor'] = $id_defensor;
+
+        if( $id_defensor === "" ){            
+            $data['id_defensor'] = $id_defensor;
+        }
+        
 
         // Se usa la función create() con el request que guarda el objeto
         $evento = Calendario::create( $data );
@@ -241,7 +244,7 @@ class CalendarioController extends Controller
             $calendario->delete();
             return response()->json(['mensaje' => 'Datos del calendario eliminados correctamente'], 201);
         } else {
-            return response()->json(['mensaje' => 'No se ha encontrado el dato'], 201);
+            return response()->json(['mensaje' => 'No se ha encontrado el evento'], 201);
         }
     }
 }

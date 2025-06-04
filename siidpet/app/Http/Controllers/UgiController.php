@@ -55,7 +55,9 @@ class UgiController extends Controller
     public function show($id)
     {
         //
-        $ugi = Ugi::where('id', $id)->where('activo', 1);
+        $ugi = Ugi::where('id', $id)->where('activo', 1)->first();
+
+        // Municipio::where('id_estado', $id)->get();
 
         if (!$ugi) {
             return response()->json(['mensaje' => 'Ugi no encontrado'], 404);

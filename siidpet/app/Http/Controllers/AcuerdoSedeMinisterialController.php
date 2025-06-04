@@ -39,7 +39,7 @@ class AcuerdoSedeMinisterialController extends Controller
     {
         //
         $request->validate([
-            'medidas_de_proteccion' => 'required',
+            // 'medidas_de_proteccion' => 'required',
             'fecha_inicio'  => 'required',
             'fecha_fin'  => 'required',
             'id_estatus_sede_ministerial'  => 'required',

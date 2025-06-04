@@ -38,12 +38,12 @@
             </div>
 
             <div class="form-group col-md-12">
-                <label for="medidas_de_proteccion">Observaciones: </label>
-                <textarea v-model="form.medidas_de_proteccion" class="form-control" 
-                id="medidas_de_proteccion" name="medidas_de_proteccion" rows="3" aria-describedby="determinacion_mp" placeholder=""></textarea>
+                <label for="observaciones">Observaciones: </label>
+                <textarea v-model="form.observaciones" class="form-control" 
+                id="observaciones" name="observaciones" rows="3" aria-describedby="determinacion_mp" placeholder=""></textarea>
 
-                <div style="color: red;" v-if="form.errors.has('medidas_de_proteccion')"
-                    v-html="form.errors.get('medidas_de_proteccion')" />
+                <div style="color: red;" v-if="form.errors.has('observaciones')"
+                    v-html="form.errors.get('observaciones')" />
             </div>
 
             
@@ -67,6 +67,7 @@
 import { ref } from "vue";
 import Form from 'vform'
 import Swal from 'sweetalert2'
+import { registrarLog, obtenerCambios } from '../../../../utils/helpers';
 
 export default {
     data() {
@@ -77,10 +78,12 @@ export default {
                 fecha_vencimiento: '',
                 id_medida_proteccion: '',
                 activo: 1,
+                observaciones: '',
             }),
             esNuevo: ref(false),
             loading: ref(true),
             medidasOpciones: ref([]),
+            originalData: ref({}),
         }
     },
     mounted() {
@@ -95,11 +98,11 @@ export default {
                     id: medida.id,
                     label: medida.nombre
                 }));
+
             } catch (error) {
                 console.error('Error fetching municipios:', error);
             }
         },
-
 
         obtenerAsignacionMedidas() {
             this.axios.get('/expediente/' + this.$route.params.id).then((response) => {
@@ -107,8 +110,10 @@ export default {
                     this.esNuevo = true;
                 } else {
                     this.axios.get('/asignacionmedidas/' + response.data.expediente.id_asignacion_medidas)
-                        .then((response) => {
-                            this.form.fill(response.data.asignacionmedidas);
+                        .then( async (response) => {
+                            await this.form.fill(response.data.asignacionmedidas);
+
+                            this.originalData = JSON.parse(JSON.stringify( this.form.data() ));
                         })
                 }
                 this.loading = false;
@@ -132,6 +137,7 @@ export default {
                 })
                 this.loading = true;
                 this.obtenerAsignacionMedidas();
+                this.guardarLog(2);
             })
         },
 
@@ -156,6 +162,8 @@ export default {
                     })
                     this.loading = true;
                     this.obtenerAsignacionMedidas();
+
+                    this.guardarLog(1);
                 })
             })
         },
@@ -181,7 +189,45 @@ export default {
             }
 
             return error;
+        },
+
+
+        async guardarLog(tipo) {
+
+            let mensaje = "";
+            if (tipo == 1) {
+                mensaje = "Se agregaron datos de Asignacion Medidas"
+            } else {
+                mensaje = "Se editaron datos de Asignacion Medidas"
+            }
+
+            let cambiado = await obtenerCambios(this.originalData, this.form.data());
+
+            const tieneIdMedida = cambiado.some(obj => obj.hasOwnProperty('id_medida_proteccion'));
+
+            if(tieneIdMedida){
+
+                let nombreMedida = "";
+                await this.axios.get('/medidaproteccion/'+this.form.id_medida_proteccion).then((response) => {
+                    nombreMedida = response.data.medida.nombre;
+                })
+                const index = cambiado.findIndex(obj => obj.hasOwnProperty('id_medida_proteccion'));
+                if (index !== -1) {
+                    cambiado[index].id_medida_proteccion = nombreMedida;
+                }
+            }
+
+            const data = {
+                id_defensor: window.defensor,
+                accion: mensaje,
+                descripcion: JSON.stringify(cambiado),
+                id_registro: this.$route.params.id,
+                tipo_registro: 3
+            };
+            registrarLog(data);
+
         }
+
 
     }
 }

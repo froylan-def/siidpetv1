@@ -66,6 +66,7 @@
 import { ref } from "vue";
 import Form from 'vform'
 import Swal from 'sweetalert2'
+import { registrarLog, obtenerCambios } from '../../../../utils/helpers';
 
 export default {
     data() {
@@ -82,6 +83,7 @@ export default {
             esNuevo: ref(false),
             loading: ref(true),
             opcionesSedes: ref([]),
+            originalData: ref({}),
         }
     },
     mounted() {
@@ -108,8 +110,12 @@ export default {
                     this.esNuevo = true;
                 } else {
                     this.axios.get('/acuerdosedeministerial/' + response.data.expediente.id_acuerdo_sede_ministerial)
-                        .then((response) => {
-                            this.form.fill(response.data.acuerdosedeministerial);
+                        .then(async (response) => {
+                            await this.form.fill(response.data.acuerdosedeministerial);
+
+                            this.originalData = JSON.parse(JSON.stringify( this.form.data() ));
+
+
                         })
                 }
                 this.loading = false;
@@ -133,6 +139,7 @@ export default {
                 })
                 this.loading = true;
                 this.obtenerAcuerdoSedes();
+                this.guardarLog(2);
             })
             
         },
@@ -156,17 +163,51 @@ export default {
                     })
                     this.loading = true;
                     this.obtenerAcuerdoSedes();
+                    this.guardarLog(1);
                 })
             })
+        },
+
+        async guardarLog(tipo) {
+
+            let mensaje = "";
+            if (tipo == 1) {
+                mensaje = "Se agregaron datos de Acuerdo sede ministerial"
+            } else {
+                mensaje = "Se editaron datos de Acuerdo sede ministerial"
+            }
+
+            let cambiado = await obtenerCambios(this.originalData, this.form.data());
+
+            const tieneSede = cambiado.some(obj => obj.hasOwnProperty('id_estatus_sede_ministerial'));
+
+            if(tieneSede){
+
+                let nombreMedida = "";
+                await this.axios.get('/estatussedeministerial/'+this.form.id_estatus_sede_ministerial).then((response) => {
+                    nombreMedida = response.data.sede.nombre;
+                })
+                const index = cambiado.findIndex(obj => obj.hasOwnProperty('id_estatus_sede_ministerial'));
+                if (index !== -1) {
+                    cambiado[index].id_estatus_sede_ministerial = nombreMedida;
+                }
+            }
+
+            const data = {
+                id_defensor: window.defensor,
+                accion: mensaje,
+                descripcion: JSON.stringify(cambiado),
+                id_registro: this.$route.params.id,
+                tipo_registro: 3
+            };
+            registrarLog(data);
+
         },
 
         validarFomrulario(){
             let error = false;
 
-            if( this.form.medidas_de_proteccion === null || this.form.medidas_de_proteccion === "" ){
-                this.form.errors.set('medidas_de_proteccion', 'Este campo es requerido');
-                error = true; 
-            }
+            
             if( this.form.fecha_inicio === null || this.form.fecha_inicio === "" ){
                 this.form.errors.set('fecha_inicio', 'Este campo es requerido');
                 error = true; 

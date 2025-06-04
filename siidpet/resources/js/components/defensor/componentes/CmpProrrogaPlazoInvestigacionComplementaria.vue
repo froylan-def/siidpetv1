@@ -56,6 +56,7 @@
 import { ref } from "vue";
 import Form from 'vform'
 import Swal from 'sweetalert2'
+import { registrarLog, obtenerCambios } from '../../../../utils/helpers';
 
 export default {
     data() {
@@ -68,6 +69,8 @@ export default {
             }),
             esNuevo: ref(false),
             loading: ref(true),
+            originalData: ref({}),
+            
         }
     },
     mounted() {
@@ -80,9 +83,10 @@ export default {
                     this.esNuevo = true;
                 } else {
                     this.axios.get('/prorrogaplazoinvestigacion/' + response.data.expediente.id_prorroga_plazo)
-                        .then((response) => {
-                            this.form.fill(response.data.prorroga_plazo_investigacion_complementaria
+                        .then(async (response) => {
+                            await this.form.fill(response.data.               prorroga_plazo_investigacion_complementaria
                             );
+                            this.originalData = JSON.parse(JSON.stringify( this.form.data() ));
                         })
                 }
                 this.loading = false;
@@ -103,6 +107,7 @@ export default {
                     timer: 1500
                 })
                 this.obtenerIdProrrogaInvestigacionComplementaria();
+                this.guardarLog(2);
             })
         },
         guardarProrrogaInvestigacionComplementaria() {
@@ -126,6 +131,7 @@ export default {
                     })
                     this.obtenerIdProrrogaInvestigacionComplementaria();
                     this.esNuevo = false;
+                    this.guardarLog(1);
                 })
             })
 
@@ -153,6 +159,30 @@ export default {
                 error = true;
             }
             return error;
+        },
+
+
+
+        async guardarLog(tipo) {
+
+            let mensaje = "";
+            if (tipo == 1) {
+                mensaje = "Se agregaron datos de Plazo Investigacion complementaria"
+            } else {
+                mensaje = "Se editaron datos de Plazo Investigacion complementaria"
+            }
+
+            let cambiado = await obtenerCambios(this.originalData, this.form.data());
+
+            const data = {
+                id_defensor: window.defensor,
+                accion: mensaje,
+                descripcion: JSON.stringify(cambiado),
+                id_registro: this.$route.params.id,
+                tipo_registro: 3
+            };
+            registrarLog(data);
+
         }
 
 

@@ -12,6 +12,7 @@ class Delito extends Model
     protected $table = 'delito';
 
     protected $fillable = [
+        'id',
         'nombre',
         'activo',
 

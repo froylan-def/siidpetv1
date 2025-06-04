@@ -7,22 +7,22 @@
                     <h5 class="m-0"> Flagrancia </h5>
                 </div><!-- /.col -->
             </div><!-- /.row -->
-            <small class="text-muted"> Por favor registra los campos solicitados. Los * son campos obligatorios. Para seleccionar una fecha u hora, da clic en el icono correspondiente </small>
+            <small class="text-muted"> Por favor registra los campos solicitados. Los * son campos obligatorios. Para
+                seleccionar una fecha u hora, da clic en el icono correspondiente </small>
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
     <div class="container">
-        
-        
+
+
         <div class="row">
 
             <div class="col-6">
                 <div class="form-group">
-                    Fecha * 
-                    <input v-model="form.fecha" type="date" class="form-control"
-                        id="fecha" aria-describedby="fecha" placeholder="">
-                    <div style="color: red;" v-if="form.errors.has('fecha')"
-                        v-html="form.errors.get('fecha')" />
+                    Fecha *
+                    <input v-model="form.fecha" type="date" class="form-control" id="fecha" aria-describedby="fecha"
+                        placeholder="">
+                    <div style="color: red;" v-if="form.errors.has('fecha')" v-html="form.errors.get('fecha')" />
                 </div>
 
             </div>
@@ -30,37 +30,36 @@
             <div class="col-6">
                 <div class="form-group">
                     Hora *
-                    <input v-model="form.hora" type="time" class="form-control"
-                        id="hora" aria-describedby="hora" placeholder="">
-                    <div style="color: red;" v-if="form.errors.has('hora')"
-                        v-html="form.errors.get('hora')" />
-                </div>  
+                    <input v-model="form.hora" type="time" class="form-control" id="hora" aria-describedby="hora"
+                        placeholder="">
+                    <div style="color: red;" v-if="form.errors.has('hora')" v-html="form.errors.get('hora')" />
+                </div>
 
             </div>
 
 
-            
 
-                                    
 
-            
+
+
+
 
 
         </div>
-        
+
 
         <div style="text-align: right;">
             <div v-if="loading" class="spinner-border" role="status">
                 <span class="sr-only">Cargando...</span>
             </div>
-            <button v-else-if="!loading && esNuevo"  class="btn btn-primary float-right"
-                @click="guardarFlagrancia"> <i class="fa-solid fa-floppy-disk"></i> Guardar </button>
+            <button v-else-if="!loading && esNuevo" class="btn btn-primary float-right" @click="guardarFlagrancia"> <i
+                    class="fa-solid fa-floppy-disk"></i> Guardar </button>
             <button v-else class="btn btn-primary float-right" @click="editarFlagrancia">
                 <i class="fa-solid fa-pen-to-square"></i> Actualizar </button>
         </div>
 
 
-            
+
     </div>
 </template>
 
@@ -68,6 +67,7 @@
 import { ref } from "vue";
 import Form from 'vform'
 import Swal from 'sweetalert2'
+import { registrarLog, obtenerCambios } from '../../../../utils/helpers';
 
 export default {
     data() {
@@ -80,6 +80,7 @@ export default {
             }),
             esNuevo: ref(false),
             loading: ref(true),
+            originalData: ref({}),
         }
     },
     mounted() {
@@ -93,9 +94,16 @@ export default {
                     this.esNuevo = true;
                 } else {
                     this.axios.get('/flagrancia/' + response.data.expediente.id_flagrancia)
-                        .then((response) => {
-                            this.form.fill(response.data.flagrancia);
+                        .then( async (response) => {
+                            await this.form.fill(response.data.flagrancia);
+
+                            this.originalData = JSON.parse(JSON.stringify( this.form.data() ));
+
+
                         })
+
+
+                        
                 }
                 this.loading = false;
             })
@@ -105,16 +113,16 @@ export default {
             this.form.errors.clear('fecha');
             this.form.errors.clear('hora');
 
-            console.log("Fecha " + this.form.fecha );
-            console.log("Hora " + this.form.hora );
-            if( this.form.fecha === null || this.form.hora === null || this.form.fecha === "" || this.form.hora === "" ){
-                if(this.form.fecha===null || this.form.fecha === ""){
+            console.log("Fecha " + this.form.fecha);
+            console.log("Hora " + this.form.hora);
+            if (this.form.fecha === null || this.form.hora === null || this.form.fecha === "" || this.form.hora === "") {
+                if (this.form.fecha === null || this.form.fecha === "") {
                     this.form.errors.set('fecha', 'Este campo es requerido');
                 }
-                if(this.form.hora===null || this.form.hora === "" ){
+                if (this.form.hora === null || this.form.hora === "") {
                     this.form.errors.set('hora', 'Este campo es requerido');
                 }
-            }else{
+            } else {
 
                 this.axios.put('/flagrancia/' + this.form.id, this.form).then((response) => {
                     Swal.fire({
@@ -126,6 +134,7 @@ export default {
                     })
                     this.loading = true;
                     this.obtenerFlagrancia();
+                    this.guardarLog(2);
                 })
 
             }
@@ -137,14 +146,14 @@ export default {
             this.form.errors.clear('fecha');
             this.form.errors.clear('hora');
 
-            if( this.form.fecha === null || this.form.hora === null ){
-                if(this.form.fecha===""){
+            if (this.form.fecha === null || this.form.hora === null) {
+                if (this.form.fecha === "") {
                     this.form.errors.set('fecha', 'Este campo es requerido');
                 }
-                if(this.form.hora===""){
+                if (this.form.hora === "") {
                     this.form.errors.set('hora', 'Este campo es requerido');
                 }
-            }else{
+            } else {
 
                 this.form.post('/flagrancia').then((response) => {
                     this.axios.put('/expediente/' + this.$route.params.id, {
@@ -159,14 +168,36 @@ export default {
                         })
                         this.loading = true;
                         this.obtenerFlagrancia();
+                        this.guardarLog(1);
                     })
                 })
+            }
+        },
 
 
+        async guardarLog(tipo) {
+
+            let mensaje = "";
+            if (tipo == 1) {
+                mensaje = "Se agregaron datos de flagrancia"
+            } else {
+                mensaje = "Se editaron datos de flagrancia"
             }
 
-            
-        },
+            let cambiado = await obtenerCambios(this.originalData, this.form.data());
+
+            const data = {
+                id_defensor: window.defensor,
+                accion: mensaje,
+                descripcion: JSON.stringify(cambiado),
+                id_registro: this.$route.params.id,
+                tipo_registro: 3
+            };
+            registrarLog(data);
+
+        }
+
+
 
 
     }

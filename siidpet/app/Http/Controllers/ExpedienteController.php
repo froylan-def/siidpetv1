@@ -79,7 +79,7 @@ class expedienteController extends Controller
         $expediente = Expediente::create( $data );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Datos guardados con éxito', 'expediente' => $data ], 201);
+        return response()->json(['mensaje' => 'Datos guardados con éxito', 'expediente' => $expediente ], 201);
         
     }
 
@@ -165,7 +165,7 @@ class expedienteController extends Controller
         $expediente->update($request->all());
 
         // Puedes devolver una respuesta JSON, un mensaje de éxito, etc.
-        return response()->json(['mensaje' => 'Datos actualizados con éxito']);
+        return response()->json(['mensaje' => 'Datos actualizados con éxito', 'id' => $id ]);
     }
 
 

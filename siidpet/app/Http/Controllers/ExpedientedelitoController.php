@@ -125,14 +125,11 @@ class ExpedientedelitoController extends Controller
         
         // Verificar si el usuario existe
         if ($delito) {
-            // Eliminar el usuario
-            // $delito->delete();
-
             ExpedienteDelito::where('id_expediente', $idExpediente)
                 ->where('id_delito', $idDelito)
                 ->delete();
 
-            return response()->json(['mensaje' => 'Registo desactivado correctamente'], 201);
+                return response()->json(['mensaje' => 'Registo desactivado correctamente', 'delito' =>  $delito ], 201);
         } else {
             return response()->json(['mensaje' => 'No se ha encontrado el registro correspondiente'], 201);
         }

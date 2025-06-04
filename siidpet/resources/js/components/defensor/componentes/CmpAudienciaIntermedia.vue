@@ -49,6 +49,7 @@
 import { ref } from "vue";
 import Form from 'vform'
 import Swal from 'sweetalert2'
+import { registrarLog, obtenerCambios } from '../../../../utils/helpers';
 
 export default {
     data() {
@@ -67,14 +68,17 @@ export default {
     methods: {
 
         obtenerAudienciaIntermedia() {
-            this.axios.get('/expediente/' + this.$route.params.id).then((response) => {
+            this.axios.get('/expediente/' + this.$route.params.id).then(async (response) => {
                 if (response.data.expediente.audiencia_intermedia == null) {
                     this.esNuevo = true;
                 } else {
-                    this.form.fill({
+                    await this.form.fill({
                         id: response.data.expediente.id,
                         audiencia_intermedia: response.data.expediente.audiencia_intermedia
                     });
+
+
+                    this.originalData = JSON.parse(JSON.stringify( this.form.data() ));
                 }
                 this.loading = false;
             })
@@ -98,6 +102,7 @@ export default {
                 this.loading = true;
                 this.esNuevo = false;
                 this.obtenerAudienciaIntermedia();
+                this.guardarLog(2);
             })
         },
 
@@ -119,6 +124,7 @@ export default {
                 this.loading = true;
                 this.esNuevo = false;
                 this.obtenerAudienciaIntermedia();
+                this.guardarLog(1);
             })
         },
 
@@ -130,8 +136,30 @@ export default {
                 error = true;
             }
             return error;
-        }
+        },
 
+
+        async guardarLog(tipo) {
+
+            let mensaje = "";
+            if (tipo == 1) {
+                mensaje = "Se agregaron datos de audiencia intermedia"
+            } else {
+                mensaje = "Se editaron datos de audiencia intermedia"
+            }
+
+            let cambiado = await obtenerCambios(this.originalData, this.form.data());
+
+            const data = {
+                id_defensor: window.defensor,
+                accion: mensaje,
+                descripcion: JSON.stringify(cambiado),
+                id_registro: this.$route.params.id,
+                tipo_registro: 3
+            };
+            registrarLog(data);
+
+        }
 
 
     }
