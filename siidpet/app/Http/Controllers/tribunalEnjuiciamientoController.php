@@ -22,7 +22,8 @@ class tribunalEnjuiciamientoController extends Controller
         // $tribunalEnjuiciamiento = TribunalEnjuiciamiento::all();
 
         $tribunalEnjuiciamiento = TribunalEnjuiciamiento::with('expediente', 'juez')->get();
-        return response( $tribunalEnjuiciamiento );
+        
+        return response()->json(['mensaje' => 'Datos guardados con éxito', 'tribunal_enjuiciamiento' => $tribunalEnjuiciamiento ], 201);
     }
 
     /**

@@ -8,7 +8,10 @@ export default defineConfig({
         host: '127.0.0.1',  // Add this to force IPv4 only
         watch: {
             usePolling: true,
-        }
+        },
+        cors: {
+            origin: '*', // Permite todos los orígenes (puedes ajustarlo por seguridad)
+        },
     },
 
     plugins: [

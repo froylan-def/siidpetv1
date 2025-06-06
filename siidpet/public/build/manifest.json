@@ -1,43 +1,43 @@
 {
-  "_html2canvas-41c7d87d.js": {
-    "file": "assets/html2canvas-41c7d87d.js",
+  "_html2canvas-4ed37c3c.js": {
+    "file": "assets/html2canvas-4ed37c3c.js",
     "imports": [
       "resources/js/app.js"
     ],
     "isDynamicEntry": true
   },
   "node_modules/canvg/lib/index.es.js": {
-    "file": "assets/index.es-06d685b7.js",
+    "file": "assets/index.es-1f077da0.js",
     "imports": [
       "resources/js/app.js"
     ],
     "isDynamicEntry": true,
     "src": "node_modules/canvg/lib/index.es.js"
   },
-  "node_modules/dompurify/dist/purify.es.js": {
-    "file": "assets/purify.es-cf254a40.js",
+  "node_modules/dompurify/dist/purify.es.mjs": {
+    "file": "assets/purify.es-31816194.js",
     "isDynamicEntry": true,
-    "src": "node_modules/dompurify/dist/purify.es.js"
+    "src": "node_modules/dompurify/dist/purify.es.mjs"
   },
   "resources/js/app.css": {
-    "file": "assets/app-32e13f1f.css",
+    "file": "assets/app-427cd9af.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.js": {
     "css": [
-      "assets/app-32e13f1f.css"
+      "assets/app-427cd9af.css"
     ],
     "dynamicImports": [
-      "_html2canvas-41c7d87d.js",
-      "node_modules/dompurify/dist/purify.es.js",
+      "_html2canvas-4ed37c3c.js",
+      "node_modules/dompurify/dist/purify.es.mjs",
       "node_modules/canvg/lib/index.es.js"
     ],
-    "file": "assets/app-9f9e7df6.js",
+    "file": "assets/app-9d2efb88.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-b9c47387.css",
+    "file": "assets/app-66db512f.css",
     "isEntry": true,
     "src": "resources/sass/app.scss"
   }

@@ -684,7 +684,7 @@ export default {
             let datosAGuardar = [
                 {ugi: datosUgi.data.ugi.nombre},
                 {fecha: datos_del_form.fecha},
-                {nuc: datos_del_form.nuc},d
+                {nuc: datos_del_form.nuc},
             ]
 
             await this.form.post('/expediente').then((response) => {

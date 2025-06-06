@@ -318,6 +318,7 @@ export default {
                 id: -1,
                 label: "Todos"
             }]),
+            id_defensor: ref(),
 
         }
     },
@@ -328,17 +329,27 @@ export default {
             this.busqueda.coordinacion = null;
         }
         this.calendarOptions.events = this.events;
+        
+        this.obtenerInformacionDefensor();
+        
         this.obtenerEventos();
         this.obtenerDefensores();
-
         this.obtenerDatosDeBusqueda();
         this.seleccionarCoordinacion();
     },
     methods: {
 
+        async obtenerInformacionDefensor() {
+            try {
+                const response = await this.axios.get('/obtenerdefensorporidusuario/' + this.idUsario);
+                this.id_defensor = response.data.defensor[0].id;
+
+            } catch (error) {
+                console.error('Error fetching ocupaciones:', error);
+            }
+        },
+
         eliminarEvento(){
-            console.log("Se ha borrado documento");
-            console.log("Id del evento " + this.form.id);
             
             Swal.fire({
                 title: '¿Está seguro de eliminar permanentemente este evento?',
@@ -408,6 +419,8 @@ export default {
                 }
 
             } else {
+
+
                 try {
                     let response = "";
                     response = await this.axios.get('/calendarioapi');
@@ -428,6 +441,7 @@ export default {
                 } catch (error) {
                     console.error('Error fetching eventos:', error);
                 }
+
 
             }
 
@@ -560,6 +574,8 @@ export default {
             });
         },
         async registrarEvento() {
+            
+            this.form.id_defensor = await this.id_defensor;
             await this.form.post('/calendarioapi').then((response) => {
                 Swal.fire({
                     position: 'top-end',
