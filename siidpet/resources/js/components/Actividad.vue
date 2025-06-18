@@ -11,9 +11,8 @@
             <i class="fa-solid fa-filter"></i> Filtrar
         </a>
 
-        <a class="btn btn-secondary ml-1" data-toggle="collapse" href="#collapseExample" role="button"
-            aria-expanded="false" aria-controls="collapseExample">
-            <i class="fa-solid fa-filter"></i> Buscar todo
+        <a class="btn btn-primary ml-1"role="button" @click="obtenerLogs">
+            <i class="fa-solid fa-database"></i> Obtener todo
         </a>
 
         <div class="container mt-2">
@@ -25,7 +24,6 @@
                             <div class="row mb-3">
                                 <div class="col-6 ">
                                     <label for="municipio" class="form-label">Defensor</label>
-                                    Defensor *
                                     <v-select :options="defensores" v-model="filtros.defensor" label="label"
                                         :reduce="defensor => defensor.id"></v-select>
                                 </div>
@@ -136,15 +134,42 @@ export default {
             defensores: ref([]),
         };
     },
-    methods: {
-    
-        async buscarLogs(){
+    methods: { 
 
-            console.log("Parametros de busqueda");
-            console.log( this.filtros );
+        async buscarLogs() {
+            const parametros = {
+                id_defensor: this.filtros.defensor,
+                fecha: this.filtros.fecha
+            }
+            
+            try {
+                let response = await this.axios.post('/busqueda',parametros);
+                let logsData = response.data.logs;
+                for (let log of logsData) {
+                    try {
+                        log.descripcionProcesada = await this.procesarDescripcion(log.descripcion);
+                        if (log.tipo_registro == 3) {
+                            let response = await this.axios.get('/expediente/' + log.id_registro);
+                            log.expediente = { nuc: response.data.expediente.nuc, id: response.data.expediente.id };
+                        } else {
+                            log.expediente = "";
+                        }
+                    } catch (error) {
+                        console.error("Error procesando descripción", error);
+                    }
+                }
+                this.logs = logsData;
 
+
+
+            } catch (error) {
+                console.error("Error obteniendo los datos", error);
+            }
+            
         },
-        async obtenerLogs(){
+        async obtenerLogs() {
+            this.filtros.fecha = "";
+            this.filtros.defensor = "";
             let logsApi = await this.axios.get('/logs');
             let logsData = logsApi.data;
 
@@ -237,7 +262,7 @@ export default {
 
     },
     mounted() {
-        this.obtenerLogs();
+        // this.obtenerLogs();
         this.obtenerDefensores();
     },
 };

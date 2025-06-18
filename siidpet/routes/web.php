@@ -164,13 +164,17 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('coordinacionMunicipio', coordinacionMunicipioController::class);
 
 
+    Route::get('/testlogs', [LogsController::class, 'testlogs']);
 
+    Route::post('/busqueda', [LogsController::class, 'busqueda']);
     Route::resource('logs', LogsController::class);
     
     // obtenerDefensorPorIdUsuario
 
     Route::get('/obtenerdefensorporidusuario/{id}/', [DefensorController::class, 'obtenerDefensorPorIdUsuario']);
 
+
+    
 
 
     Route::post('/busquedaconfiltros', [ExpedienteController::class, 'busquedaConFiltros']);

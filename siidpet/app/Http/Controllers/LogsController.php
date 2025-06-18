@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Logs;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class LogsController extends Controller
 {
@@ -149,5 +150,36 @@ class LogsController extends Controller
         }
 
 
+    }
+
+
+    public function testlogs()
+    {
+        // return response()->json(['mensaje' => 'algo'], 201 );
+        return "Test algo";
+    }
+
+    public function busqueda(Request $request)
+    {
+        // Obtén los parámetros desde la solicitud
+        $id_defensor = $request->input('id_defensor');
+        $fecha = $request->input('fecha');
+
+        $query = Logs::with('defensor', 'defensor.user');
+        
+        if ($id_defensor) {
+            $query->where('id_defensor', $id_defensor);
+        }
+
+        if ($fecha) {
+            $query->whereBetween('created_at', [
+                Carbon::parse($fecha)->startOfDay(),
+                Carbon::parse($fecha)->addDay()->startOfDay()
+            ]);
+        }
+
+        $logs = $query->get();
+        
+        return response()->json(['logs' => $logs,], 201);
     }
 }

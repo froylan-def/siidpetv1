@@ -9,27 +9,20 @@
     <div class="container mt-2">
         <div class="row ">
             <div class="col-md-12">
-
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="">
-
-
                         <a class="btn btn-secondary ml-1" data-toggle="collapse" href="#collapseExample" role="button"
                             aria-expanded="false" aria-controls="collapseExample">
                             <i class="fa-solid fa-magnifying-glass"></i>
                             Buscar
                         </a>
-
-
                     </div>
                     <button class="btn btn-success" data-toggle="modal" data-target="#modalAgregarDefensor"
                         @click="abrirModalRegistro">
                         <i class="fa-solid fa-circle-plus"></i> Registrar nuevo usuario
                     </button>
                 </div>
-
                 <div class="row">
-
                     <div class="collapse" id="collapseExample">
                         <div class="card card-body">
                             <h5> Busqueda de usuarios </h5>
@@ -59,7 +52,6 @@
                             <button class="btn btn-warning btn-sm mt-2 mb-2 mr-1" @click="actualizarDefensor(item)" v-if="item.activo === 1">
                                 <i class="fa-solid fa-pen-to-square"></i> 
                             </button>
-
                             <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1 " v-if="item.activo === 1"
                                 @click="desactivarUsuario(item)">
                                 <i class="fa-solid fa-power-off"></i> 
@@ -69,14 +61,10 @@
                                 @click="desactivarUsuario(item)">
                                 <i class="fa-solid fa-power-off"></i> 
                             </button>
-
-
                         </div>
                     </template>
                 </EasyDataTable>
-
             </div>
-
         </div>
         <div class="modal fade" id="modalAgregarDefensor" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -171,10 +159,6 @@
                                     <div style="color: red;" v-if="form.errors.has('gender')"
                                         v-html="form.errors.get('gender')" />
                                 </div>
-
-
-
-
                                 <div class="form-group col-md-12">
                                     <label for="Contraseña del usuario">Rol</label>
                                     <select v-model="form.IDRol" id="rol" type="text" class="form-control "
@@ -191,30 +175,18 @@
                                     <div style="color: red;" v-if="form.errors.has('IDRol')"
                                         v-html="form.errors.get('IDRol')" />
                                 </div>
-
-
-
-
-
                                 <div class="form-group col-md-12">
                                     <label for="fathername">Contraseña</label>
-
                                     <span v-if="actualizarDefensorCheck" style="color: red;"> * </span>
-
-
                                     <input v-model="form.password" type="password" class="form-control" id="password"
                                         placeholder="contraseña">
 
                                     <div style="color: red;" v-if="form.errors.has('password')"
                                         v-html="form.errors.get('password')" />
                                 </div>
-
                                 <span v-if="actualizarDefensorCheck" style="color: red;"> * Solo llene si desea cambiar
                                     la
                                     contraseña </span>
-
-
-
                             </div>
                         </div>
                         <div class="modal-footer">

@@ -4,8 +4,6 @@
             <h1 class="h4">Calendario</h1>
         </div>
     </div>
-
-
     <div class="container mt-2">
         <div class="row">
             <div class="col-md-12">
@@ -17,13 +15,10 @@
                             <i class="fa-solid fa-filter"></i> Busqueda
                         </a>
                     </div>
-
                     <button class="btn btn-success" data-toggle="modal" data-target="#modalAgregarEvento"
                         @click="abrirModalRegistro">
                         <i class="fa-solid fa-plus"></i> Crear nuevo evento
                     </button>
-
-
                 </div>
                 <div class="container">
                     <div class="row justify-content-center">
@@ -96,7 +91,6 @@
             </div>
         </div>
     </div>
-
     <div class="container mt-2">
         <div class="row">
             <div class="col-md-12">
@@ -270,7 +264,7 @@ export default {
             visualizarExpedienteCheck: ref(true),
             date: new Date(),
             calendarioRef: ref(null),
-            events: reactive([]),
+            events: ref([]),
             form: new Form({
                 id: "",
                 evento: "",
@@ -280,22 +274,22 @@ export default {
                 id_defensor: "",
                 nombre_defensor: "",
             }),
-            calendarOptions: {
+            calendarOptions: ref({
                 plugins: [dayGridPlugin, interactionPlugin],
                 initialView: 'dayGridMonth',
                 editable: true,
                 droppable: true,
-                selectable: true,
+                selectable: true, 
                 locale: esLocale,
                 firstDay: 1,
                 headerToolbar: {
                     left: "title",
                 },
-                events: [],
+                events: ref([]),
                 dateClick: this.abrirModalRegistro,
                 eventClick: this.actualizarExpediente,
                 eventChange: this.handleEventChange
-            },
+            }),
             defensoresOpciones: ref([]),
             agregarFechaFin: false,
             coordinacion: ref(window.coordinacion),
@@ -322,23 +316,20 @@ export default {
 
         }
     },
-    mounted() {
+    async mounted() {
         if (this.rolUsuario == "5") {
             this.busqueda.coordinacion = this.coordinacion;
         }else{
             this.busqueda.coordinacion = null;
         }
-        this.calendarOptions.events = this.events;
-        
-        this.obtenerInformacionDefensor();
-        
-        this.obtenerEventos();
-        this.obtenerDefensores();
-        this.obtenerDatosDeBusqueda();
-        this.seleccionarCoordinacion();
+        this.calendarOptions.events = await this.events;
+        await this.obtenerInformacionDefensor();
+        await this.obtenerDefensores();
+        await this.obtenerDatosDeBusqueda();
+        await this.seleccionarCoordinacion();
+        await this.obtenerEventos();
     },
     methods: {
-
         async obtenerInformacionDefensor() {
             try {
                 const response = await this.axios.get('/obtenerdefensorporidusuario/' + this.idUsario);
@@ -348,9 +339,8 @@ export default {
                 console.error('Error fetching ocupaciones:', error);
             }
         },
-
         eliminarEvento(){
-            
+            let _this = this;
             Swal.fire({
                 title: '¿Está seguro de eliminar permanentemente este evento?',
                 showDenyButton: true,
@@ -358,7 +348,12 @@ export default {
                 denyButtonText: `Cancelar`,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.axios.delete('/calendarioapi/' + this.form.id).then((response) => {
+
+                    this.axios.delete('/calendarioapi/' + this.form.id).then(async  (response) => {
+
+                        console.log("Respuesta de la eliminacion");
+                        console.log(response);
+                        await _this.obtenerEventos();
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
@@ -367,7 +362,8 @@ export default {
                             timer: 1500
                         })
                         $('#modalAgregarEvento').modal('hide');
-                        this.obtenerEventos();
+                        
+
                     }).catch(error => {
                         Swal.fire({
                             position: 'center',
@@ -377,14 +373,17 @@ export default {
                             showConfirmButton: true,
                         })
                     });
+
                 } else if (result.isDenied) {
                     Swal.fire('No se guardaron los cambios', '', 'info')
                 }
             })
-                
         },
         async obtenerEventos() {
-            if (this.busqueda.coordinacion !=  null ) {
+            if (this.busqueda.coordinacion !=  -1 ) {
+
+
+
                 const coordinacion = this.busqueda.coordinacion === -1 ? null : [this.busqueda.coordinacion];
                 const municipio = this.busqueda.municipio === -1 ? null : [this.busqueda.municipio];
                 const defensor = this.busqueda.defensor === -1 ? null : [this.busqueda.defensor];
@@ -411,20 +410,18 @@ export default {
                             borderColor: "#" + element.defensor.coordinacion.color,
                         });
                     });
-
                     this.calendarOptions.events = _this.events;
-
+                    
                 } catch (error) {
                     console.error('Error fetching eventos:', error);
                 }
-
             } else {
-
-
                 try {
                     let response = "";
                     response = await this.axios.get('/calendarioapi');
                     const _this = this;
+                    _this.events = [];
+                    this.calendarOptions.events = [];
                     response.data.forEach(function (element) {
                         _this.events.push({
                             id: element.id,
@@ -438,18 +435,13 @@ export default {
                             borderColor: "#" + element.defensor.coordinacion.color,
                         });
                     });
+                    _this.calendarOptions.events = _this.events;
                 } catch (error) {
                     console.error('Error fetching eventos:', error);
                 }
 
-
             }
-
-
         },
-
-
-
         async obtenerDatosDeBusqueda() {
             try {
                 if (this.rolUsuario == '5') {
