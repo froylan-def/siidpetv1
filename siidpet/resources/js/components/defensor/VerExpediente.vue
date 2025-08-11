@@ -14,23 +14,23 @@
                     <li class="nav-item">
                         <a @click="changeOption(1)" class="nav-link" :class="{ active: isActiveTab(1) }" href="#tab_1"
                             data-toggle="tab">
-                            Grupo 1
+                            Carpeta de investigación
                         </a>
                     </li>
                     <li class="nav-item"><a @click="changeOption(2)" class="nav-link"
-                            :class="{ active: isActiveTab(2) }" href="#tab_2" data-toggle="tab"> Grupo 2 </a></li>
+                            :class="{ active: isActiveTab(2) }" href="#tab_2" data-toggle="tab"> Control </a></li>
                     <li class="nav-item"><a @click="changeOption(3)" class="nav-link"
                             :class="{ active: isActiveTab(3) }" href="#tab_3" data-toggle="tab">
-                            Grupo 3 </a>
+                            Juicio </a>
                     </li>
                     <li class="nav-item"><a @click="changeOption(4)" class="nav-link"
                             :class="{ active: isActiveTab(4) }" href="#tab_4" data-toggle="tab">
-                            Grupo 4 </a>
+                            Individualización </a>
                     </li>
 
                     <li class="nav-item"><a @click="changeOption(5)" class="nav-link"
                             :class="{ active: isActiveTab(5) }" href="#tab_5" data-toggle="tab">
-                            Grupo 5 </a>
+                            Recursos </a>
                     </li>
                 </ul>
 
@@ -39,6 +39,9 @@
             <div class="row">
                 <!-- Columna 3 -->
                 <div class="col-md-2 col-12 d-flex flex-column" >
+
+                    
+
                     <div class="card flex-fill mb-3" style="border-radius: 0.5rem">
                         <div class="card-body custom-padding">
                             <h6 class="text-primary text-bold"> <i class="fa-regular fa-user"></i> Imputado</h6>
@@ -109,6 +112,39 @@
                             </ul>
                         </div>
                     </div>
+                    <div class="card flex-fill mb-2" style="border-radius: 0.5rem">
+                        <div class="card-body custom-padding">
+                            <h6 class="text-primary text-bold"> <i class="fa-regular fa-folder"></i> Etapa procesal </h6>
+                            <ul v-if="this.expediente.carpeta_procesal === '' || this.expediente.carpeta_procesal === null"
+                                style="font-size: smaller; list-style: none;" class="pl-0">
+                                <li>No hay C.P. registrada</li>
+                            </ul>
+
+                            <ul style="font-size: smaller; list-style: none;" class="pl-0">
+                                <li>
+                                    {{ this.expediente.carpeta_procesal }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card flex-fill mb-2" style="border-radius: 0.5rem">
+                        <div class="card-body custom-padding">
+                            <h6 class="text-primary text-bold"> <i class="fa-regular fa-folder"></i> Ultima audiencia </h6>
+                            <ul v-if="this.expediente.carpeta_procesal === '' || this.expediente.carpeta_procesal === null"
+                                style="font-size: smaller; list-style: none;" class="pl-0">
+                                <li>No hay C.P. registrada</li>
+                            </ul>
+
+                            <ul style="font-size: smaller; list-style: none;" class="pl-0">
+                                <li>
+                                    {{ this.expediente.carpeta_procesal }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+
                 </div>
 
                 <!-- Columna 9 -->
@@ -117,6 +153,8 @@
                         <div class="card-body ">
                             <div class="tab-content">
                                 <div class="tab-pane" :class="{ active: isActiveTab(1) }" id="tab_1">
+
+                                    
 
                                     <Tabs :tabs="tabsGrupo1">
                                         <template #entrevista>

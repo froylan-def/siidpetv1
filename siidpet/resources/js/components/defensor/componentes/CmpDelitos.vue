@@ -7,7 +7,7 @@
                     <h5 class="m-0">Delitos</h5>
                 </div><!-- /.col -->
             </div><!-- /.row -->
-            <small class="text-muted"> Por favor selecciona un delito de la lista. Si el delito no existe por favor notifica al administrador del sistema</small>
+            <small class="text-muted"> Por favor selecciona un delito de la lista. Si el delito no existe por favor notifica al administrador del sistema </small>
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->

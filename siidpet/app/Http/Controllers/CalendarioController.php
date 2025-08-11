@@ -23,19 +23,20 @@ class CalendarioController extends Controller
  
          if( $user->IDRol === 1 || $user->IDRol === 2 || $user->IDRol === 3 ){
              // Consulta si es administrador
-             $expediente = Calendario::with('defensor','defensor.user', 'defensor.municipio', 'defensor.coordinacion')->get();
+             $expediente = Calendario::with('defensor','defensor.user', 'defensor.municipio', 'defensor.coordinacion')->orderBy('updated_at', 'desc')->get();
  
          }else if( $user->IDRol === 5 ){
  
              // Consulta si es coordinador
              $expediente = Calendario::with('defensor', 'defensor.user', 'defensor.municipio', 'defensor.coordinacion')->whereHas('defensor', function ($query) use ($id_coordinacion) {
                  $query->where('id_coordinacion', $id_coordinacion);
-             })->get();
+             })->orderBy('updated_at', 'desc')->get();
  
          }else{
              // Consulta si es otro rol que no sea administrador o coordinador
              $expediente = Calendario::with('defensor', 'defensor.user', 'defensor.municipio', 'defensor.coordinacion')->select('*') 
              ->where('id_defensor', $id_defensor )
+             ->orderBy('updated_at', 'desc')
              ->get();
          }
  

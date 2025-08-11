@@ -16,7 +16,6 @@ class AsignacionMedidasController extends Controller
     {
         //
         $asignacionMedidas = AsignacionMedidas::all();
-        // return response( $asignacionMedidas );
         return response()->json(['asignacionmedidas' => $asignacionMedidas ], 201);
     }
 
@@ -44,6 +43,7 @@ class AsignacionMedidasController extends Controller
             'fecha_vencimiento' => 'required',
             'id_medida_proteccion' => 'required',
             'observaciones' => 'required',
+            'id_expediente' => 'required',
         ]);
 
         //Se usa la función create() con el request que guarda el objeto
@@ -128,4 +128,17 @@ class AsignacionMedidasController extends Controller
             return response()->json(['mensaje' => 'No se ha encontrado el dato'], 201);
         }
     }
+
+    public function showPorExpediente($id)
+    {
+        $id_expediente = $id; // Este es el valor con el que deseas comparar
+        $medidas = AsignacionMedidas::with('medida')
+            ->where('id_expediente', $id_expediente)
+            ->where('activo', 1)
+            ->get();
+
+        return response($medidas);
+    }
+
+
 }

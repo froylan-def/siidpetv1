@@ -300,6 +300,10 @@
             border-radius: 0.7rem;
         }
 
+        .nav-pills .nav-link:hover {
+            color: var(--secondary-color) !important;
+        }
+
         body {
             font-family: 'Encode Sans', serif;
             /* font-family: 'Roboto', serif; */
@@ -426,6 +430,16 @@
                                 <i class="nav-icon fas fa-list-check"></i>
                                 <p>
                                     Actividad
+                                </p>
+                            </router-link>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <router-link to="/archivos" class="nav-link" active-class="active">
+                                <i class="nav-icon fas fa-file-pdf"></i>
+                                <p>
+                                    Archivos
                                 </p>
                             </router-link>
                         </li>

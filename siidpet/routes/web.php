@@ -123,7 +123,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('entrevista', EntrevistaController::class);
     Route::resource('victima', VictimaController::class);
     Route::resource('flagrancia', FlagranciaController::class);
+
+    Route::get('/medidasporexpediente/{id}/', [AsignacionMedidasController::class,'showPorExpediente' ]);
+
     Route::resource('asignacionmedidas', AsignacionMedidasController::class);
+    
     Route::resource('acuerdosedeministerial', AcuerdoSedeMinisterialController::class);
     Route::resource('juezcontrol', JuezControlController::class);
     Route::resource('acuerdoreparatorio', AcuerdoReparatorioController::class);

@@ -229,26 +229,16 @@
             </div>
         </div>
 
-
-
-
         <div class="modal fade" id="modalSeleccionarImputado" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-
-
-
                     <form @submit.prevent="actualizarUsuarioCheck === false ? registrarImputado : actualizarUsuario"
                         @keydown="form.onKeydown($event)">
                         <div class="modal-header">
                             <h5 class="modal-title" id="modalSeleccionarImputado">
                                 Seleccionar imputado
                             </h5>
-
-
-
-
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

@@ -28,6 +28,8 @@ import TribunalEnjuiciamiento from '../components/admin/TribunalEnjuiciamiento.v
 import Test from '../components/defensor/componentes/CmpTestChart.vue';
 import Actividad from '../components/Actividad.vue';
 
+import Archivos from '../components/Archivos.vue';
+
 const routes = [
     {
         path: '/',
@@ -185,6 +187,14 @@ const routes = [
         path: "/actividad",
         name: "actividad",
         component: Actividad,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+
+
+    {
+        path: "/archivos",
+        name: "archivos",
+        component: Archivos,
         meta: { requiresAuth: true, requiresAdmin: true }
     },
 
